@@ -1,1 +1,1394 @@
-# Spa
+<!DOCTYPE html>
+
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Glam Nails Spa — Medellín</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --nude: #f5ede6;
+    --blush: #e8c4b8;
+    --rose: #c27b6e;
+    --deep: #7a3d35;
+    --dark: #1a1a1a;
+    --muted: #8a7a76;
+    --white: #ffffff;
+    --cream: #fdf8f5;
+  }
+
+- { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+font-family: ‘DM Sans’, sans-serif;
+background: var(–cream);
+color: var(–dark);
+overflow-x: hidden;
+}
+
+/* ── NAVBAR ── */
+nav {
+position: fixed;
+top: 0; left: 0; right: 0;
+z-index: 100;
+display: flex;
+align-items: center;
+justify-content: space-between;
+padding: 18px 32px;
+background: rgba(253,248,245,0.92);
+backdrop-filter: blur(12px);
+border-bottom: 1px solid rgba(194,123,110,0.15);
+}
+
+.nav-logo {
+font-family: ‘Playfair Display’, serif;
+font-size: 1.5rem;
+font-weight: 700;
+color: var(–deep);
+letter-spacing: -0.5px;
+}
+
+.nav-logo span { color: var(–rose); font-style: italic; }
+
+.nav-links {
+display: flex;
+gap: 32px;
+list-style: none;
+}
+
+.nav-links a {
+text-decoration: none;
+color: var(–muted);
+font-size: 0.88rem;
+font-weight: 500;
+letter-spacing: 0.5px;
+text-transform: uppercase;
+transition: color 0.2s;
+}
+
+.nav-links a:hover { color: var(–rose); }
+
+.nav-cta {
+background: var(–deep);
+color: var(–white) !important;
+padding: 10px 22px;
+border-radius: 50px;
+font-size: 0.85rem !important;
+transition: background 0.2s !important;
+}
+
+.nav-cta:hover { background: var(–rose) !important; color: var(–white) !important; }
+
+/* ── HERO ── */
+.hero {
+min-height: 100vh;
+display: grid;
+grid-template-columns: 1fr 1fr;
+padding-top: 80px;
+}
+
+.hero-left {
+display: flex;
+flex-direction: column;
+justify-content: center;
+padding: 80px 60px 80px 80px;
+position: relative;
+}
+
+.hero-badge {
+display: inline-flex;
+align-items: center;
+gap: 8px;
+background: var(–nude);
+border: 1px solid var(–blush);
+border-radius: 50px;
+padding: 8px 16px;
+font-size: 0.78rem;
+color: var(–rose);
+font-weight: 500;
+letter-spacing: 0.5px;
+text-transform: uppercase;
+width: fit-content;
+margin-bottom: 28px;
+animation: fadeUp 0.6s ease both;
+}
+
+.hero-badge::before {
+content: ‘’;
+width: 6px; height: 6px;
+background: var(–rose);
+border-radius: 50%;
+}
+
+.hero-title {
+font-family: ‘Playfair Display’, serif;
+font-size: clamp(2.8rem, 4vw, 4.2rem);
+line-height: 1.1;
+color: var(–dark);
+margin-bottom: 24px;
+animation: fadeUp 0.6s 0.1s ease both;
+}
+
+.hero-title em {
+font-style: italic;
+color: var(–rose);
+}
+
+.hero-sub {
+font-size: 1rem;
+color: var(–muted);
+line-height: 1.7;
+max-width: 420px;
+margin-bottom: 40px;
+font-weight: 300;
+animation: fadeUp 0.6s 0.2s ease both;
+}
+
+.hero-actions {
+display: flex;
+gap: 16px;
+align-items: center;
+animation: fadeUp 0.6s 0.3s ease both;
+}
+
+.btn-primary {
+background: var(–deep);
+color: var(–white);
+padding: 16px 32px;
+border-radius: 50px;
+font-size: 0.92rem;
+font-weight: 500;
+text-decoration: none;
+transition: all 0.2s;
+border: none;
+cursor: pointer;
+}
+
+.btn-primary:hover {
+background: var(–rose);
+transform: translateY(-2px);
+box-shadow: 0 8px 24px rgba(194,123,110,0.35);
+}
+
+.btn-ghost {
+color: var(–deep);
+font-size: 0.92rem;
+font-weight: 500;
+text-decoration: none;
+display: flex;
+align-items: center;
+gap: 8px;
+transition: gap 0.2s;
+}
+
+.btn-ghost:hover { gap: 14px; }
+
+.hero-stats {
+display: flex;
+gap: 40px;
+margin-top: 56px;
+padding-top: 40px;
+border-top: 1px solid var(–blush);
+animation: fadeUp 0.6s 0.4s ease both;
+}
+
+.stat-num {
+font-family: ‘Playfair Display’, serif;
+font-size: 2rem;
+font-weight: 700;
+color: var(–deep);
+line-height: 1;
+}
+
+.stat-label {
+font-size: 0.78rem;
+color: var(–muted);
+text-transform: uppercase;
+letter-spacing: 0.5px;
+margin-top: 4px;
+}
+
+.hero-right {
+position: relative;
+background: linear-gradient(135deg, var(–nude) 0%, var(–blush) 100%);
+overflow: hidden;
+display: flex;
+align-items: center;
+justify-content: center;
+}
+
+.hero-img-wrap {
+position: relative;
+width: 85%;
+max-width: 440px;
+}
+
+.hero-img-placeholder {
+width: 100%;
+aspect-ratio: 3/4;
+background: linear-gradient(160deg, #e8c4b8 0%, #c27b6e 50%, #7a3d35 100%);
+border-radius: 24px;
+display: flex;
+align-items: center;
+justify-content: center;
+font-family: ‘Playfair Display’, serif;
+font-size: 1.1rem;
+color: rgba(255,255,255,0.7);
+font-style: italic;
+animation: fadeIn 0.8s ease both;
+}
+
+.hero-card-float {
+position: absolute;
+background: var(–white);
+border-radius: 16px;
+padding: 16px 20px;
+box-shadow: 0 8px 32px rgba(122,61,53,0.15);
+}
+
+.float-top {
+top: 10%;
+right: -30px;
+animation: float 3s ease-in-out infinite;
+}
+
+.float-bottom {
+bottom: 12%;
+left: -30px;
+animation: float 3s 1.5s ease-in-out infinite;
+}
+
+.float-label {
+font-size: 0.72rem;
+color: var(–muted);
+text-transform: uppercase;
+letter-spacing: 0.5px;
+}
+
+.float-value {
+font-family: ‘Playfair Display’, serif;
+font-size: 1.1rem;
+color: var(–deep);
+font-weight: 600;
+margin-top: 2px;
+}
+
+.stars { color: #f4c542; font-size: 0.85rem; }
+
+/* ── BANNERS ── */
+.banners-section {
+padding: 24px 0;
+background: var(–deep);
+overflow: hidden;
+}
+
+.banners-track {
+display: flex;
+gap: 0;
+animation: marquee 20s linear infinite;
+white-space: nowrap;
+}
+
+.banner-item {
+display: inline-flex;
+align-items: center;
+gap: 16px;
+padding: 0 40px;
+color: var(–nude);
+font-size: 0.88rem;
+letter-spacing: 1px;
+text-transform: uppercase;
+flex-shrink: 0;
+}
+
+.banner-dot { color: var(–rose); font-size: 1.2rem; }
+
+/* ── SERVICIOS ── */
+.section {
+padding: 100px 80px;
+}
+
+.section-header {
+display: flex;
+align-items: flex-end;
+justify-content: space-between;
+margin-bottom: 56px;
+}
+
+.section-label {
+font-size: 0.78rem;
+color: var(–rose);
+text-transform: uppercase;
+letter-spacing: 1.5px;
+font-weight: 500;
+margin-bottom: 12px;
+}
+
+.section-title {
+font-family: ‘Playfair Display’, serif;
+font-size: clamp(2rem, 3vw, 2.8rem);
+color: var(–dark);
+line-height: 1.2;
+}
+
+.section-title em { font-style: italic; color: var(–rose); }
+
+.services-grid {
+display: grid;
+grid-template-columns: repeat(3, 1fr);
+gap: 24px;
+}
+
+.service-card {
+background: var(–white);
+border-radius: 20px;
+overflow: hidden;
+border: 1px solid rgba(194,123,110,0.12);
+transition: all 0.3s;
+cursor: pointer;
+}
+
+.service-card:hover {
+transform: translateY(-6px);
+box-shadow: 0 20px 48px rgba(122,61,53,0.12);
+border-color: var(–blush);
+}
+
+.service-img {
+height: 200px;
+display: flex;
+align-items: center;
+justify-content: center;
+font-size: 3rem;
+position: relative;
+overflow: hidden;
+}
+
+.service-img-1 { background: linear-gradient(135deg, #f9e4dc, #e8c4b8); }
+.service-img-2 { background: linear-gradient(135deg, #e8d5f0, #c9a8e0); }
+.service-img-3 { background: linear-gradient(135deg, #fce8d5, #f0c4a0); }
+.service-img-4 { background: linear-gradient(135deg, #d5e8f0, #a8cce0); }
+.service-img-5 { background: linear-gradient(135deg, #f0e8d5, #e0cca8); }
+.service-img-6 { background: linear-gradient(135deg, #d5f0e8, #a8e0cc); }
+
+.service-body { padding: 24px; }
+
+.service-name {
+font-family: ‘Playfair Display’, serif;
+font-size: 1.15rem;
+color: var(–dark);
+margin-bottom: 6px;
+}
+
+.service-desc {
+font-size: 0.83rem;
+color: var(–muted);
+line-height: 1.6;
+margin-bottom: 16px;
+}
+
+.service-footer {
+display: flex;
+align-items: center;
+justify-content: space-between;
+}
+
+.service-price {
+font-family: ‘Playfair Display’, serif;
+font-size: 1.3rem;
+color: var(–deep);
+font-weight: 700;
+}
+
+.service-duration {
+font-size: 0.78rem;
+color: var(–muted);
+background: var(–nude);
+padding: 4px 12px;
+border-radius: 50px;
+}
+
+/* ── PROFESIONALES ── */
+.pros-section {
+background: var(–nude);
+padding: 100px 80px;
+}
+
+.pros-grid {
+display: grid;
+grid-template-columns: repeat(4, 1fr);
+gap: 24px;
+}
+
+.pro-card {
+background: var(–white);
+border-radius: 20px;
+padding: 32px 24px;
+text-align: center;
+border: 1px solid rgba(194,123,110,0.1);
+transition: all 0.3s;
+}
+
+.pro-card:hover {
+transform: translateY(-4px);
+box-shadow: 0 16px 40px rgba(122,61,53,0.1);
+}
+
+.pro-avatar {
+width: 90px;
+height: 90px;
+border-radius: 50%;
+margin: 0 auto 16px;
+display: flex;
+align-items: center;
+justify-content: center;
+font-size: 2.2rem;
+border: 3px solid var(–blush);
+}
+
+.pro-avatar-1 { background: linear-gradient(135deg, #f9e4dc, #e8c4b8); }
+.pro-avatar-2 { background: linear-gradient(135deg, #e8d5f0, #c9a8e0); }
+.pro-avatar-3 { background: linear-gradient(135deg, #fce8d5, #f0c4a0); }
+.pro-avatar-4 { background: linear-gradient(135deg, #d5f0e8, #a8e0cc); }
+
+.pro-name {
+font-family: ‘Playfair Display’, serif;
+font-size: 1.1rem;
+color: var(–dark);
+margin-bottom: 4px;
+}
+
+.pro-specialty {
+font-size: 0.8rem;
+color: var(–muted);
+margin-bottom: 12px;
+}
+
+.pro-rating {
+display: flex;
+align-items: center;
+justify-content: center;
+gap: 6px;
+margin-bottom: 16px;
+}
+
+.rating-num {
+font-weight: 600;
+font-size: 0.88rem;
+color: var(–deep);
+}
+
+.pro-slots {
+display: flex;
+flex-wrap: wrap;
+gap: 6px;
+justify-content: center;
+margin-bottom: 20px;
+}
+
+.slot {
+font-size: 0.75rem;
+background: var(–nude);
+color: var(–deep);
+padding: 5px 12px;
+border-radius: 50px;
+border: 1px solid var(–blush);
+cursor: pointer;
+transition: all 0.2s;
+}
+
+.slot:hover, .slot.active {
+background: var(–deep);
+color: var(–white);
+border-color: var(–deep);
+}
+
+.btn-agendar {
+width: 100%;
+background: var(–deep);
+color: var(–white);
+border: none;
+border-radius: 50px;
+padding: 12px;
+font-size: 0.85rem;
+font-weight: 500;
+cursor: pointer;
+transition: all 0.2s;
+font-family: ‘DM Sans’, sans-serif;
+}
+
+.btn-agendar:hover { background: var(–rose); }
+
+/* ── INSPIRACIÓN ── */
+.inspo-section { padding: 100px 80px; }
+
+.inspo-grid {
+display: grid;
+grid-template-columns: repeat(5, 1fr);
+grid-template-rows: auto auto;
+gap: 16px;
+}
+
+.inspo-card {
+border-radius: 16px;
+overflow: hidden;
+cursor: pointer;
+position: relative;
+transition: transform 0.3s;
+}
+
+.inspo-card:hover { transform: scale(1.02); }
+.inspo-card:hover .inspo-overlay { opacity: 1; }
+
+.inspo-card:nth-child(1) { grid-column: span 2; grid-row: span 2; }
+.inspo-card:nth-child(4) { grid-column: span 2; }
+
+.inspo-img {
+width: 100%;
+aspect-ratio: 1;
+display: flex;
+align-items: center;
+justify-content: center;
+font-size: 2.5rem;
+}
+
+.inspo-card:nth-child(1) .inspo-img { aspect-ratio: unset; height: 100%; min-height: 260px; }
+
+.inspo-bg-1 { background: linear-gradient(135deg, #f9c5d1, #e891a8); }
+.inspo-bg-2 { background: linear-gradient(135deg, #c5d9f9, #91b8e8); }
+.inspo-bg-3 { background: linear-gradient(135deg, #f9e4c5, #e8c891); }
+.inspo-bg-4 { background: linear-gradient(135deg, #d1f9c5, #a8e891); }
+.inspo-bg-5 { background: linear-gradient(135deg, #e4c5f9, #c891e8); }
+.inspo-bg-6 { background: linear-gradient(135deg, #f9c5e4, #e891c8); }
+.inspo-bg-7 { background: linear-gradient(135deg, #c5f9e4, #91e8c8); }
+
+.inspo-overlay {
+position: absolute;
+inset: 0;
+background: rgba(122,61,53,0.7);
+display: flex;
+align-items: center;
+justify-content: center;
+opacity: 0;
+transition: opacity 0.3s;
+}
+
+.inspo-overlay-text {
+color: var(–white);
+font-family: ‘Playfair Display’, serif;
+font-size: 1rem;
+text-align: center;
+padding: 16px;
+}
+
+/* ── AGENDAR ── */
+.booking-section {
+background: var(–deep);
+padding: 100px 80px;
+display: grid;
+grid-template-columns: 1fr 1fr;
+gap: 80px;
+align-items: center;
+}
+
+.booking-left h2 {
+font-family: ‘Playfair Display’, serif;
+font-size: 2.8rem;
+color: var(–white);
+line-height: 1.2;
+margin-bottom: 20px;
+}
+
+.booking-left h2 em { font-style: italic; color: var(–blush); }
+
+.booking-left p {
+color: rgba(245,237,230,0.7);
+line-height: 1.7;
+font-size: 0.95rem;
+margin-bottom: 32px;
+}
+
+.booking-feature {
+display: flex;
+align-items: center;
+gap: 12px;
+color: var(–nude);
+font-size: 0.88rem;
+margin-bottom: 12px;
+}
+
+.booking-feature-icon {
+width: 32px;
+height: 32px;
+background: rgba(245,237,230,0.1);
+border-radius: 50%;
+display: flex;
+align-items: center;
+justify-content: center;
+font-size: 0.9rem;
+flex-shrink: 0;
+}
+
+.booking-form {
+background: var(–white);
+border-radius: 24px;
+padding: 40px;
+}
+
+.form-title {
+font-family: ‘Playfair Display’, serif;
+font-size: 1.5rem;
+color: var(–dark);
+margin-bottom: 28px;
+}
+
+.form-group {
+margin-bottom: 20px;
+}
+
+.form-label {
+display: block;
+font-size: 0.78rem;
+color: var(–muted);
+text-transform: uppercase;
+letter-spacing: 0.5px;
+font-weight: 500;
+margin-bottom: 8px;
+}
+
+.form-control {
+width: 100%;
+padding: 14px 18px;
+border: 1.5px solid rgba(194,123,110,0.2);
+border-radius: 12px;
+font-size: 0.92rem;
+color: var(–dark);
+background: var(–cream);
+font-family: ‘DM Sans’, sans-serif;
+transition: border-color 0.2s;
+outline: none;
+appearance: none;
+}
+
+.form-control:focus { border-color: var(–rose); }
+
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+.btn-book {
+width: 100%;
+background: var(–deep);
+color: var(–white);
+border: none;
+border-radius: 50px;
+padding: 16px;
+font-size: 0.95rem;
+font-weight: 500;
+cursor: pointer;
+font-family: ‘DM Sans’, sans-serif;
+transition: all 0.2s;
+margin-top: 8px;
+display: flex;
+align-items: center;
+justify-content: center;
+gap: 10px;
+}
+
+.btn-book:hover {
+background: var(–rose);
+transform: translateY(-2px);
+box-shadow: 0 8px 24px rgba(194,123,110,0.4);
+}
+
+.whatsapp-note {
+text-align: center;
+margin-top: 16px;
+font-size: 0.8rem;
+color: var(–muted);
+display: flex;
+align-items: center;
+justify-content: center;
+gap: 6px;
+}
+
+/* ── CRM PUNTOS ── */
+.puntos-section {
+padding: 100px 80px;
+background: var(–nude);
+}
+
+.puntos-inner {
+display: grid;
+grid-template-columns: 1fr 1fr;
+gap: 80px;
+align-items: center;
+}
+
+.puntos-card {
+background: var(–white);
+border-radius: 24px;
+padding: 40px;
+border: 1px solid var(–blush);
+}
+
+.puntos-header {
+display: flex;
+align-items: center;
+gap: 16px;
+margin-bottom: 32px;
+}
+
+.puntos-icon {
+width: 56px;
+height: 56px;
+background: linear-gradient(135deg, var(–blush), var(–rose));
+border-radius: 16px;
+display: flex;
+align-items: center;
+justify-content: center;
+font-size: 1.5rem;
+}
+
+.puntos-title {
+font-family: ‘Playfair Display’, serif;
+font-size: 1.3rem;
+color: var(–dark);
+}
+
+.puntos-subtitle { font-size: 0.82rem; color: var(–muted); }
+
+.puntos-progress {
+margin-bottom: 24px;
+}
+
+.puntos-row {
+display: flex;
+justify-content: space-between;
+align-items: center;
+margin-bottom: 8px;
+}
+
+.puntos-name { font-size: 0.88rem; color: var(–dark); font-weight: 500; }
+.puntos-val { font-size: 0.82rem; color: var(–rose); font-weight: 600; }
+
+.progress-bar {
+height: 6px;
+background: var(–nude);
+border-radius: 50px;
+overflow: hidden;
+margin-bottom: 20px;
+}
+
+.progress-fill {
+height: 100%;
+background: linear-gradient(90deg, var(–blush), var(–rose));
+border-radius: 50px;
+}
+
+.puntos-badges {
+display: flex;
+gap: 8px;
+flex-wrap: wrap;
+}
+
+.badge {
+font-size: 0.75rem;
+padding: 6px 14px;
+border-radius: 50px;
+font-weight: 500;
+}
+
+.badge-gold { background: #fff3cd; color: #856404; }
+.badge-rose { background: #fce4e4; color: var(–deep); }
+.badge-green { background: #d4edda; color: #155724; }
+
+/* ── FOOTER ── */
+footer {
+background: var(–dark);
+padding: 60px 80px 32px;
+}
+
+.footer-top {
+display: grid;
+grid-template-columns: 2fr 1fr 1fr;
+gap: 60px;
+margin-bottom: 48px;
+}
+
+.footer-brand {
+font-family: ‘Playfair Display’, serif;
+font-size: 1.5rem;
+color: var(–white);
+margin-bottom: 16px;
+}
+
+.footer-brand span { color: var(–rose); font-style: italic; }
+
+.footer-desc {
+font-size: 0.85rem;
+color: rgba(255,255,255,0.4);
+line-height: 1.7;
+max-width: 280px;
+}
+
+.footer-col h4 {
+font-size: 0.78rem;
+color: rgba(255,255,255,0.5);
+text-transform: uppercase;
+letter-spacing: 1px;
+margin-bottom: 20px;
+}
+
+.footer-col a {
+display: block;
+color: rgba(255,255,255,0.7);
+text-decoration: none;
+font-size: 0.88rem;
+margin-bottom: 10px;
+transition: color 0.2s;
+}
+
+.footer-col a:hover { color: var(–rose); }
+
+.footer-bottom {
+border-top: 1px solid rgba(255,255,255,0.08);
+padding-top: 28px;
+display: flex;
+align-items: center;
+justify-content: space-between;
+}
+
+.footer-copy {
+font-size: 0.8rem;
+color: rgba(255,255,255,0.3);
+}
+
+.powered {
+font-size: 0.8rem;
+color: rgba(255,255,255,0.3);
+display: flex;
+align-items: center;
+gap: 6px;
+}
+
+.powered strong {
+color: rgba(255,255,255,0.6);
+font-weight: 500;
+}
+
+/* ── WHATSAPP FLOTANTE ── */
+.wa-float {
+position: fixed;
+bottom: 28px;
+right: 28px;
+width: 56px;
+height: 56px;
+background: #25D366;
+border-radius: 50%;
+display: flex;
+align-items: center;
+justify-content: center;
+font-size: 1.5rem;
+cursor: pointer;
+box-shadow: 0 4px 20px rgba(37,211,102,0.4);
+z-index: 200;
+transition: transform 0.2s;
+text-decoration: none;
+}
+
+.wa-float:hover { transform: scale(1.1); }
+
+/* ── ANIMACIONES ── */
+@keyframes fadeUp {
+from { opacity: 0; transform: translateY(24px); }
+to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+from { opacity: 0; }
+to { opacity: 1; }
+}
+
+@keyframes float {
+0%, 100% { transform: translateY(0); }
+50% { transform: translateY(-10px); }
+}
+
+@keyframes marquee {
+from { transform: translateX(0); }
+to { transform: translateX(-50%); }
+}
+
+/* ── MOBILE ── */
+@media (max-width: 768px) {
+nav { padding: 16px 20px; }
+.nav-links { display: none; }
+.hero { grid-template-columns: 1fr; }
+.hero-right { display: none; }
+.hero-left { padding: 40px 24px; }
+.section { padding: 60px 24px; }
+.services-grid { grid-template-columns: 1fr; }
+.pros-grid { grid-template-columns: 1fr 1fr; }
+.inspo-grid { grid-template-columns: repeat(2, 1fr); }
+.inspo-card:nth-child(1) { grid-column: span 2; }
+.inspo-card:nth-child(4) { grid-column: span 1; }
+.booking-section { grid-template-columns: 1fr; padding: 60px 24px; gap: 40px; }
+.puntos-inner { grid-template-columns: 1fr; padding: 0; gap: 40px; }
+.puntos-section { padding: 60px 24px; }
+.footer-top { grid-template-columns: 1fr; gap: 32px; }
+footer { padding: 48px 24px 24px; }
+.form-row { grid-template-columns: 1fr; }
+}
+</style>
+
+</head>
+<body>
+
+<!-- NAVBAR -->
+
+<nav>
+  <div class="nav-logo">Glam<span>Nails</span></div>
+  <ul class="nav-links">
+    <li><a href="#servicios">Servicios</a></li>
+    <li><a href="#profesionales">Profesionales</a></li>
+    <li><a href="#inspiracion">Inspiración</a></li>
+    <li><a href="#agendar" class="nav-cta">Agendar cita</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+
+<section class="hero">
+  <div class="hero-left">
+    <div class="hero-badge">✦ Medellín · El Poblado</div>
+    <h1 class="hero-title">
+      Uñas que<br><em>cuentan tu</em><br>historia
+    </h1>
+    <p class="hero-sub">
+      Arte en cada detalle. Agenda tu cita con las mejores profesionales de Medellín y luce unas uñas perfectas para cada momento.
+    </p>
+    <div class="hero-actions">
+      <a href="#agendar" class="btn-primary">Agendar ahora</a>
+      <a href="#inspiracion" class="btn-ghost">Ver diseños →</a>
+    </div>
+    <div class="hero-stats">
+      <div>
+        <div class="stat-num">4.9</div>
+        <div class="stat-label">⭐ Calificación</div>
+      </div>
+      <div>
+        <div class="stat-num">1.2k</div>
+        <div class="stat-label">Clientas felices</div>
+      </div>
+      <div>
+        <div class="stat-num">5+</div>
+        <div class="stat-label">Años de experiencia</div>
+      </div>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="hero-img-wrap">
+      <div class="hero-img-placeholder">📸 Foto del spa aquí</div>
+      <div class="hero-card-float float-top">
+        <div class="float-label">Próxima disponible</div>
+        <div class="float-value">Hoy · 3:00 PM</div>
+        <div class="stars">★★★★★</div>
+      </div>
+      <div class="hero-card-float float-bottom">
+        <div class="float-label">Servicio más pedido</div>
+        <div class="float-value">Manicure gel ✨</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BANNERS -->
+
+<div class="banners-section">
+  <div class="banners-track">
+    <div class="banner-item"><span class="banner-dot">◆</span> 20% OFF en tu primera visita</div>
+    <div class="banner-item"><span class="banner-dot">◆</span> Manicure + Pedicure $75.000</div>
+    <div class="banner-item"><span class="banner-dot">◆</span> Acumula puntos y gana beneficios</div>
+    <div class="banner-item"><span class="banner-dot">◆</span> Agenda 24/7 desde tu celular</div>
+    <div class="banner-item"><span class="banner-dot">◆</span> Confirmación por WhatsApp</div>
+    <div class="banner-item"><span class="banner-dot">◆</span> 20% OFF en tu primera visita</div>
+    <div class="banner-item"><span class="banner-dot">◆</span> Manicure + Pedicure $75.000</div>
+    <div class="banner-item"><span class="banner-dot">◆</span> Acumula puntos y gana beneficios</div>
+    <div class="banner-item"><span class="banner-dot">◆</span> Agenda 24/7 desde tu celular</div>
+    <div class="banner-item"><span class="banner-dot">◆</span> Confirmación por WhatsApp</div>
+  </div>
+</div>
+
+<!-- SERVICIOS -->
+
+<section class="section" id="servicios">
+  <div class="section-header">
+    <div>
+      <div class="section-label">Lo que hacemos</div>
+      <h2 class="section-title">Nuestros <em>servicios</em></h2>
+    </div>
+    <a href="#agendar" class="btn-ghost">Ver todos →</a>
+  </div>
+  <div class="services-grid">
+    <div class="service-card">
+      <div class="service-img service-img-1">💅</div>
+      <div class="service-body">
+        <div class="service-name">Manicure Gel</div>
+        <div class="service-desc">Acabado perfecto con gel de larga duración. Incluye limpieza, forma y color.</div>
+        <div class="service-footer">
+          <div class="service-price">$45.000</div>
+          <div class="service-duration">⏱ 45 min</div>
+        </div>
+      </div>
+    </div>
+    <div class="service-card">
+      <div class="service-img service-img-2">✨</div>
+      <div class="service-body">
+        <div class="service-name">Uñas Acrílicas</div>
+        <div class="service-desc">Extensiones de acrílico con el diseño que sueñas. Personalizado 100%.</div>
+        <div class="service-footer">
+          <div class="service-price">$80.000</div>
+          <div class="service-duration">⏱ 90 min</div>
+        </div>
+      </div>
+    </div>
+    <div class="service-card">
+      <div class="service-img service-img-3">🦶</div>
+      <div class="service-body">
+        <div class="service-name">Pedicure Spa</div>
+        <div class="service-desc">Relajación total con exfoliación, masaje y esmaltado duradero.</div>
+        <div class="service-footer">
+          <div class="service-price">$55.000</div>
+          <div class="service-duration">⏱ 60 min</div>
+        </div>
+      </div>
+    </div>
+    <div class="service-card">
+      <div class="service-img service-img-4">🎨</div>
+      <div class="service-body">
+        <div class="service-name">Nail Art</div>
+        <div class="service-desc">Diseños artísticos únicos: flores, degradados, piedras y mucho más.</div>
+        <div class="service-footer">
+          <div class="service-price">$30.000</div>
+          <div class="service-duration">⏱ 30 min</div>
+        </div>
+      </div>
+    </div>
+    <div class="service-card">
+      <div class="service-img service-img-5">💎</div>
+      <div class="service-body">
+        <div class="service-name">Semipermanente</div>
+        <div class="service-desc">Color que dura hasta 3 semanas sin astillarse. Secado en lámpara UV.</div>
+        <div class="service-footer">
+          <div class="service-price">$38.000</div>
+          <div class="service-duration">⏱ 50 min</div>
+        </div>
+      </div>
+    </div>
+    <div class="service-card">
+      <div class="service-img service-img-6">🌿</div>
+      <div class="service-body">
+        <div class="service-name">Manicure + Pedicure</div>
+        <div class="service-desc">El combo perfecto. Manos y pies impecables en una sola visita.</div>
+        <div class="service-footer">
+          <div class="service-price">$75.000</div>
+          <div class="service-duration">⏱ 100 min</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROFESIONALES -->
+
+<section class="pros-section" id="profesionales">
+  <div class="section-header">
+    <div>
+      <div class="section-label">Nuestro equipo</div>
+      <h2 class="section-title">Las <em>profesionales</em></h2>
+    </div>
+  </div>
+  <div class="pros-grid">
+    <div class="pro-card">
+      <div class="pro-avatar pro-avatar-1">👩🏽</div>
+      <div class="pro-name">Valentina G.</div>
+      <div class="pro-specialty">Nail Art · Acrílicas</div>
+      <div class="pro-rating">
+        <span class="stars">★★★★★</span>
+        <span class="rating-num">4.9</span>
+        <span style="font-size:0.75rem;color:var(--muted)">(128)</span>
+      </div>
+      <div class="pro-slots">
+        <span class="slot active">9:00 AM</span>
+        <span class="slot">11:00 AM</span>
+        <span class="slot">2:00 PM</span>
+        <span class="slot">4:00 PM</span>
+      </div>
+      <button class="btn-agendar">Agendar con ella</button>
+    </div>
+    <div class="pro-card">
+      <div class="pro-avatar pro-avatar-2">👩🏻</div>
+      <div class="pro-name">Daniela R.</div>
+      <div class="pro-specialty">Gel · Semipermanente</div>
+      <div class="pro-rating">
+        <span class="stars">★★★★★</span>
+        <span class="rating-num">4.8</span>
+        <span style="font-size:0.75rem;color:var(--muted)">(95)</span>
+      </div>
+      <div class="pro-slots">
+        <span class="slot">10:00 AM</span>
+        <span class="slot active">1:00 PM</span>
+        <span class="slot">3:00 PM</span>
+        <span class="slot">5:00 PM</span>
+      </div>
+      <button class="btn-agendar">Agendar con ella</button>
+    </div>
+    <div class="pro-card">
+      <div class="pro-avatar pro-avatar-3">👩🏾</div>
+      <div class="pro-name">Juliana M.</div>
+      <div class="pro-specialty">Pedicure · Spa</div>
+      <div class="pro-rating">
+        <span class="stars">★★★★★</span>
+        <span class="rating-num">5.0</span>
+        <span style="font-size:0.75rem;color:var(--muted)">(74)</span>
+      </div>
+      <div class="pro-slots">
+        <span class="slot">9:30 AM</span>
+        <span class="slot">12:00 PM</span>
+        <span class="slot active">3:30 PM</span>
+        <span class="slot">5:30 PM</span>
+      </div>
+      <button class="btn-agendar">Agendar con ella</button>
+    </div>
+    <div class="pro-card">
+      <div class="pro-avatar pro-avatar-4">👩🏼</div>
+      <div class="pro-name">Camila S.</div>
+      <div class="pro-specialty">Acrílicas · Nail Art</div>
+      <div class="pro-rating">
+        <span class="stars">★★★★☆</span>
+        <span class="rating-num">4.7</span>
+        <span style="font-size:0.75rem;color:var(--muted)">(61)</span>
+      </div>
+      <div class="pro-slots">
+        <span class="slot">10:30 AM</span>
+        <span class="slot">2:30 PM</span>
+        <span class="slot active">4:30 PM</span>
+        <span class="slot">6:00 PM</span>
+      </div>
+      <button class="btn-agendar">Agendar con ella</button>
+    </div>
+  </div>
+</section>
+
+<!-- INSPIRACIÓN -->
+
+<section class="inspo-section" id="inspiracion">
+  <div class="section-header">
+    <div>
+      <div class="section-label">¿Sin ideas?</div>
+      <h2 class="section-title">Inspírate <em>aquí</em></h2>
+    </div>
+    <p style="max-width:280px;font-size:0.88rem;color:var(--muted);line-height:1.6">Explora diseños y al agendar cuéntale a tu profesional cuál te gustó.</p>
+  </div>
+  <div class="inspo-grid">
+    <div class="inspo-card">
+      <div class="inspo-img inspo-bg-1">💅</div>
+      <div class="inspo-overlay"><div class="inspo-overlay-text">Francesa clásica<br><small>Elegante y atemporal</small></div></div>
+    </div>
+    <div class="inspo-card">
+      <div class="inspo-img inspo-bg-2">🌸</div>
+      <div class="inspo-overlay"><div class="inspo-overlay-text">Floral primavera<br><small>Delicado y femenino</small></div></div>
+    </div>
+    <div class="inspo-card">
+      <div class="inspo-img inspo-bg-3">✨</div>
+      <div class="inspo-overlay"><div class="inspo-overlay-text">Glitter sunset<br><small>Brillante y festivo</small></div></div>
+    </div>
+    <div class="inspo-card">
+      <div class="inspo-img inspo-bg-4">🌿</div>
+      <div class="inspo-overlay"><div class="inspo-overlay-text">Nude natural<br><small>Minimalista y sofisticado</small></div></div>
+    </div>
+    <div class="inspo-card">
+      <div class="inspo-img inspo-bg-5">💜</div>
+      <div class="inspo-overlay"><div class="inspo-overlay-text">Degradado lila<br><small>Moderno y atrevido</small></div></div>
+    </div>
+    <div class="inspo-card">
+      <div class="inspo-img inspo-bg-6">🦋</div>
+      <div class="inspo-overlay"><div class="inspo-overlay-text">Mariposas 3D<br><small>Artístico y único</small></div></div>
+    </div>
+    <div class="inspo-card">
+      <div class="inspo-img inspo-bg-7">💎</div>
+      <div class="inspo-overlay"><div class="inspo-overlay-text">Piedras y cristales<br><small>Glamour total</small></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- AGENDAR -->
+
+<section class="booking-section" id="agendar">
+  <div class="booking-left">
+    <h2>Agenda tu cita<br><em>en segundos</em></h2>
+    <p>Sin llamadas, sin esperas. Elige tu servicio, tu profesional y el horario que más te convenga. Te confirmamos por WhatsApp al instante.</p>
+    <div class="booking-feature">
+      <div class="booking-feature-icon">✅</div>
+      Confirmación inmediata por WhatsApp
+    </div>
+    <div class="booking-feature">
+      <div class="booking-feature-icon">🔔</div>
+      Recordatorio 1 hora antes de tu cita
+    </div>
+    <div class="booking-feature">
+      <div class="booking-feature-icon">❌</div>
+      Cancela fácil hasta 2 horas antes
+    </div>
+    <div class="booking-feature">
+      <div class="booking-feature-icon">⭐</div>
+      Acumula puntos en cada visita
+    </div>
+  </div>
+  <div class="booking-form">
+    <div class="form-title">Reservar cita</div>
+    <div class="form-group">
+      <label class="form-label">Tu nombre</label>
+      <input class="form-control" type="text" placeholder="María Camila Pérez">
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">WhatsApp</label>
+        <input class="form-control" type="tel" placeholder="300 000 0000">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Servicio</label>
+        <select class="form-control">
+          <option>Manicure Gel</option>
+          <option>Uñas Acrílicas</option>
+          <option>Pedicure Spa</option>
+          <option>Nail Art</option>
+          <option>Semipermanente</option>
+          <option>Manicure + Pedicure</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Profesional</label>
+        <select class="form-control">
+          <option>Cualquiera disponible</option>
+          <option>Valentina G.</option>
+          <option>Daniela R.</option>
+          <option>Juliana M.</option>
+          <option>Camila S.</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Fecha</label>
+        <input class="form-control" type="date">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Hora disponible</label>
+      <select class="form-control">
+        <option>9:00 AM</option>
+        <option>10:00 AM</option>
+        <option>11:00 AM</option>
+        <option>12:00 PM</option>
+        <option>2:00 PM</option>
+        <option>3:00 PM</option>
+        <option>4:00 PM</option>
+        <option>5:00 PM</option>
+      </select>
+    </div>
+    <button class="btn-book">
+      <span>Confirmar por WhatsApp</span>
+      <span>💬</span>
+    </button>
+    <div class="whatsapp-note">💬 Recibirás confirmación en tu WhatsApp</div>
+  </div>
+</section>
+
+<!-- PUNTOS / CRM -->
+
+<section class="puntos-section">
+  <div class="puntos-inner">
+    <div>
+      <div class="section-label">Programa de fidelidad</div>
+      <h2 class="section-title">Acumula <em>puntos</em><br>y gana premios</h2>
+      <p style="color:var(--muted);line-height:1.7;margin:20px 0;font-size:0.92rem">Cada visita suma puntos. Canjéalos por servicios gratis, descuentos exclusivos y sorpresas especiales para nuestras clientas más fieles.</p>
+      <div style="display:flex;gap:16px;flex-wrap:wrap">
+        <div class="badge badge-gold">⭐ 500 pts = Manicure gratis</div>
+        <div class="badge badge-rose">💗 200 pts = 20% OFF</div>
+        <div class="badge badge-green">🎁 100 pts = Nail art gratis</div>
+      </div>
+    </div>
+    <div class="puntos-card">
+      <div class="puntos-header">
+        <div class="puntos-icon">⭐</div>
+        <div>
+          <div class="puntos-title">Mis GlamPoints</div>
+          <div class="puntos-subtitle">Programa de recompensas</div>
+        </div>
+      </div>
+      <div style="text-align:center;margin-bottom:24px">
+        <div style="font-family:'Playfair Display',serif;font-size:3rem;color:var(--deep);font-weight:700">340</div>
+        <div style="font-size:0.82rem;color:var(--muted)">puntos acumulados · Nivel <strong style="color:var(--rose)">Rose</strong></div>
+      </div>
+      <div class="puntos-progress">
+        <div class="puntos-row">
+          <span class="puntos-name">Progreso al nivel Gold</span>
+          <span class="puntos-val">340 / 500</span>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill" style="width:68%"></div>
+        </div>
+        <div class="puntos-row">
+          <span style="font-size:0.78rem;color:var(--muted)">Te faltan 160 puntos para una manicure gratis</span>
+        </div>
+      </div>
+      <div style="background:var(--nude);border-radius:12px;padding:16px;text-align:center">
+        <div style="font-size:0.78rem;color:var(--muted);margin-bottom:4px">Próxima visita</div>
+        <div style="font-family:'Playfair Display',serif;font-size:1rem;color:var(--deep)">Viernes 18 Abr · 3:00 PM con Valentina</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+
+<footer>
+  <div class="footer-top">
+    <div>
+      <div class="footer-brand">Glam<span>Nails</span></div>
+      <p class="footer-desc">El mejor spa de uñas en El Poblado, Medellín. Arte, cuidado y estilo en cada visita.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Servicios</h4>
+      <a href="#">Manicure Gel</a>
+      <a href="#">Uñas Acrílicas</a>
+      <a href="#">Pedicure Spa</a>
+      <a href="#">Nail Art</a>
+      <a href="#">Semipermanente</a>
+    </div>
+    <div class="footer-col">
+      <h4>Contacto</h4>
+      <a href="#">📍 El Poblado, Medellín</a>
+      <a href="#">📞 300 000 0000</a>
+      <a href="#">💬 WhatsApp</a>
+      <a href="#">📷 Instagram</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-copy">© 2026 GlamNails. Todos los derechos reservados.</div>
+    <div class="powered">
+      <span>Powered by</span>
+      <strong>MApos</strong>
+    </div>
+  </div>
+</footer>
+
+<!-- WHATSAPP FLOTANTE -->
+
+<a class="wa-float" href="#" title="Escríbenos">💬</a>
+
+</body>
+</html>
