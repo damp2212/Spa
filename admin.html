@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light">
+<title>GlamNails — Admin</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; -webkit-text-size-adjust: 100%; }
+html { background: #f4f6f9; }
+body { font-family: 'DM Sans', sans-serif; background: #f4f6f9; color: #1a1a1a; -webkit-font-smoothing: antialiased; }
+
+/* ── LOGIN ── */
+#login-screen {
+min-height: 100vh; display: flex; align-items: center; justify-content: center;
+background: linear-gradient(135deg, #7a3d35, #c27b6e); padding: 24px;
+}
+.login-card {
+background: #ffffff; border-radius: 24px; padding: 40px 32px;
+width: 100%; max-width: 400px; box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+}
+.login-logo { font-family: ‘Playfair Display’, Georgia, serif; font-size: 1.8rem; font-weight: 700; color: #7a3d35; margin-bottom: 4px; }
+.login-logo span { color: #c27b6e; font-style: italic; }
+.login-sub { font-size: 0.85rem; color: #8a7a76; margin-bottom: 32px; }
+.login-label { display: block; font-size: 0.72rem; color: #8a7a76; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 500; margin-bottom: 7px; }
+.login-input { width: 100%; padding: 13px 16px; border: 1.5px solid #e8c4b8; border-radius: 12px; font-size: 0.9rem; color: #1a1a1a; background: #fdf8f5; font-family: ‘DM Sans’, sans-serif; outline: none; margin-bottom: 16px; -webkit-appearance: none; }
+.login-input:focus { border-color: #c27b6e; }
+.login-btn { width: 100%; background: #7a3d35; color: #ffffff; border: none; border-radius: 50px; padding: 15px; font-size: 0.92rem; font-weight: 500; cursor: pointer; font-family: ‘DM Sans’, sans-serif; }
+.login-error { font-size: 0.8rem; color: #c0392b; margin-top: 12px; text-align: center; display: none; }
+
+/* ── LAYOUT ── */
+#app { display: none; min-height: 100vh; }
+
+/* SIDEBAR */
+.sidebar {
+position: fixed; top: 0; left: 0; bottom: 0; width: 240px;
+background: #1a1a1a; padding: 28px 0; z-index: 100;
+display: flex; flex-direction: column;
+}
+.sidebar-logo { font-family: ‘Playfair Display’, Georgia, serif; font-size: 1.4rem; color: #ffffff; padding: 0 24px; margin-bottom: 8px; }
+.sidebar-logo span { color: #c27b6e; font-style: italic; }
+.sidebar-role { font-size: 0.72rem; color: #777777; padding: 0 24px; margin-bottom: 32px; text-transform: uppercase; letter-spacing: 1px; }
+.sidebar-section { font-size: 0.68rem; color: #555555; text-transform: uppercase; letter-spacing: 1px; padding: 0 24px; margin-bottom: 8px; margin-top: 16px; }
+.sidebar-link {
+display: flex; align-items: center; gap: 10px; padding: 11px 24px;
+color: #aaaaaa; text-decoration: none; font-size: 0.85rem; font-weight: 500;
+transition: all 0.2s; cursor: pointer; border: none; background: none; width: 100%; text-align: left;
+}
+.sidebar-link:hover { color: #ffffff; background: rgba(255,255,255,0.05); }
+.sidebar-link.active { color: #ffffff; background: rgba(194,123,110,0.15); border-left: 3px solid #c27b6e; }
+.sidebar-link .icon { font-size: 1rem; width: 20px; text-align: center; }
+.sidebar-bottom { margin-top: auto; padding: 16px 24px; border-top: 1px solid #333333; }
+.sidebar-user { font-size: 0.78rem; color: #777777; margin-bottom: 12px; }
+.btn-logout { font-size: 0.78rem; color: #c27b6e; background: none; border: none; cursor: pointer; font-family: ‘DM Sans’, sans-serif; }
+
+/* MAIN */
+.main { margin-left: 240px; padding: 32px; min-height: 100vh; }
+.page { display: none; }
+.page.active { display: block; }
+
+/* TOPBAR */
+.topbar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 32px; }
+.topbar-title { font-family: ‘Playfair Display’, Georgia, serif; font-size: 1.8rem; color: #1a1a1a; }
+.topbar-title em { font-style: italic; color: #c27b6e; }
+.topbar-date { font-size: 0.82rem; color: #8a7a76; }
+
+/* STATS GRID */
+.stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-bottom: 32px; }
+.stat-card { background: #ffffff; border-radius: 16px; padding: 24px; border: 1px solid #eeeeee; }
+.stat-card-label { font-size: 0.75rem; color: #8a7a76; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
+.stat-card-num { font-family: ‘Playfair Display’, Georgia, serif; font-size: 2rem; font-weight: 700; color: #1a1a1a; line-height: 1; margin-bottom: 6px; }
+.stat-card-sub { font-size: 0.75rem; color: #8a7a76; }
+.stat-card.accent { background: #7a3d35; border-color: #7a3d35; }
+.stat-card.accent .stat-card-label { color: rgba(245,237,230,0.7); }
+.stat-card.accent .stat-card-num { color: #ffffff; }
+.stat-card.accent .stat-card-sub { color: rgba(245,237,230,0.6); }
+
+/* CARDS */
+.card { background: #ffffff; border-radius: 16px; padding: 24px; border: 1px solid #eeeeee; margin-bottom: 24px; }
+.card-title { font-family: ‘Playfair Display’, Georgia, serif; font-size: 1.1rem; color: #1a1a1a; margin-bottom: 20px; display: flex; align-items: center; justify-content: space-between; }
+.card-title-right { font-size: 0.78rem; color: #8a7a76; font-family: ‘DM Sans’, sans-serif; font-weight: 400; }
+
+/* TABLA CITAS */
+.tabla-wrap { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+thead th { text-align: left; font-size: 0.72rem; color: #8a7a76; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 500; padding: 0 16px 12px; border-bottom: 1px solid #eeeeee; }
+tbody tr { border-bottom: 1px solid #f5f5f5; transition: background 0.15s; }
+tbody tr:hover { background: #fdf8f5; }
+tbody td { padding: 14px 16px; color: #1a1a1a; vertical-align: middle; }
+.td-name { font-weight: 500; }
+.td-phone { color: #8a7a76; font-size: 0.8rem; }
+.td-pro { display: flex; align-items: center; gap: 8px; }
+.pro-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+
+/* BADGES ESTADO */
+.badge-estado { display: inline-flex; align-items: center; gap: 5px; padding: 4px 12px; border-radius: 50px; font-size: 0.72rem; font-weight: 500; }
+.badge-pendiente { background: #fff3cd; color: #856404; }
+.badge-confirmada { background: #d4edda; color: #155724; }
+.badge-cancelada { background: #f8d7da; color: #721c24; }
+.badge-atendida { background: #d1ecf1; color: #0c5460; }
+
+/* BOTONES ACCIÓN */
+.btn-confirmar-cita { background: #1a7a3d; color: #ffffff; border: none; border-radius: 50px; padding: 6px 14px; font-size: 0.75rem; cursor: pointer; font-family: ‘DM Sans’, sans-serif; font-weight: 500; margin-right: 4px; }
+.btn-cancelar-cita { background: #f8d7da; color: #721c24; border: none; border-radius: 50px; padding: 6px 14px; font-size: 0.75rem; cursor: pointer; font-family: ‘DM Sans’, sans-serif; font-weight: 500; }
+
+/* FILTROS */
+.filtros { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
+.filtro-btn { padding: 7px 16px; border-radius: 50px; font-size: 0.78rem; font-weight: 500; cursor: pointer; font-family: ‘DM Sans’, sans-serif; border: 1.5px solid #e0e0e0; background: #ffffff; color: #8a7a76; transition: all 0.2s; }
+.filtro-btn.active { background: #7a3d35; color: #ffffff; border-color: #7a3d35; }
+
+/* PROFESIONALES STATS */
+.pro-stats-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+.pro-stat-card { background: #f9f9f9; border-radius: 14px; padding: 20px; border: 1px solid #eeeeee; }
+.pro-stat-header { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+.pro-stat-avatar { width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; flex-shrink: 0; }
+.pro-stat-name { font-weight: 600; font-size: 0.92rem; color: #1a1a1a; }
+.pro-stat-spec { font-size: 0.75rem; color: #8a7a76; }
+.pro-stat-row { display: flex; justify-content: space-between; font-size: 0.82rem; margin-bottom: 8px; }
+.pro-stat-key { color: #8a7a76; }
+.pro-stat-val { font-weight: 600; color: #1a1a1a; }
+.pro-stat-val.green { color: #1a7a3d; }
+
+/* EMPTY STATE */
+.empty-state { text-align: center; padding: 48px 24px; color: #8a7a76; }
+.empty-icon { font-size: 2.5rem; margin-bottom: 12px; }
+.empty-text { font-size: 0.88rem; }
+
+/* TOAST */
+.toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); background: #1a1a1a; color: #ffffff; padding: 12px 24px; border-radius: 50px; font-size: 0.85rem; font-weight: 500; z-index: 9999; opacity: 0; transition: opacity 0.3s; pointer-events: none; white-space: nowrap; }
+.toast.show { opacity: 1; }
+.toast.success { background: #1a7a3d; }
+.toast.error { background: #7a1a1a; }
+
+/* MOBILE */
+.mobile-header { display: none; background: #1a1a1a; padding: 16px 20px; position: fixed; top: 0; left: 0; right: 0; z-index: 200; align-items: center; justify-content: space-between; }
+.mobile-logo { font-family: ‘Playfair Display’, Georgia, serif; font-size: 1.2rem; color: #ffffff; }
+.mobile-logo span { color: #c27b6e; font-style: italic; }
+.hamburger { background: none; border: none; color: #ffffff; font-size: 1.4rem; cursor: pointer; }
+.sidebar-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 99; }
+
+@media (max-width: 900px) {
+.sidebar { transform: translateX(-100%); transition: transform 0.3s; }
+.sidebar.open { transform: translateX(0); }
+.sidebar-overlay.open { display: block; }
+.main { margin-left: 0; padding: 80px 16px 24px; }
+.mobile-header { display: flex; }
+.stats-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+.pro-stats-grid { grid-template-columns: 1fr; }
+.topbar-title { font-size: 1.4rem; }
+thead th:nth-child(3), tbody td:nth-child(3) { display: none; }
+thead th:nth-child(5), tbody td:nth-child(5) { display: none; }
+}
+
+@media (max-width: 500px) {
+.stats-grid { grid-template-columns: 1fr 1fr; }
+.stat-card-num { font-size: 1.5rem; }
+}
+</style>
+
+</head>
+<body>
+
+<div class="toast" id="toast"></div>
+
+<!-- LOGIN -->
+
+<div id="login-screen">
+  <div class="login-card">
+    <div class="login-logo">Glam<span>Nails</span></div>
+    <div class="login-sub">Panel de administración</div>
+    <label class="login-label">Correo electrónico</label>
+    <input class="login-input" id="admin-email" type="email" placeholder="admin@glamnails.com">
+    <label class="login-label">Contraseña</label>
+    <input class="login-input" id="admin-pass" type="password" placeholder="••••••••">
+    <button class="login-btn" onclick="loginAdmin()">Ingresar al panel</button>
+    <div class="login-error" id="login-error">Correo o contraseña incorrectos</div>
+  </div>
+</div>
+
+<!-- APP -->
+
+<div id="app">
+
+  <!-- MOBILE HEADER -->
+
+  <div class="mobile-header">
+    <div class="mobile-logo">Glam<span>Nails</span></div>
+    <button class="hamburger" onclick="toggleSidebar()">☰</button>
+  </div>
+
+  <!-- SIDEBAR OVERLAY -->
+
+  <div class="sidebar-overlay" id="sidebar-overlay" onclick="toggleSidebar()"></div>
+
+  <!-- SIDEBAR -->
+
+  <div class="sidebar" id="sidebar">
+    <div class="sidebar-logo">Glam<span>Nails</span></div>
+    <div class="sidebar-role">Panel Admin</div>
+
+```
+<div class="sidebar-section">Principal</div>
+<button class="sidebar-link active" onclick="showPage('dashboard', this)">
+  <span class="icon">📊</span> Dashboard
+</button>
+
+<div class="sidebar-section">Operación</div>
+<button class="sidebar-link" onclick="showPage('citas', this)">
+  <span class="icon">📅</span> Citas
+</button>
+<button class="sidebar-link" onclick="showPage('profesionales', this)">
+  <span class="icon">👩</span> Profesionales
+</button>
+
+<div class="sidebar-section">Clientes</div>
+<button class="sidebar-link" onclick="showPage('crm', this)">
+  <span class="icon">👥</span> CRM Clientas
+</button>
+
+<div class="sidebar-bottom">
+  <div class="sidebar-user" id="sidebar-user">admin@glamnails.com</div>
+  <button class="btn-logout" onclick="logoutAdmin()">Cerrar sesión →</button>
+</div>
+```
+
+  </div>
+
+  <!-- MAIN -->
+
+  <div class="main">
+
+```
+<!-- DASHBOARD -->
+<div class="page active" id="page-dashboard">
+  <div class="topbar">
+    <div>
+      <div class="topbar-title">Buen día, <em>Admin</em> 👋</div>
+      <div class="topbar-date" id="fecha-hoy"></div>
+    </div>
+  </div>
+
+  <div class="stats-grid">
+    <div class="stat-card accent">
+      <div class="stat-card-label">Citas hoy</div>
+      <div class="stat-card-num" id="stat-hoy">0</div>
+      <div class="stat-card-sub">agendadas</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-card-label">Esta semana</div>
+      <div class="stat-card-num" id="stat-semana">0</div>
+      <div class="stat-card-sub">citas totales</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-card-label">Total citas</div>
+      <div class="stat-card-num" id="stat-total">0</div>
+      <div class="stat-card-sub">en el sistema</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-card-label">Clientas</div>
+      <div class="stat-card-num" id="stat-clientes">0</div>
+      <div class="stat-card-sub">registradas</div>
+    </div>
+  </div>
+
+  <!-- CITAS DE HOY -->
+  <div class="card">
+    <div class="card-title">
+      Citas de hoy
+      <span class="card-title-right" id="citas-hoy-count">0 citas</span>
+    </div>
+    <div class="tabla-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Clienta</th>
+            <th>Servicio</th>
+            <th>Profesional</th>
+            <th>Hora</th>
+            <th>Estado</th>
+            <th>Acción</th>
+          </tr>
+        </thead>
+        <tbody id="tabla-hoy">
+          <tr><td colspan="6"><div class="empty-state"><div class="empty-icon">📅</div><div class="empty-text">Cargando citas...</div></div></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- VENTAS POR PROFESIONAL HOY -->
+  <div class="card">
+    <div class="card-title">Rendimiento de profesionales hoy</div>
+    <div class="pro-stats-grid" id="pro-stats-hoy">
+      <div class="empty-state"><div class="empty-icon">👩</div><div class="empty-text">Sin datos aún</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- CITAS -->
+<div class="page" id="page-citas">
+  <div class="topbar">
+    <div class="topbar-title">Todas las <em>citas</em></div>
+  </div>
+  <div class="card">
+    <div class="filtros">
+      <button class="filtro-btn active" onclick="filtrarCitas('todas', this)">Todas</button>
+      <button class="filtro-btn" onclick="filtrarCitas('pendiente', this)">Pendientes</button>
+      <button class="filtro-btn" onclick="filtrarCitas('confirmada', this)">Confirmadas</button>
+      <button class="filtro-btn" onclick="filtrarCitas('atendida', this)">Atendidas</button>
+      <button class="filtro-btn" onclick="filtrarCitas('cancelada', this)">Canceladas</button>
+    </div>
+    <div class="tabla-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Clienta</th>
+            <th>Servicio</th>
+            <th>Profesional</th>
+            <th>Fecha · Hora</th>
+            <th>Estado</th>
+            <th>Acción</th>
+          </tr>
+        </thead>
+        <tbody id="tabla-todas">
+          <tr><td colspan="6"><div class="empty-state"><div class="empty-icon">📅</div><div class="empty-text">Cargando...</div></div></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- PROFESIONALES -->
+<div class="page" id="page-profesionales">
+  <div class="topbar">
+    <div class="topbar-title">Ventas por <em>profesional</em></div>
+  </div>
+  <div class="card">
+    <div class="pro-stats-grid" id="pro-stats-total">
+      <div class="empty-state"><div class="empty-icon">👩</div><div class="empty-text">Cargando...</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- CRM -->
+<div class="page" id="page-crm">
+  <div class="topbar">
+    <div class="topbar-title">CRM <em>Clientas</em></div>
+  </div>
+  <div class="card">
+    <div class="tabla-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Clienta</th>
+            <th>WhatsApp</th>
+            <th>Visitas</th>
+            <th>Puntos</th>
+            <th>Estado</th>
+          </tr>
+        </thead>
+        <tbody id="tabla-crm">
+          <tr><td colspan="5"><div class="empty-state"><div class="empty-icon">👥</div><div class="empty-text">Cargando...</div></div></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+```
+
+  </div>
+</div>
+
+<!-- FIREBASE -->
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-app.js";
+  import { getFirestore, collection, getDocs, doc, updateDoc, query, orderBy } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-firestore.js";
+  import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-auth.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyBBZInWQZVJyBTP5TG8MrTBOfe7UQFR5uU",
+    authDomain: "mapos-spas.firebaseapp.com",
+    projectId: "mapos-spas",
+    storageBucket: "mapos-spas.firebasestorage.app",
+    messagingSenderId: "704720438670",
+    appId: "1:704720438670:web:fd94574e51e97964cd10df"
+  };
+
+  const app  = initializeApp(firebaseConfig);
+  const db   = getFirestore(app);
+  const auth = getAuth(app);
+
+  let todasLasCitas = [];
+  let todosLosClientes = [];
+
+  // ── TOAST ──
+  function showToast(msg, type = '') {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.className = 'toast show ' + type;
+    setTimeout(() => { t.className = 'toast'; }, 3000);
+  }
+
+  // ── FECHA HOY ──
+  const hoy = new Date();
+  const fechaHoyStr = hoy.toISOString().split('T')[0];
+  const opciones = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+  document.getElementById('fecha-hoy').textContent = hoy.toLocaleDateString('es-CO', opciones);
+
+  // ── AUTH ──
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      document.getElementById('login-screen').style.display = 'none';
+      document.getElementById('app').style.display = 'block';
+      document.getElementById('sidebar-user').textContent = user.email;
+      cargarDatos();
+    } else {
+      document.getElementById('login-screen').style.display = 'flex';
+      document.getElementById('app').style.display = 'none';
+    }
+  });
+
+  window.loginAdmin = async function() {
+    const email = document.getElementById('admin-email').value.trim();
+    const pass  = document.getElementById('admin-pass').value;
+    const errEl = document.getElementById('login-error');
+    errEl.style.display = 'none';
+
+    try {
+      await signInWithEmailAndPassword(auth, email, pass);
+    } catch (e) {
+      errEl.style.display = 'block';
+    }
+  }
+
+  window.logoutAdmin = async function() {
+    await signOut(auth);
+  }
+
+  // ── CARGAR DATOS ──
+  async function cargarDatos() {
+    try {
+      // Cargar citas
+      const citasSnap = await getDocs(query(
+        collection(db, 'spas', 'glamnails', 'citas'),
+        orderBy('creadoEn', 'desc')
+      ));
+      todasLasCitas = citasSnap.docs.map(d => ({ id: d.id, ...d.data() }));
+
+      // Cargar clientes
+      const clientesSnap = await getDocs(collection(db, 'spas', 'glamnails', 'clientes'));
+      todosLosClientes = clientesSnap.docs.map(d => ({ id: d.id, ...d.data() }));
+
+      actualizarDashboard();
+      renderTablaTodasCitas(todasLasCitas);
+      renderProStatsTotal();
+      renderCRM();
+
+    } catch (e) {
+      console.error(e);
+      showToast('Error cargando datos', 'error');
+    }
+  }
+
+  // ── DASHBOARD ──
+  function actualizarDashboard() {
+    const citasHoy = todasLasCitas.filter(c => c.fecha === fechaHoyStr);
+
+    // Stats semana
+    const inicioSemana = new Date(hoy);
+    inicioSemana.setDate(hoy.getDate() - hoy.getDay());
+    const citasSemana = todasLasCitas.filter(c => {
+      if (!c.fecha) return false;
+      return new Date(c.fecha) >= inicioSemana;
+    });
+
+    document.getElementById('stat-hoy').textContent    = citasHoy.length;
+    document.getElementById('stat-semana').textContent = citasSemana.length;
+    document.getElementById('stat-total').textContent  = todasLasCitas.length;
+    document.getElementById('stat-clientes').textContent = todosLosClientes.length;
+    document.getElementById('citas-hoy-count').textContent = citasHoy.length + ' citas';
+
+    // Tabla hoy
+    renderTabla('tabla-hoy', citasHoy, true);
+
+    // Pro stats hoy
+    renderProStats('pro-stats-hoy', citasHoy);
+  }
+
+  // ── RENDER TABLA ──
+  function renderTabla(idTabla, citas, esHoy = false) {
+    const tbody = document.getElementById(idTabla);
+    if (citas.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="6"><div class="empty-state"><div class="empty-icon">📅</div><div class="empty-text">${esHoy ? 'No hay citas para hoy' : 'No hay citas'}</div></div></td></tr>`;
+      return;
+    }
+
+    const colores = { 'Valentina G.': '#e8c4b8', 'Daniela R.': '#c9a8e0', 'Juliana M.': '#f0c4a0', 'Camila S.': '#a8e0cc' };
+
+    tbody.innerHTML = citas.map(c => `
+      <tr>
+        <td>
+          <div class="td-name">${c.nombre || '—'}</div>
+          <div class="td-phone">${c.whatsapp || ''}</div>
+        </td>
+        <td>${c.servicio ? c.servicio.split('—')[0].trim() : '—'}</td>
+        <td>
+          <div class="td-pro">
+            <div class="pro-dot" style="background:${colores[c.profesional] || '#cccccc'}"></div>
+            ${c.profesional || '—'}
+          </div>
+        </td>
+        <td>${esHoy ? (c.hora || '—') : ((c.fecha || '') + ' · ' + (c.hora || ''))}</td>
+        <td><span class="badge-estado badge-${c.estado || 'pendiente'}">${c.estado || 'pendiente'}</span></td>
+        <td>
+          ${c.estado === 'pendiente' ? `
+            <button class="btn-confirmar-cita" onclick="cambiarEstado('${c.id}', 'confirmada')">✅ Confirmar</button>
+            <button class="btn-cancelar-cita" onclick="cambiarEstado('${c.id}', 'cancelada')">❌</button>
+          ` : c.estado === 'confirmada' ? `
+            <button class="btn-confirmar-cita" onclick="cambiarEstado('${c.id}', 'atendida')">✔ Atendida</button>
+          ` : '—'}
+        </td>
+      </tr>
+    `).join('');
+  }
+
+  function renderTablaTodasCitas(citas) {
+    renderTabla('tabla-todas', citas, false);
+  }
+
+  // ── FILTRAR CITAS ──
+  window.filtrarCitas = function(estado, btn) {
+    document.querySelectorAll('.filtro-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const filtradas = estado === 'todas' ? todasLasCitas : todasLasCitas.filter(c => c.estado === estado);
+    renderTablaTodasCitas(filtradas);
+  }
+
+  // ── CAMBIAR ESTADO CITA ──
+  window.cambiarEstado = async function(idCita, nuevoEstado) {
+    try {
+      await updateDoc(doc(db, 'spas', 'glamnails', 'citas', idCita), { estado: nuevoEstado });
+      const idx = todasLasCitas.findIndex(c => c.id === idCita);
+      if (idx !== -1) todasLasCitas[idx].estado = nuevoEstado;
+      actualizarDashboard();
+      renderTablaTodasCitas(todasLasCitas);
+      showToast('✅ Cita ' + nuevoEstado, 'success');
+    } catch (e) {
+      showToast('❌ Error actualizando', 'error');
+    }
+  }
+
+  // ── PRO STATS ──
+  function renderProStats(idContenedor, citas) {
+    const pros = ['Valentina G.', 'Daniela R.', 'Juliana M.', 'Camila S.'];
+    const colores = ['#f9e4dc', '#e8d5f0', '#fce8d5', '#d5f0e8'];
+    const emojis  = ['👩🏽', '👩🏻', '👩🏾', '👩🏼'];
+
+    const precios = { 'Manicure Gel': 45000, 'Uñas Acrílicas': 80000, 'Pedicure Spa': 55000, 'Nail Art': 30000, 'Semipermanente': 38000, 'Manicure + Pedicure': 75000 };
+
+    const stats = pros.map((pro, i) => {
+      const citasPro = citas.filter(c => c.profesional === pro && c.estado !== 'cancelada');
+      const ingresos = citasPro.reduce((sum, c) => {
+        const svc = c.servicio ? c.servicio.split('—')[0].trim() : '';
+        return sum + (precios[svc] || 0);
+      }, 0);
+      return { pro, citasPro: citasPro.length, ingresos, color: colores[i], emoji: emojis[i] };
+    });
+
+    const contenedor = document.getElementById(idContenedor);
+    if (stats.every(s => s.citasPro === 0)) {
+      contenedor.innerHTML = `<div class="empty-state"><div class="empty-icon">👩</div><div class="empty-text">Sin citas aún</div></div>`;
+      return;
+    }
+
+    contenedor.innerHTML = stats.map(s => `
+      <div class="pro-stat-card">
+        <div class="pro-stat-header">
+          <div class="pro-stat-avatar" style="background:${s.color}">${s.emoji}</div>
+          <div>
+            <div class="pro-stat-name">${s.pro}</div>
+          </div>
+        </div>
+        <div class="pro-stat-row"><span class="pro-stat-key">Citas</span><span class="pro-stat-val">${s.citasPro}</span></div>
+        <div class="pro-stat-row"><span class="pro-stat-key">Ingresos</span><span class="pro-stat-val green">$${s.ingresos.toLocaleString('es-CO')}</span></div>
+      </div>
+    `).join('');
+  }
+
+  function renderProStatsTotal() {
+    renderProStats('pro-stats-total', todasLasCitas);
+  }
+
+  // ── CRM ──
+  function renderCRM() {
+    const tbody = document.getElementById('tabla-crm');
+    if (todosLosClientes.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="5"><div class="empty-state"><div class="empty-icon">👥</div><div class="empty-text">No hay clientas registradas aún</div></div></td></tr>`;
+      return;
+    }
+
+    // Enriquecer con datos de citas
+    const clientesEnriquecidos = todosLosClientes.map(c => {
+      const citasCliente = todasLasCitas.filter(cita => cita.uid === c.id && cita.estado !== 'cancelada');
+      const ultimaCita = citasCliente.sort((a, b) => (b.fecha || '').localeCompare(a.fecha || ''))[0];
+      const diasSinVenir = ultimaCita ? Math.floor((hoy - new Date(ultimaCita.fecha)) / (1000 * 60 * 60 * 24)) : null;
+      return { ...c, visitas: citasCliente.length, ultimaCita: ultimaCita?.fecha, diasSinVenir };
+    });
+
+    tbody.innerHTML = clientesEnriquecidos.map(c => {
+      let estadoBadge = '';
+      if (c.diasSinVenir === null) {
+        estadoBadge = '<span class="badge-estado badge-pendiente">Sin visitas</span>';
+      } else if (c.diasSinVenir <= 30) {
+        estadoBadge = '<span class="badge-estado badge-confirmada">Activa 🟢</span>';
+      } else if (c.diasSinVenir <= 60) {
+        estadoBadge = '<span class="badge-estado badge-pendiente">Tibia 🟡</span>';
+      } else {
+        estadoBadge = '<span class="badge-estado badge-cancelada">Perdida 🔴</span>';
+      }
+
+      return `
+        <tr>
+          <td><div class="td-name">${c.nombre || 'Sin nombre'}</div><div class="td-phone">${c.ultimaCita ? 'Última: ' + c.ultimaCita : 'Sin visitas'}</div></td>
+          <td>${c.whatsapp || '—'}</td>
+          <td>${c.visitas || 0}</td>
+          <td>⭐ ${c.puntos || 0}</td>
+          <td>${estadoBadge}</td>
+        </tr>
+      `;
+    }).join('');
+  }
+
+  // ── NAVEGACIÓN ──
+  window.showPage = function(pageName, btn) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('active'));
+    document.getElementById('page-' + pageName).classList.add('active');
+    btn.classList.add('active');
+    if (window.innerWidth <= 900) toggleSidebar();
+  }
+
+  window.toggleSidebar = function() {
+    document.getElementById('sidebar').classList.toggle('open');
+    document.getElementById('sidebar-overlay').classList.toggle('open');
+  }
+</script>
+
+</body>
+</html>
