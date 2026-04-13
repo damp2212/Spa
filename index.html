@@ -101,8 +101,16 @@ nav { position: fixed; top: 0; left: 0; right: 0; z-index: 999; display: flex; a
 .form-group { margin-bottom: 16px; }
 .form-label { display: block; font-size: 0.72rem; color: #8a7a76; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 500; margin-bottom: 7px; }
 .form-control { width: 100%; padding: 13px 16px; border: 1.5px solid #e8c4b8; border-radius: 12px; font-size: 0.9rem; color: #1a1a1a; background: #fdf8f5; font-family: ‘DM Sans’, sans-serif; outline: none; -webkit-appearance: none; appearance: none; }
-.btn-book { width: 100%; background: #7a3d35; color: #ffffff; border: none; border-radius: 50px; padding: 15px; font-size: 0.92rem; font-weight: 500; cursor: pointer; font-family: ‘DM Sans’, sans-serif; margin-top: 8px; }
+.form-control:focus { border-color: #c27b6e; }
+.btn-book { width: 100%; background: #7a3d35; color: #ffffff; border: none; border-radius: 50px; padding: 15px; font-size: 0.92rem; font-weight: 500; cursor: pointer; font-family: ‘DM Sans’, sans-serif; margin-top: 8px; transition: background 0.2s; }
+.btn-book:disabled { background: #aaaaaa; cursor: not-allowed; }
 .wa-note { text-align: center; margin-top: 14px; font-size: 0.78rem; color: #8a7a76; }
+
+/* TOAST */
+.toast { position: fixed; bottom: 90px; left: 50%; transform: translateX(-50%); background: #1a1a1a; color: #ffffff; padding: 14px 24px; border-radius: 50px; font-size: 0.85rem; font-weight: 500; z-index: 9999; opacity: 0; transition: opacity 0.3s; pointer-events: none; white-space: nowrap; }
+.toast.show { opacity: 1; }
+.toast.success { background: #1a7a3d; }
+.toast.error { background: #7a1a1a; }
 
 .puntos-card { background: #ffffff; border-radius: 24px; padding: 28px 20px; border: 1px solid #e8c4b8; margin-top: 32px; }
 .puntos-hdr { display: flex; align-items: center; gap: 14px; margin-bottom: 24px; }
@@ -144,6 +152,10 @@ footer { background-color: #1a1a1a; padding: 52px 24px 32px; }
 </head>
 <body>
 
+<!-- TOAST -->
+
+<div class="toast" id="toast"></div>
+
 <nav>
   <div class="nav-logo">Glam<span>Nails</span></div>
   <a href="#agendar" class="nav-cta">Agendar cita</a>
@@ -183,54 +195,12 @@ footer { background-color: #1a1a1a; padding: 52px 24px 32px; }
   <div class="sec-label">Lo que hacemos</div>
   <h2 class="sec-title">Nuestros <em>servicios</em></h2>
   <div class="services-grid">
-    <div class="service-card">
-      <div class="svc-img si1">💅</div>
-      <div class="svc-body">
-        <div class="svc-name">Manicure Gel</div>
-        <div class="svc-desc">Acabado perfecto con gel de larga duración. Incluye limpieza, forma y color.</div>
-        <div class="svc-foot"><div class="svc-price">$45.000</div><div class="svc-dur">⏱ 45 min</div></div>
-      </div>
-    </div>
-    <div class="service-card">
-      <div class="svc-img si2">✨</div>
-      <div class="svc-body">
-        <div class="svc-name">Uñas Acrílicas</div>
-        <div class="svc-desc">Extensiones de acrílico con el diseño que sueñas. Personalizado 100%.</div>
-        <div class="svc-foot"><div class="svc-price">$80.000</div><div class="svc-dur">⏱ 90 min</div></div>
-      </div>
-    </div>
-    <div class="service-card">
-      <div class="svc-img si3">🦶</div>
-      <div class="svc-body">
-        <div class="svc-name">Pedicure Spa</div>
-        <div class="svc-desc">Relajación total con exfoliación, masaje y esmaltado duradero.</div>
-        <div class="svc-foot"><div class="svc-price">$55.000</div><div class="svc-dur">⏱ 60 min</div></div>
-      </div>
-    </div>
-    <div class="service-card">
-      <div class="svc-img si4">🎨</div>
-      <div class="svc-body">
-        <div class="svc-name">Nail Art</div>
-        <div class="svc-desc">Diseños artísticos únicos: flores, degradados, piedras y mucho más.</div>
-        <div class="svc-foot"><div class="svc-price">$30.000</div><div class="svc-dur">⏱ 30 min</div></div>
-      </div>
-    </div>
-    <div class="service-card">
-      <div class="svc-img si5">💎</div>
-      <div class="svc-body">
-        <div class="svc-name">Semipermanente</div>
-        <div class="svc-desc">Color que dura hasta 3 semanas sin astillarse. Secado en lámpara UV.</div>
-        <div class="svc-foot"><div class="svc-price">$38.000</div><div class="svc-dur">⏱ 50 min</div></div>
-      </div>
-    </div>
-    <div class="service-card">
-      <div class="svc-img si6">🌿</div>
-      <div class="svc-body">
-        <div class="svc-name">Manicure + Pedicure</div>
-        <div class="svc-desc">El combo perfecto. Manos y pies impecables en una sola visita.</div>
-        <div class="svc-foot"><div class="svc-price">$75.000</div><div class="svc-dur">⏱ 100 min</div></div>
-      </div>
-    </div>
+    <div class="service-card"><div class="svc-img si1">💅</div><div class="svc-body"><div class="svc-name">Manicure Gel</div><div class="svc-desc">Acabado perfecto con gel de larga duración. Incluye limpieza, forma y color.</div><div class="svc-foot"><div class="svc-price">$45.000</div><div class="svc-dur">⏱ 45 min</div></div></div></div>
+    <div class="service-card"><div class="svc-img si2">✨</div><div class="svc-body"><div class="svc-name">Uñas Acrílicas</div><div class="svc-desc">Extensiones de acrílico con el diseño que sueñas. Personalizado 100%.</div><div class="svc-foot"><div class="svc-price">$80.000</div><div class="svc-dur">⏱ 90 min</div></div></div></div>
+    <div class="service-card"><div class="svc-img si3">🦶</div><div class="svc-body"><div class="svc-name">Pedicure Spa</div><div class="svc-desc">Relajación total con exfoliación, masaje y esmaltado duradero.</div><div class="svc-foot"><div class="svc-price">$55.000</div><div class="svc-dur">⏱ 60 min</div></div></div></div>
+    <div class="service-card"><div class="svc-img si4">🎨</div><div class="svc-body"><div class="svc-name">Nail Art</div><div class="svc-desc">Diseños artísticos únicos: flores, degradados, piedras y mucho más.</div><div class="svc-foot"><div class="svc-price">$30.000</div><div class="svc-dur">⏱ 30 min</div></div></div></div>
+    <div class="service-card"><div class="svc-img si5">💎</div><div class="svc-body"><div class="svc-name">Semipermanente</div><div class="svc-desc">Color que dura hasta 3 semanas sin astillarse. Secado en lámpara UV.</div><div class="svc-foot"><div class="svc-price">$38.000</div><div class="svc-dur">⏱ 50 min</div></div></div></div>
+    <div class="service-card"><div class="svc-img si6">🌿</div><div class="svc-body"><div class="svc-name">Manicure + Pedicure</div><div class="svc-desc">El combo perfecto. Manos y pies impecables en una sola visita.</div><div class="svc-foot"><div class="svc-price">$75.000</div><div class="svc-dur">⏱ 100 min</div></div></div></div>
   </div>
 </section>
 
@@ -238,46 +208,10 @@ footer { background-color: #1a1a1a; padding: 52px 24px 32px; }
   <div class="sec-label">Nuestro equipo</div>
   <h2 class="sec-title">Las <em>profesionales</em></h2>
   <div class="pros-grid">
-    <div class="pro-card">
-      <div class="pro-avatar pa1">👩🏽</div>
-      <div class="pro-name">Valentina G.</div>
-      <div class="pro-spec">Nail Art · Acrílicas</div>
-      <div class="pro-rating"><span class="stars">★★★★★</span><span class="rating-num">4.9</span><span class="rating-cnt">(128)</span></div>
-      <div class="pro-slots">
-        <span class="slot slot-on">9:00 AM</span><span class="slot">11:00 AM</span><span class="slot">2:00 PM</span><span class="slot">4:00 PM</span>
-      </div>
-      <button class="btn-ag">Agendar con ella</button>
-    </div>
-    <div class="pro-card">
-      <div class="pro-avatar pa2">👩🏻</div>
-      <div class="pro-name">Daniela R.</div>
-      <div class="pro-spec">Gel · Semipermanente</div>
-      <div class="pro-rating"><span class="stars">★★★★★</span><span class="rating-num">4.8</span><span class="rating-cnt">(95)</span></div>
-      <div class="pro-slots">
-        <span class="slot">10:00 AM</span><span class="slot slot-on">1:00 PM</span><span class="slot">3:00 PM</span><span class="slot">5:00 PM</span>
-      </div>
-      <button class="btn-ag">Agendar con ella</button>
-    </div>
-    <div class="pro-card">
-      <div class="pro-avatar pa3">👩🏾</div>
-      <div class="pro-name">Juliana M.</div>
-      <div class="pro-spec">Pedicure · Spa</div>
-      <div class="pro-rating"><span class="stars">★★★★★</span><span class="rating-num">5.0</span><span class="rating-cnt">(74)</span></div>
-      <div class="pro-slots">
-        <span class="slot">9:30 AM</span><span class="slot">12:00 PM</span><span class="slot slot-on">3:30 PM</span><span class="slot">5:30 PM</span>
-      </div>
-      <button class="btn-ag">Agendar con ella</button>
-    </div>
-    <div class="pro-card">
-      <div class="pro-avatar pa4">👩🏼</div>
-      <div class="pro-name">Camila S.</div>
-      <div class="pro-spec">Acrílicas · Nail Art</div>
-      <div class="pro-rating"><span class="stars">★★★★☆</span><span class="rating-num">4.7</span><span class="rating-cnt">(61)</span></div>
-      <div class="pro-slots">
-        <span class="slot">10:30 AM</span><span class="slot">2:30 PM</span><span class="slot slot-on">4:30 PM</span><span class="slot">6:00 PM</span>
-      </div>
-      <button class="btn-ag">Agendar con ella</button>
-    </div>
+    <div class="pro-card"><div class="pro-avatar pa1">👩🏽</div><div class="pro-name">Valentina G.</div><div class="pro-spec">Nail Art · Acrílicas</div><div class="pro-rating"><span class="stars">★★★★★</span><span class="rating-num">4.9</span><span class="rating-cnt">(128)</span></div><div class="pro-slots"><span class="slot slot-on">9:00 AM</span><span class="slot">11:00 AM</span><span class="slot">2:00 PM</span><span class="slot">4:00 PM</span></div><button class="btn-ag" onclick="agendarCon('Valentina G.')">Agendar con ella</button></div>
+    <div class="pro-card"><div class="pro-avatar pa2">👩🏻</div><div class="pro-name">Daniela R.</div><div class="pro-spec">Gel · Semipermanente</div><div class="pro-rating"><span class="stars">★★★★★</span><span class="rating-num">4.8</span><span class="rating-cnt">(95)</span></div><div class="pro-slots"><span class="slot">10:00 AM</span><span class="slot slot-on">1:00 PM</span><span class="slot">3:00 PM</span><span class="slot">5:00 PM</span></div><button class="btn-ag" onclick="agendarCon('Daniela R.')">Agendar con ella</button></div>
+    <div class="pro-card"><div class="pro-avatar pa3">👩🏾</div><div class="pro-name">Juliana M.</div><div class="pro-spec">Pedicure · Spa</div><div class="pro-rating"><span class="stars">★★★★★</span><span class="rating-num">5.0</span><span class="rating-cnt">(74)</span></div><div class="pro-slots"><span class="slot">9:30 AM</span><span class="slot">12:00 PM</span><span class="slot slot-on">3:30 PM</span><span class="slot">5:30 PM</span></div><button class="btn-ag" onclick="agendarCon('Juliana M.')">Agendar con ella</button></div>
+    <div class="pro-card"><div class="pro-avatar pa4">👩🏼</div><div class="pro-name">Camila S.</div><div class="pro-spec">Acrílicas · Nail Art</div><div class="pro-rating"><span class="stars">★★★★☆</span><span class="rating-num">4.7</span><span class="rating-cnt">(61)</span></div><div class="pro-slots"><span class="slot">10:30 AM</span><span class="slot">2:30 PM</span><span class="slot slot-on">4:30 PM</span><span class="slot">6:00 PM</span></div><button class="btn-ag" onclick="agendarCon('Camila S.')">Agendar con ella</button></div>
   </div>
 </section>
 
@@ -305,11 +239,11 @@ footer { background-color: #1a1a1a; padding: 52px 24px 32px; }
   <div class="book-feat"><div class="book-feat-icon">⭐</div> Acumula puntos en cada visita</div>
   <div class="booking-form">
     <div class="form-title">Reservar cita</div>
-    <div class="form-group"><label class="form-label">Tu nombre</label><input class="form-control" type="text" placeholder="María Camila Pérez"></div>
-    <div class="form-group"><label class="form-label">WhatsApp</label><input class="form-control" type="tel" placeholder="300 000 0000"></div>
+    <div class="form-group"><label class="form-label">Tu nombre</label><input class="form-control" id="f-nombre" type="text" placeholder="María Camila Pérez"></div>
+    <div class="form-group"><label class="form-label">WhatsApp</label><input class="form-control" id="f-whatsapp" type="tel" placeholder="300 000 0000"></div>
     <div class="form-group">
       <label class="form-label">Servicio</label>
-      <select class="form-control">
+      <select class="form-control" id="f-servicio">
         <option>Manicure Gel — $45.000</option>
         <option>Uñas Acrílicas — $80.000</option>
         <option>Pedicure Spa — $55.000</option>
@@ -320,7 +254,7 @@ footer { background-color: #1a1a1a; padding: 52px 24px 32px; }
     </div>
     <div class="form-group">
       <label class="form-label">Profesional</label>
-      <select class="form-control">
+      <select class="form-control" id="f-profesional">
         <option>Cualquiera disponible</option>
         <option>Valentina G.</option>
         <option>Daniela R.</option>
@@ -328,16 +262,16 @@ footer { background-color: #1a1a1a; padding: 52px 24px 32px; }
         <option>Camila S.</option>
       </select>
     </div>
-    <div class="form-group"><label class="form-label">Fecha</label><input class="form-control" type="date"></div>
+    <div class="form-group"><label class="form-label">Fecha</label><input class="form-control" id="f-fecha" type="date"></div>
     <div class="form-group">
       <label class="form-label">Hora</label>
-      <select class="form-control">
+      <select class="form-control" id="f-hora">
         <option>9:00 AM</option><option>10:00 AM</option><option>11:00 AM</option>
         <option>12:00 PM</option><option>2:00 PM</option><option>3:00 PM</option>
         <option>4:00 PM</option><option>5:00 PM</option>
       </select>
     </div>
-    <button class="btn-book">Confirmar por WhatsApp 💬</button>
+    <button class="btn-book" id="btn-confirmar" onclick="guardarCita()">Confirmar por WhatsApp 💬</button>
     <div class="wa-note">Recibirás confirmación en tu WhatsApp</div>
   </div>
 </section>
@@ -352,21 +286,12 @@ footer { background-color: #1a1a1a; padding: 52px 24px 32px; }
     <span class="badge bg-green">🎁 100 pts = Nail art gratis</span>
   </div>
   <div class="puntos-card">
-    <div class="puntos-hdr">
-      <div class="puntos-icon">⭐</div>
-      <div><div class="puntos-title">Mis GlamPoints</div><div class="puntos-sub">Programa de recompensas</div></div>
-    </div>
-    <div class="puntos-big">
-      <div class="puntos-num">340</div>
-      <div class="puntos-desc">puntos · Nivel <strong style="color:#c27b6e">Rose</strong></div>
-    </div>
+    <div class="puntos-hdr"><div class="puntos-icon">⭐</div><div><div class="puntos-title">Mis GlamPoints</div><div class="puntos-sub">Programa de recompensas</div></div></div>
+    <div class="puntos-big"><div class="puntos-num">340</div><div class="puntos-desc">puntos · Nivel <strong style="color:#c27b6e">Rose</strong></div></div>
     <div class="prog-row"><span>Progreso al nivel Gold</span><span class="prog-val">340 / 500</span></div>
     <div class="prog-bar"><div class="prog-fill" style="width:68%"></div></div>
     <div class="prog-hint">Te faltan 160 puntos para una manicure gratis</div>
-    <div class="puntos-next">
-      <div class="puntos-next-lbl">Próxima visita</div>
-      <div class="puntos-next-val">Viernes 18 Abr · 3:00 PM con Valentina</div>
-    </div>
+    <div class="puntos-next"><div class="puntos-next-lbl">Próxima visita</div><div class="puntos-next-val">Viernes 18 Abr · 3:00 PM con Valentina</div></div>
   </div>
 </section>
 
@@ -374,20 +299,8 @@ footer { background-color: #1a1a1a; padding: 52px 24px 32px; }
   <div class="ft-logo">Glam<span>Nails</span></div>
   <p class="ft-desc">El mejor spa de uñas en El Poblado, Medellín. Arte, cuidado y estilo en cada visita.</p>
   <div class="ft-cols">
-    <div>
-      <div class="ft-col-title">Servicios</div>
-      <a class="ft-link" href="#">Manicure Gel</a>
-      <a class="ft-link" href="#">Uñas Acrílicas</a>
-      <a class="ft-link" href="#">Pedicure Spa</a>
-      <a class="ft-link" href="#">Nail Art</a>
-    </div>
-    <div>
-      <div class="ft-col-title">Contacto</div>
-      <a class="ft-link" href="#">📍 El Poblado</a>
-      <a class="ft-link" href="#">📞 300 000 0000</a>
-      <a class="ft-link" href="#">💬 WhatsApp</a>
-      <a class="ft-link" href="#">📷 Instagram</a>
-    </div>
+    <div><div class="ft-col-title">Servicios</div><a class="ft-link" href="#">Manicure Gel</a><a class="ft-link" href="#">Uñas Acrílicas</a><a class="ft-link" href="#">Pedicure Spa</a><a class="ft-link" href="#">Nail Art</a></div>
+    <div><div class="ft-col-title">Contacto</div><a class="ft-link" href="#">📍 El Poblado</a><a class="ft-link" href="#">📞 300 000 0000</a><a class="ft-link" href="#">💬 WhatsApp</a><a class="ft-link" href="#">📷 Instagram</a></div>
   </div>
   <div class="ft-bottom">
     <div class="ft-copy">© 2026 GlamNails. Todos los derechos reservados.</div>
@@ -396,6 +309,103 @@ footer { background-color: #1a1a1a; padding: 52px 24px 32px; }
 </footer>
 
 <a class="wa-float" href="#" title="WhatsApp">💬</a>
+
+<!-- FIREBASE -->
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-app.js";
+  import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyBBZInWQZVJyBTP5TG8MrTBOfe7UQFR5uU",
+    authDomain: "mapos-spas.firebaseapp.com",
+    projectId: "mapos-spas",
+    storageBucket: "mapos-spas.firebasestorage.app",
+    messagingSenderId: "704720438670",
+    appId: "1:704720438670:web:fd94574e51e97964cd10df"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
+  // Función para mostrar toast
+  function showToast(msg, type = '') {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.className = 'toast show ' + type;
+    setTimeout(() => { t.className = 'toast'; }, 3500);
+  }
+
+  // Función para seleccionar profesional desde tarjeta
+  window.agendarCon = function(nombre) {
+    document.getElementById('f-profesional').value = nombre;
+    document.getElementById('agendar').scrollIntoView({ behavior: 'smooth' });
+    showToast('Seleccionaste a ' + nombre + ' ✨');
+  }
+
+  // Función principal guardar cita
+  window.guardarCita = async function() {
+    const nombre    = document.getElementById('f-nombre').value.trim();
+    const whatsapp  = document.getElementById('f-whatsapp').value.trim();
+    const servicio  = document.getElementById('f-servicio').value;
+    const profesional = document.getElementById('f-profesional').value;
+    const fecha     = document.getElementById('f-fecha').value;
+    const hora      = document.getElementById('f-hora').value;
+
+    // Validaciones
+    if (!nombre) { showToast('⚠️ Ingresa tu nombre', 'error'); return; }
+    if (!whatsapp || whatsapp.length < 7) { showToast('⚠️ Ingresa tu WhatsApp', 'error'); return; }
+    if (!fecha) { showToast('⚠️ Selecciona una fecha', 'error'); return; }
+
+    const btn = document.getElementById('btn-confirmar');
+    btn.disabled = true;
+    btn.textContent = 'Guardando...';
+
+    try {
+      // Guardar en Firestore colección "citas" / subcolección del spa "glamnails"
+      await addDoc(collection(db, 'spas', 'glamnails', 'citas'), {
+        nombre,
+        whatsapp,
+        servicio,
+        profesional,
+        fecha,
+        hora,
+        estado: 'pendiente',
+        puntos: 10,
+        creadoEn: serverTimestamp()
+      });
+
+      showToast('✅ ¡Cita agendada! Te confirmamos por WhatsApp', 'success');
+
+      // Redirigir a WhatsApp con resumen de la cita
+      const msg = encodeURIComponent(
+        `Hola GlamNails! 💅 Acabo de agendar una cita:\n\n` +
+        `👤 Nombre: ${nombre}\n` +
+        `💆 Servicio: ${servicio}\n` +
+        `👩 Profesional: ${profesional}\n` +
+        `📅 Fecha: ${fecha}\n` +
+        `⏰ Hora: ${hora}\n\n` +
+        `Por favor confirmar mi cita. ¡Gracias!`
+      );
+
+      setTimeout(() => {
+        window.open(`https://wa.me/573000000000?text=${msg}`, '_blank');
+      }, 1500);
+
+      // Limpiar formulario
+      document.getElementById('f-nombre').value = '';
+      document.getElementById('f-whatsapp').value = '';
+      document.getElementById('f-fecha').value = '';
+
+    } catch (err) {
+      console.error(err);
+      showToast('❌ Error al guardar. Intenta de nuevo.', 'error');
+    }
+
+    btn.disabled = false;
+    btn.textContent = 'Confirmar por WhatsApp 💬';
+  }
+</script>
 
 </body>
 </html>
