@@ -314,7 +314,8 @@ footer { background-color: #1a1a1a; padding: 52px 24px 32px; }
 
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-app.js";
-  import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-firestore.js";
+  import { getFirestore, collection, addDoc, doc, setDoc, getDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-firestore.js";
+  import { getAuth, RecaptchaVerifier, signInWithPhoneNumber, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-auth.js";
 
   const firebaseConfig = {
     apiKey: "AIzaSyBBZInWQZVJyBTP5TG8MrTBOfe7UQFR5uU",
@@ -326,9 +327,13 @@ footer { background-color: #1a1a1a; padding: 52px 24px 32px; }
   };
 
   const app = initializeApp(firebaseConfig);
-  const db = getFirestore(app);
+  const db  = getFirestore(app);
+  const auth = getAuth(app);
 
-  // Función para mostrar toast
+  let usuarioActual = null;
+  let confirmationResult = null;
+
+  // ── TOAST ──
   function showToast(msg, type = '') {
     const t = document.getElementById('toast');
     t.textContent = msg;
@@ -336,34 +341,164 @@ footer { background-color: #1a1a1a; padding: 52px 24px 32px; }
     setTimeout(() => { t.className = 'toast'; }, 3500);
   }
 
-  // Función para seleccionar profesional desde tarjeta
+  // ── ESTADO AUTH ──
+  onAuthStateChanged(auth, async (user) => {
+    if (user) {
+      usuarioActual = user;
+      // Cargar perfil del usuario
+      const perfilRef = doc(db, 'spas', 'glamnails', 'clientes', user.uid);
+      const perfil = await getDoc(perfilRef);
+      if (perfil.exists()) {
+        const data = perfil.data();
+        // Prellenar formulario con datos guardados
+        if (data.nombre) document.getElementById('f-nombre').value = data.nombre;
+        if (data.whatsapp) document.getElementById('f-whatsapp').value = data.whatsapp;
+        // Actualizar puntos si existen
+        if (data.puntos !== undefined) {
+          document.querySelector('.puntos-num').textContent = data.puntos;
+        }
+      }
+      mostrarEstadoLogin(user.phoneNumber);
+    } else {
+      usuarioActual = null;
+      mostrarPantallaLogin();
+    }
+  });
+
+  // ── MOSTRAR LOGIN ──
+  function mostrarPantallaLogin() {
+    document.getElementById('login-overlay').style.display = 'flex';
+    document.getElementById('paso-telefono').style.display = 'block';
+    document.getElementById('paso-codigo').style.display = 'none';
+  }
+
+  function mostrarEstadoLogin(telefono) {
+    document.getElementById('login-overlay').style.display = 'none';
+    // Mostrar info del usuario logueado en nav
+    const navUser = document.getElementById('nav-user');
+    if (navUser) navUser.textContent = '👤 ' + (telefono || 'Mi cuenta');
+  }
+
+  // ── RECAPTCHA ──
+  window.iniciarRecaptcha = function() {
+    if (!window.recaptchaVerifier) {
+      window.recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', {
+        size: 'invisible',
+        callback: () => {}
+      });
+    }
+  }
+
+  // ── ENVIAR CÓDIGO SMS ──
+  window.enviarCodigo = async function() {
+    const tel = document.getElementById('login-telefono').value.trim();
+    if (!tel || tel.length < 7) {
+      showToast('⚠️ Ingresa tu número de celular', 'error');
+      return;
+    }
+
+    // Formatear número colombiano
+    let numero = tel.replace(/\s/g, '');
+    if (!numero.startsWith('+')) numero = '+57' + numero;
+
+    const btn = document.getElementById('btn-enviar-codigo');
+    btn.disabled = true;
+    btn.textContent = 'Enviando...';
+
+    try {
+      iniciarRecaptcha();
+      confirmationResult = await signInWithPhoneNumber(auth, numero, window.recaptchaVerifier);
+      document.getElementById('paso-telefono').style.display = 'none';
+      document.getElementById('paso-codigo').style.display = 'block';
+      showToast('✅ Código enviado por SMS', 'success');
+    } catch (err) {
+      console.error(err);
+      showToast('❌ Error al enviar el código. Verifica el número.', 'error');
+      btn.disabled = false;
+      btn.textContent = 'Enviar código SMS';
+      if (window.recaptchaVerifier) {
+        window.recaptchaVerifier.clear();
+        window.recaptchaVerifier = null;
+      }
+    }
+  }
+
+  // ── VERIFICAR CÓDIGO ──
+  window.verificarCodigo = async function() {
+    const codigo = document.getElementById('login-codigo').value.trim();
+    if (!codigo || codigo.length < 6) {
+      showToast('⚠️ Ingresa el código de 6 dígitos', 'error');
+      return;
+    }
+
+    const btn = document.getElementById('btn-verificar');
+    btn.disabled = true;
+    btn.textContent = 'Verificando...';
+
+    try {
+      const result = await confirmationResult.confirm(codigo);
+      usuarioActual = result.user;
+
+      // Guardar/actualizar perfil básico en Firestore
+      const perfilRef = doc(db, 'spas', 'glamnails', 'clientes', result.user.uid);
+      const perfil = await getDoc(perfilRef);
+      if (!perfil.exists()) {
+        await setDoc(perfilRef, {
+          whatsapp: result.user.phoneNumber,
+          puntos: 0,
+          visitas: 0,
+          creadoEn: serverTimestamp()
+        });
+      }
+
+      showToast('✅ ¡Bienvenida! Ya podés agendar tu cita 💅', 'success');
+    } catch (err) {
+      console.error(err);
+      showToast('❌ Código incorrecto. Intenta de nuevo.', 'error');
+      btn.disabled = false;
+      btn.textContent = 'Verificar código';
+    }
+  }
+
+  // ── SELECCIONAR PROFESIONAL ──
   window.agendarCon = function(nombre) {
+    if (!usuarioActual) {
+      mostrarPantallaLogin();
+      showToast('Primero ingresá con tu número 📱', 'error');
+      return;
+    }
     document.getElementById('f-profesional').value = nombre;
     document.getElementById('agendar').scrollIntoView({ behavior: 'smooth' });
     showToast('Seleccionaste a ' + nombre + ' ✨');
   }
 
-  // Función principal guardar cita
+  // ── GUARDAR CITA ──
   window.guardarCita = async function() {
-    const nombre    = document.getElementById('f-nombre').value.trim();
-    const whatsapp  = document.getElementById('f-whatsapp').value.trim();
-    const servicio  = document.getElementById('f-servicio').value;
-    const profesional = document.getElementById('f-profesional').value;
-    const fecha     = document.getElementById('f-fecha').value;
-    const hora      = document.getElementById('f-hora').value;
+    if (!usuarioActual) {
+      mostrarPantallaLogin();
+      showToast('Primero ingresá con tu número 📱', 'error');
+      return;
+    }
 
-    // Validaciones
+    const nombre     = document.getElementById('f-nombre').value.trim();
+    const whatsapp   = document.getElementById('f-whatsapp').value.trim();
+    const servicio   = document.getElementById('f-servicio').value;
+    const profesional= document.getElementById('f-profesional').value;
+    const fecha      = document.getElementById('f-fecha').value;
+    const hora       = document.getElementById('f-hora').value;
+
     if (!nombre) { showToast('⚠️ Ingresa tu nombre', 'error'); return; }
-    if (!whatsapp || whatsapp.length < 7) { showToast('⚠️ Ingresa tu WhatsApp', 'error'); return; }
-    if (!fecha) { showToast('⚠️ Selecciona una fecha', 'error'); return; }
+    if (!whatsapp) { showToast('⚠️ Ingresa tu WhatsApp', 'error'); return; }
+    if (!fecha)   { showToast('⚠️ Selecciona una fecha', 'error'); return; }
 
     const btn = document.getElementById('btn-confirmar');
     btn.disabled = true;
     btn.textContent = 'Guardando...';
 
     try {
-      // Guardar en Firestore colección "citas" / subcolección del spa "glamnails"
+      // Guardar cita
       await addDoc(collection(db, 'spas', 'glamnails', 'citas'), {
+        uid: usuarioActual.uid,
         nombre,
         whatsapp,
         servicio,
@@ -375,26 +510,13 @@ footer { background-color: #1a1a1a; padding: 52px 24px 32px; }
         creadoEn: serverTimestamp()
       });
 
-      showToast('✅ ¡Cita agendada! Te confirmamos por WhatsApp', 'success');
+      // Actualizar perfil del cliente con nombre y whatsapp
+      const perfilRef = doc(db, 'spas', 'glamnails', 'clientes', usuarioActual.uid);
+      await setDoc(perfilRef, { nombre, whatsapp }, { merge: true });
 
-      // Redirigir a WhatsApp con resumen de la cita
-      const msg = encodeURIComponent(
-        `Hola GlamNails! 💅 Acabo de agendar una cita:\n\n` +
-        `👤 Nombre: ${nombre}\n` +
-        `💆 Servicio: ${servicio}\n` +
-        `👩 Profesional: ${profesional}\n` +
-        `📅 Fecha: ${fecha}\n` +
-        `⏰ Hora: ${hora}\n\n` +
-        `Por favor confirmar mi cita. ¡Gracias!`
-      );
+      showToast('✅ ¡Cita agendada! Te confirmaremos pronto 💅', 'success');
 
-      setTimeout(() => {
-        window.open(`https://wa.me/573000000000?text=${msg}`, '_blank');
-      }, 1500);
-
-      // Limpiar formulario
-      document.getElementById('f-nombre').value = '';
-      document.getElementById('f-whatsapp').value = '';
+      // Limpiar fecha
       document.getElementById('f-fecha').value = '';
 
     } catch (err) {
@@ -403,9 +525,50 @@ footer { background-color: #1a1a1a; padding: 52px 24px 32px; }
     }
 
     btn.disabled = false;
-    btn.textContent = 'Confirmar por WhatsApp 💬';
+    btn.textContent = 'Confirmar cita 💅';
   }
 </script>
+
+<!-- LOGIN OVERLAY -->
+
+<div id="login-overlay" style="display:none;position:fixed;inset:0;background:rgba(26,26,26,0.92);z-index:9999;align-items:center;justify-content:center;padding:24px;">
+  <div style="background:#ffffff;border-radius:24px;padding:32px 24px;width:100%;max-width:380px;">
+
+```
+<!-- PASO 1: TELÉFONO -->
+<div id="paso-telefono">
+  <div style="text-align:center;margin-bottom:24px;">
+    <div style="font-size:2.5rem;margin-bottom:12px;">💅</div>
+    <div style="font-family:'Playfair Display',Georgia,serif;font-size:1.5rem;color:#1a1a1a;margin-bottom:8px;">Bienvenida</div>
+    <div style="font-size:0.85rem;color:#8a7a76;line-height:1.6">Ingresa tu número de celular para agendar tu cita y acumular puntos</div>
+  </div>
+  <div style="margin-bottom:16px;">
+    <label style="display:block;font-size:0.72rem;color:#8a7a76;text-transform:uppercase;letter-spacing:0.5px;font-weight:500;margin-bottom:7px;">Número de celular</label>
+    <input id="login-telefono" type="tel" placeholder="300 000 0000" style="width:100%;padding:13px 16px;border:1.5px solid #e8c4b8;border-radius:12px;font-size:0.9rem;color:#1a1a1a;background:#fdf8f5;font-family:'DM Sans',sans-serif;outline:none;-webkit-appearance:none;">
+  </div>
+  <div id="recaptcha-container"></div>
+  <button id="btn-enviar-codigo" onclick="enviarCodigo()" style="width:100%;background:#7a3d35;color:#ffffff;border:none;border-radius:50px;padding:15px;font-size:0.92rem;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif;margin-bottom:12px;">Enviar código SMS</button>
+  <div style="text-align:center;font-size:0.78rem;color:#8a7a76;">Te enviaremos un código de verificación</div>
+</div>
+
+<!-- PASO 2: CÓDIGO -->
+<div id="paso-codigo" style="display:none;">
+  <div style="text-align:center;margin-bottom:24px;">
+    <div style="font-size:2.5rem;margin-bottom:12px;">📱</div>
+    <div style="font-family:'Playfair Display',Georgia,serif;font-size:1.5rem;color:#1a1a1a;margin-bottom:8px;">Verifica tu número</div>
+    <div style="font-size:0.85rem;color:#8a7a76;line-height:1.6">Ingresa el código de 6 dígitos que te llegó por SMS</div>
+  </div>
+  <div style="margin-bottom:16px;">
+    <label style="display:block;font-size:0.72rem;color:#8a7a76;text-transform:uppercase;letter-spacing:0.5px;font-weight:500;margin-bottom:7px;">Código de verificación</label>
+    <input id="login-codigo" type="number" placeholder="123456" maxlength="6" style="width:100%;padding:13px 16px;border:1.5px solid #e8c4b8;border-radius:12px;font-size:1.2rem;color:#1a1a1a;background:#fdf8f5;font-family:'DM Sans',sans-serif;outline:none;-webkit-appearance:none;text-align:center;letter-spacing:8px;">
+  </div>
+  <button id="btn-verificar" onclick="verificarCodigo()" style="width:100%;background:#7a3d35;color:#ffffff;border:none;border-radius:50px;padding:15px;font-size:0.92rem;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif;margin-bottom:12px;">Verificar código</button>
+  <button onclick="document.getElementById('paso-telefono').style.display='block';document.getElementById('paso-codigo').style.display='none';" style="width:100%;background:transparent;color:#8a7a76;border:1px solid #e8c4b8;border-radius:50px;padding:12px;font-size:0.85rem;cursor:pointer;font-family:'DM Sans',sans-serif;">← Cambiar número</button>
+</div>
+```
+
+  </div>
+</div>
 
 </body>
 </html>
