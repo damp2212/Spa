@@ -9,153 +9,174 @@
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; -webkit-text-size-adjust: 100%; }
-html { background: #f4f6f9; }
-body { font-family: 'DM Sans', sans-serif; background: #f4f6f9; color: #1a1a1a; -webkit-font-smoothing: antialiased; }
+html, body { background: #f4f6f9; font-family: 'DM Sans', Georgia, sans-serif; color: #1a1a1a; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
 
-/* ── LOGIN ── */
-#login-screen {
-min-height: 100vh; display: flex; align-items: center; justify-content: center;
-background: linear-gradient(135deg, #7a3d35, #c27b6e); padding: 24px;
-}
-.login-card {
-background: #ffffff; border-radius: 24px; padding: 40px 32px;
-width: 100%; max-width: 400px; box-shadow: 0 20px 60px rgba(0,0,0,0.2);
-}
+#login-screen { min-height: 100vh; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #7a3d35, #c27b6e); padding: 24px; }
+.login-card { background: #ffffff; border-radius: 24px; padding: 40px 32px; width: 100%; max-width: 400px; box-shadow: 0 20px 60px rgba(0,0,0,0.2); }
 .login-logo { font-family: ‘Playfair Display’, Georgia, serif; font-size: 1.8rem; font-weight: 700; color: #7a3d35; margin-bottom: 4px; }
 .login-logo span { color: #c27b6e; font-style: italic; }
 .login-sub { font-size: 0.85rem; color: #8a7a76; margin-bottom: 32px; }
-.login-label { display: block; font-size: 0.72rem; color: #8a7a76; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 500; margin-bottom: 7px; }
-.login-input { width: 100%; padding: 13px 16px; border: 1.5px solid #e8c4b8; border-radius: 12px; font-size: 0.9rem; color: #1a1a1a; background: #fdf8f5; font-family: ‘DM Sans’, sans-serif; outline: none; margin-bottom: 16px; -webkit-appearance: none; }
-.login-input:focus { border-color: #c27b6e; }
-.login-btn { width: 100%; background: #7a3d35; color: #ffffff; border: none; border-radius: 50px; padding: 15px; font-size: 0.92rem; font-weight: 500; cursor: pointer; font-family: ‘DM Sans’, sans-serif; }
-.login-error { font-size: 0.8rem; color: #c0392b; margin-top: 12px; text-align: center; display: none; }
+.lbl { display: block; font-size: 0.72rem; color: #8a7a76; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 500; margin-bottom: 7px; }
+.linput { width: 100%; padding: 13px 16px; border: 1.5px solid #e8c4b8; border-radius: 12px; font-size: 0.9rem; color: #1a1a1a; background: #fdf8f5; font-family: ‘DM Sans’, sans-serif; outline: none; margin-bottom: 16px; -webkit-appearance: none; appearance: none; }
+.linput:focus { border-color: #c27b6e; }
+.lbtn { width: 100%; background: #7a3d35; color: #ffffff; border: none; border-radius: 50px; padding: 15px; font-size: 0.92rem; font-weight: 500; cursor: pointer; font-family: ‘DM Sans’, sans-serif; }
+.lerror { font-size: 0.8rem; color: #c0392b; margin-top: 12px; text-align: center; display: none; }
 
-/* ── LAYOUT ── */
 #app { display: none; min-height: 100vh; }
 
-/* SIDEBAR */
-.sidebar {
-position: fixed; top: 0; left: 0; bottom: 0; width: 240px;
-background: #1a1a1a; padding: 28px 0; z-index: 100;
-display: flex; flex-direction: column;
-}
-.sidebar-logo { font-family: ‘Playfair Display’, Georgia, serif; font-size: 1.4rem; color: #ffffff; padding: 0 24px; margin-bottom: 8px; }
-.sidebar-logo span { color: #c27b6e; font-style: italic; }
-.sidebar-role { font-size: 0.72rem; color: #777777; padding: 0 24px; margin-bottom: 32px; text-transform: uppercase; letter-spacing: 1px; }
-.sidebar-section { font-size: 0.68rem; color: #555555; text-transform: uppercase; letter-spacing: 1px; padding: 0 24px; margin-bottom: 8px; margin-top: 16px; }
-.sidebar-link {
-display: flex; align-items: center; gap: 10px; padding: 11px 24px;
-color: #aaaaaa; text-decoration: none; font-size: 0.85rem; font-weight: 500;
-transition: all 0.2s; cursor: pointer; border: none; background: none; width: 100%; text-align: left;
-}
-.sidebar-link:hover { color: #ffffff; background: rgba(255,255,255,0.05); }
-.sidebar-link.active { color: #ffffff; background: rgba(194,123,110,0.15); border-left: 3px solid #c27b6e; }
-.sidebar-link .icon { font-size: 1rem; width: 20px; text-align: center; }
-.sidebar-bottom { margin-top: auto; padding: 16px 24px; border-top: 1px solid #333333; }
-.sidebar-user { font-size: 0.78rem; color: #777777; margin-bottom: 12px; }
-.btn-logout { font-size: 0.78rem; color: #c27b6e; background: none; border: none; cursor: pointer; font-family: ‘DM Sans’, sans-serif; }
+.sidebar { position: fixed; top: 0; left: 0; bottom: 0; width: 240px; background: #1a1a1a; padding: 28px 0; z-index: 100; display: flex; flex-direction: column; overflow-y: auto; }
+.sl { font-family: ‘Playfair Display’, Georgia, serif; font-size: 1.4rem; color: #ffffff; padding: 0 24px; margin-bottom: 4px; }
+.sl span { color: #c27b6e; font-style: italic; }
+.sr { font-size: 0.72rem; color: #777777; padding: 0 24px; margin-bottom: 28px; text-transform: uppercase; letter-spacing: 1px; }
 
-/* MAIN */
+/* SELECTOR SUCURSAL */
+.sucursal-select-wrap { padding: 0 16px; margin-bottom: 20px; }
+.sucursal-select { width: 100%; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.12); border-radius: 10px; color: #ffffff; padding: 9px 12px; font-size: 0.8rem; font-family: ‘DM Sans’, sans-serif; outline: none; -webkit-appearance: none; appearance: none; cursor: pointer; }
+.sucursal-select option { background: #1a1a1a; color: #ffffff; }
+
+.ss { font-size: 0.68rem; color: #555555; text-transform: uppercase; letter-spacing: 1px; padding: 0 24px; margin-bottom: 8px; margin-top: 16px; }
+.slink { display: flex; align-items: center; gap: 10px; padding: 11px 24px; color: #aaaaaa; font-size: 0.85rem; font-weight: 500; transition: all 0.2s; cursor: pointer; border: none; background: none; width: 100%; text-align: left; border-left: 3px solid transparent; }
+.slink:hover { color: #ffffff; background: rgba(255,255,255,0.05); }
+.slink.active { color: #ffffff; background: rgba(194,123,110,0.15); border-left-color: #c27b6e; }
+.slink .ico { font-size: 1rem; width: 20px; text-align: center; }
+.sb { margin-top: auto; padding: 16px 24px; border-top: 1px solid #333333; }
+.sb-user { font-size: 0.75rem; color: #777777; margin-bottom: 10px; word-break: break-all; }
+.btn-out { font-size: 0.78rem; color: #c27b6e; background: none; border: none; cursor: pointer; font-family: ‘DM Sans’, sans-serif; }
+
 .main { margin-left: 240px; padding: 32px; min-height: 100vh; }
 .page { display: none; }
 .page.active { display: block; }
 
-/* TOPBAR */
-.topbar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 32px; }
-.topbar-title { font-family: ‘Playfair Display’, Georgia, serif; font-size: 1.8rem; color: #1a1a1a; }
+.topbar { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 28px; flex-wrap: wrap; gap: 12px; }
+.topbar-title { font-family: ‘Playfair Display’, Georgia, serif; font-size: 1.8rem; color: #1a1a1a; line-height: 1.2; }
 .topbar-title em { font-style: italic; color: #c27b6e; }
-.topbar-date { font-size: 0.82rem; color: #8a7a76; }
+.topbar-sub { font-size: 0.82rem; color: #8a7a76; margin-top: 4px; }
+.topbar-badge { background: #f5ede6; color: #7a3d35; font-size: 0.75rem; font-weight: 600; padding: 6px 14px; border-radius: 50px; border: 1px solid #e8c4b8; }
 
-/* STATS GRID */
-.stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-bottom: 32px; }
-.stat-card { background: #ffffff; border-radius: 16px; padding: 24px; border: 1px solid #eeeeee; }
-.stat-card-label { font-size: 0.75rem; color: #8a7a76; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
-.stat-card-num { font-family: ‘Playfair Display’, Georgia, serif; font-size: 2rem; font-weight: 700; color: #1a1a1a; line-height: 1; margin-bottom: 6px; }
-.stat-card-sub { font-size: 0.75rem; color: #8a7a76; }
+.stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px; }
+.stat-card { background: #ffffff; border-radius: 16px; padding: 22px 20px; border: 1px solid #eeeeee; }
 .stat-card.accent { background: #7a3d35; border-color: #7a3d35; }
-.stat-card.accent .stat-card-label { color: rgba(245,237,230,0.7); }
-.stat-card.accent .stat-card-num { color: #ffffff; }
-.stat-card.accent .stat-card-sub { color: rgba(245,237,230,0.6); }
+.sc-label { font-size: 0.72rem; color: #8a7a76; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
+.accent .sc-label { color: rgba(245,237,230,0.65); }
+.sc-num { font-family: ‘Playfair Display’, Georgia, serif; font-size: 2rem; font-weight: 700; color: #1a1a1a; line-height: 1; margin-bottom: 4px; }
+.accent .sc-num { color: #ffffff; }
+.sc-sub { font-size: 0.72rem; color: #8a7a76; }
+.accent .sc-sub { color: rgba(245,237,230,0.55); }
 
-/* CARDS */
-.card { background: #ffffff; border-radius: 16px; padding: 24px; border: 1px solid #eeeeee; margin-bottom: 24px; }
-.card-title { font-family: ‘Playfair Display’, Georgia, serif; font-size: 1.1rem; color: #1a1a1a; margin-bottom: 20px; display: flex; align-items: center; justify-content: space-between; }
-.card-title-right { font-size: 0.78rem; color: #8a7a76; font-family: ‘DM Sans’, sans-serif; font-weight: 400; }
-
-/* TABLA CITAS */
-.tabla-wrap { overflow-x: auto; }
-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
-thead th { text-align: left; font-size: 0.72rem; color: #8a7a76; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 500; padding: 0 16px 12px; border-bottom: 1px solid #eeeeee; }
-tbody tr { border-bottom: 1px solid #f5f5f5; transition: background 0.15s; }
-tbody tr:hover { background: #fdf8f5; }
-tbody td { padding: 14px 16px; color: #1a1a1a; vertical-align: middle; }
-.td-name { font-weight: 500; }
-.td-phone { color: #8a7a76; font-size: 0.8rem; }
-.td-pro { display: flex; align-items: center; gap: 8px; }
-.pro-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
-
-/* BADGES ESTADO */
-.badge-estado { display: inline-flex; align-items: center; gap: 5px; padding: 4px 12px; border-radius: 50px; font-size: 0.72rem; font-weight: 500; }
-.badge-pendiente { background: #fff3cd; color: #856404; }
-.badge-confirmada { background: #d4edda; color: #155724; }
-.badge-cancelada { background: #f8d7da; color: #721c24; }
-.badge-atendida { background: #d1ecf1; color: #0c5460; }
-
-/* BOTONES ACCIÓN */
-.btn-confirmar-cita { background: #1a7a3d; color: #ffffff; border: none; border-radius: 50px; padding: 6px 14px; font-size: 0.75rem; cursor: pointer; font-family: ‘DM Sans’, sans-serif; font-weight: 500; margin-right: 4px; }
-.btn-cancelar-cita { background: #f8d7da; color: #721c24; border: none; border-radius: 50px; padding: 6px 14px; font-size: 0.75rem; cursor: pointer; font-family: ‘DM Sans’, sans-serif; font-weight: 500; }
+.card { background: #ffffff; border-radius: 16px; padding: 24px; border: 1px solid #eeeeee; margin-bottom: 20px; }
+.card-title { font-family: ‘Playfair Display’, Georgia, serif; font-size: 1.05rem; color: #1a1a1a; margin-bottom: 18px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
+.ct-right { font-size: 0.78rem; color: #8a7a76; font-family: ‘DM Sans’, sans-serif; font-weight: 400; }
 
 /* FILTROS */
-.filtros { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
-.filtro-btn { padding: 7px 16px; border-radius: 50px; font-size: 0.78rem; font-weight: 500; cursor: pointer; font-family: ‘DM Sans’, sans-serif; border: 1.5px solid #e0e0e0; background: #ffffff; color: #8a7a76; transition: all 0.2s; }
-.filtro-btn.active { background: #7a3d35; color: #ffffff; border-color: #7a3d35; }
+.filtros { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+.fb { padding: 7px 14px; border-radius: 50px; font-size: 0.75rem; font-weight: 500; cursor: pointer; font-family: ‘DM Sans’, sans-serif; border: 1.5px solid #e0e0e0; background: #ffffff; color: #8a7a76; transition: all 0.2s; }
+.fb.active { background: #7a3d35; color: #ffffff; border-color: #7a3d35; }
 
-/* PROFESIONALES STATS */
-.pro-stats-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
-.pro-stat-card { background: #f9f9f9; border-radius: 14px; padding: 20px; border: 1px solid #eeeeee; }
-.pro-stat-header { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
-.pro-stat-avatar { width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; flex-shrink: 0; }
-.pro-stat-name { font-weight: 600; font-size: 0.92rem; color: #1a1a1a; }
-.pro-stat-spec { font-size: 0.75rem; color: #8a7a76; }
-.pro-stat-row { display: flex; justify-content: space-between; font-size: 0.82rem; margin-bottom: 8px; }
-.pro-stat-key { color: #8a7a76; }
-.pro-stat-val { font-weight: 600; color: #1a1a1a; }
-.pro-stat-val.green { color: #1a7a3d; }
+/* FILTRO FECHAS */
+.filtro-fechas { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin-bottom: 20px; }
+.filtro-fechas input { padding: 8px 12px; border: 1.5px solid #e8c4b8; border-radius: 10px; font-size: 0.82rem; font-family: ‘DM Sans’, sans-serif; color: #1a1a1a; background: #fdf8f5; outline: none; -webkit-appearance: none; appearance: none; }
+.filtro-fechas label { font-size: 0.75rem; color: #8a7a76; font-weight: 500; }
+.btn-filtrar { background: #7a3d35; color: #ffffff; border: none; border-radius: 50px; padding: 8px 18px; font-size: 0.78rem; font-weight: 500; cursor: pointer; font-family: ‘DM Sans’, sans-serif; }
+.filtros-rapidos { display: flex; gap: 6px; flex-wrap: wrap; }
 
-/* EMPTY STATE */
-.empty-state { text-align: center; padding: 48px 24px; color: #8a7a76; }
-.empty-icon { font-size: 2.5rem; margin-bottom: 12px; }
-.empty-text { font-size: 0.88rem; }
+/* TABLA */
+.tabla-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+table { width: 100%; border-collapse: collapse; font-size: 0.83rem; min-width: 500px; }
+thead th { text-align: left; font-size: 0.7rem; color: #8a7a76; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600; padding: 0 14px 12px; border-bottom: 1px solid #eeeeee; white-space: nowrap; }
+tbody tr { border-bottom: 1px solid #f5f5f5; transition: background 0.15s; }
+tbody tr:hover { background: #fdf8f5; }
+tbody td { padding: 13px 14px; color: #1a1a1a; vertical-align: middle; }
+.td-name { font-weight: 600; font-size: 0.85rem; }
+.td-sub { color: #8a7a76; font-size: 0.75rem; margin-top: 2px; }
+.td-pro { display: flex; align-items: center; gap: 7px; }
+.pro-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+
+.best { display: inline-flex; align-items: center; gap: 4px; font-size: 0.7rem; background: #fff3cd; color: #856404; padding: 2px 8px; border-radius: 50px; font-weight: 600; margin-left: 6px; }
+
+/* BADGES */
+.badge-e { display: inline-flex; align-items: center; gap: 4px; padding: 4px 10px; border-radius: 50px; font-size: 0.7rem; font-weight: 600; white-space: nowrap; }
+.be-pendiente { background: #fff3cd; color: #856404; }
+.be-confirmada { background: #d4edda; color: #155724; }
+.be-cancelada { background: #f8d7da; color: #721c24; }
+.be-atendida { background: #d1ecf1; color: #0c5460; }
+.be-activa { background: #d4edda; color: #155724; }
+.be-tibia { background: #fff3cd; color: #856404; }
+.be-perdida { background: #f8d7da; color: #721c24; }
+.be-nueva { background: #d1ecf1; color: #0c5460; }
+
+/* BOTONES ACCIÓN */
+.btn-ok { background: #d4edda; color: #155724; border: none; border-radius: 50px; padding: 5px 12px; font-size: 0.72rem; cursor: pointer; font-family: ‘DM Sans’, sans-serif; font-weight: 600; margin-right: 4px; white-space: nowrap; }
+.btn-no { background: #f8d7da; color: #721c24; border: none; border-radius: 50px; padding: 5px 12px; font-size: 0.72rem; cursor: pointer; font-family: ‘DM Sans’, sans-serif; font-weight: 600; white-space: nowrap; }
+.btn-at { background: #d1ecf1; color: #0c5460; border: none; border-radius: 50px; padding: 5px 12px; font-size: 0.72rem; cursor: pointer; font-family: ‘DM Sans’, sans-serif; font-weight: 600; white-space: nowrap; }
+
+/* PRO GRID */
+.pro-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+.pro-card { background: #f9f9f9; border-radius: 14px; padding: 20px; border: 1px solid #eeeeee; }
+.pro-card-hdr { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+.pro-avatar { width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; flex-shrink: 0; }
+.pro-card-name { font-weight: 600; font-size: 0.9rem; color: #1a1a1a; }
+.pro-card-spec { font-size: 0.73rem; color: #8a7a76; }
+.pro-row { display: flex; justify-content: space-between; font-size: 0.8rem; margin-bottom: 7px; padding-bottom: 7px; border-bottom: 1px solid #eeeeee; }
+.pro-row:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+.pro-key { color: #8a7a76; }
+.pro-val { font-weight: 600; color: #1a1a1a; }
+.pro-val.green { color: #1a7a3d; }
+.pro-val.rose { color: #7a3d35; }
+
+/* CRM CARDS */
+.crm-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 20px; }
+.crm-stat { background: #ffffff; border-radius: 14px; padding: 18px; border: 1px solid #eeeeee; text-align: center; }
+.crm-stat-num { font-family: ‘Playfair Display’, Georgia, serif; font-size: 1.6rem; font-weight: 700; color: #7a3d35; }
+.crm-stat-label { font-size: 0.72rem; color: #8a7a76; margin-top: 4px; }
+
+/* CRM CLIENTE CARD */
+.crm-cliente-card { background: #ffffff; border-radius: 14px; padding: 18px; border: 1px solid #eeeeee; margin-bottom: 10px; }
+.crm-cliente-hdr { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; flex-wrap: wrap; gap: 8px; }
+.crm-cliente-name { font-weight: 600; font-size: 0.92rem; color: #1a1a1a; }
+.crm-cliente-phone { font-size: 0.75rem; color: #8a7a76; }
+.crm-cliente-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+.crm-cs { text-align: center; background: #f9f9f9; border-radius: 10px; padding: 10px 6px; }
+.crm-cs-val { font-weight: 700; font-size: 0.92rem; color: #1a1a1a; }
+.crm-cs-label { font-size: 0.65rem; color: #8a7a76; margin-top: 2px; }
+.crm-fav { font-size: 0.72rem; color: #7a3d35; background: #f5ede6; padding: 3px 10px; border-radius: 50px; margin-top: 10px; display: inline-block; }
+
+/* EMPTY */
+.empty { text-align: center; padding: 40px 20px; color: #8a7a76; }
+.empty-ico { font-size: 2.5rem; margin-bottom: 10px; }
+.empty-txt { font-size: 0.85rem; }
 
 /* TOAST */
-.toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); background: #1a1a1a; color: #ffffff; padding: 12px 24px; border-radius: 50px; font-size: 0.85rem; font-weight: 500; z-index: 9999; opacity: 0; transition: opacity 0.3s; pointer-events: none; white-space: nowrap; }
+.toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: #1a1a1a; color: #ffffff; padding: 12px 24px; border-radius: 50px; font-size: 0.82rem; font-weight: 500; z-index: 9999; opacity: 0; transition: opacity 0.3s; pointer-events: none; white-space: nowrap; }
 .toast.show { opacity: 1; }
-.toast.success { background: #1a7a3d; }
-.toast.error { background: #7a1a1a; }
+.toast.ok { background: #1a7a3d; }
+.toast.err { background: #7a1a1a; }
 
 /* MOBILE */
-.mobile-header { display: none; background: #1a1a1a; padding: 16px 20px; position: fixed; top: 0; left: 0; right: 0; z-index: 200; align-items: center; justify-content: space-between; }
-.mobile-logo { font-family: ‘Playfair Display’, Georgia, serif; font-size: 1.2rem; color: #ffffff; }
-.mobile-logo span { color: #c27b6e; font-style: italic; }
-.hamburger { background: none; border: none; color: #ffffff; font-size: 1.4rem; cursor: pointer; }
-.sidebar-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 99; }
+.mob-header { display: none; background: #1a1a1a; padding: 15px 20px; position: fixed; top: 0; left: 0; right: 0; z-index: 200; align-items: center; justify-content: space-between; }
+.mob-logo { font-family: ‘Playfair Display’, Georgia, serif; font-size: 1.2rem; color: #ffffff; }
+.mob-logo span { color: #c27b6e; font-style: italic; }
+.hamburger { background: none; border: none; color: #ffffff; font-size: 1.4rem; cursor: pointer; line-height: 1; }
+.overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.55); z-index: 99; }
 
-@media (max-width: 900px) {
-.sidebar { transform: translateX(-100%); transition: transform 0.3s; }
+@media (max-width: 960px) {
+.sidebar { transform: translateX(-100%); transition: transform 0.3s; z-index: 150; }
 .sidebar.open { transform: translateX(0); }
-.sidebar-overlay.open { display: block; }
-.main { margin-left: 0; padding: 80px 16px 24px; }
-.mobile-header { display: flex; }
+.overlay.open { display: block; }
+.main { margin-left: 0; padding: 76px 16px 24px; }
+.mob-header { display: flex; }
 .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
-.pro-stats-grid { grid-template-columns: 1fr; }
+.pro-grid { grid-template-columns: 1fr; }
+.crm-grid { grid-template-columns: repeat(3, 1fr); }
+.crm-cliente-stats { grid-template-columns: repeat(2, 1fr); }
 .topbar-title { font-size: 1.4rem; }
-thead th:nth-child(3), tbody td:nth-child(3) { display: none; }
-thead th:nth-child(5), tbody td:nth-child(5) { display: none; }
 }
 
-@media (max-width: 500px) {
-.stats-grid { grid-template-columns: 1fr 1fr; }
-.stat-card-num { font-size: 1.5rem; }
+@media (max-width: 480px) {
+.stats-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+.sc-num { font-size: 1.5rem; }
+.crm-grid { grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.crm-stat-num { font-size: 1.3rem; }
+.filtro-fechas { flex-direction: column; align-items: flex-start; }
 }
 </style>
 
@@ -170,12 +191,12 @@ thead th:nth-child(5), tbody td:nth-child(5) { display: none; }
   <div class="login-card">
     <div class="login-logo">Glam<span>Nails</span></div>
     <div class="login-sub">Panel de administración</div>
-    <label class="login-label">Correo electrónico</label>
-    <input class="login-input" id="admin-email" type="email" placeholder="admin@glamnails.com">
-    <label class="login-label">Contraseña</label>
-    <input class="login-input" id="admin-pass" type="password" placeholder="••••••••">
-    <button class="login-btn" onclick="loginAdmin()">Ingresar al panel</button>
-    <div class="login-error" id="login-error">Correo o contraseña incorrectos</div>
+    <label class="lbl">Correo electrónico</label>
+    <input class="linput" id="admin-email" type="email" placeholder="admin@glamnails.com">
+    <label class="lbl">Contraseña</label>
+    <input class="linput" id="admin-pass" type="password" placeholder="••••••••">
+    <button class="lbtn" onclick="loginAdmin()">Ingresar al panel</button>
+    <div class="lerror" id="lerror">Correo o contraseña incorrectos</div>
   </div>
 </div>
 
@@ -183,51 +204,44 @@ thead th:nth-child(5), tbody td:nth-child(5) { display: none; }
 
 <div id="app">
 
-  <!-- MOBILE HEADER -->
-
-  <div class="mobile-header">
-    <div class="mobile-logo">Glam<span>Nails</span></div>
-    <button class="hamburger" onclick="toggleSidebar()">☰</button>
+  <div class="mob-header">
+    <div class="mob-logo">Glam<span>Nails</span></div>
+    <button class="hamburger" onclick="toggleSidebar()">&#9776;</button>
   </div>
 
-  <!-- SIDEBAR OVERLAY -->
-
-  <div class="sidebar-overlay" id="sidebar-overlay" onclick="toggleSidebar()"></div>
-
-  <!-- SIDEBAR -->
+  <div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
 
   <div class="sidebar" id="sidebar">
-    <div class="sidebar-logo">Glam<span>Nails</span></div>
-    <div class="sidebar-role">Panel Admin</div>
+    <div class="sl">Glam<span>Nails</span></div>
+    <div class="sr">Panel Admin</div>
 
 ```
-<div class="sidebar-section">Principal</div>
-<button class="sidebar-link active" onclick="showPage('dashboard', this)">
-  <span class="icon">📊</span> Dashboard
-</button>
+<!-- SELECTOR SUCURSAL -->
+<div class="sucursal-select-wrap">
+  <select class="sucursal-select" id="sucursal-select" onchange="cambiarSucursal(this.value)">
+    <option value="glamnails">Sede El Poblado</option>
+    <option value="glamnails-laureles">Sede Laureles</option>
+    <option value="glamnails-envigado">Sede Envigado</option>
+  </select>
+</div>
 
-<div class="sidebar-section">Operación</div>
-<button class="sidebar-link" onclick="showPage('citas', this)">
-  <span class="icon">📅</span> Citas
-</button>
-<button class="sidebar-link" onclick="showPage('profesionales', this)">
-  <span class="icon">👩</span> Profesionales
-</button>
+<div class="ss">Principal</div>
+<button class="slink active" onclick="showPage('dashboard', this)"><span class="ico">&#128202;</span> Dashboard</button>
 
-<div class="sidebar-section">Clientes</div>
-<button class="sidebar-link" onclick="showPage('crm', this)">
-  <span class="icon">👥</span> CRM Clientas
-</button>
+<div class="ss">Operacion</div>
+<button class="slink" onclick="showPage('citas', this)"><span class="ico">&#128197;</span> Citas</button>
+<button class="slink" onclick="showPage('profesionales', this)"><span class="ico">&#128105;</span> Profesionales</button>
 
-<div class="sidebar-bottom">
-  <div class="sidebar-user" id="sidebar-user">admin@glamnails.com</div>
-  <button class="btn-logout" onclick="logoutAdmin()">Cerrar sesión →</button>
+<div class="ss">Clientes</div>
+<button class="slink" onclick="showPage('crm', this)"><span class="ico">&#128101;</span> CRM Clientas</button>
+
+<div class="sb">
+  <div class="sb-user" id="sb-user"></div>
+  <button class="btn-out" onclick="logoutAdmin()">Cerrar sesion</button>
 </div>
 ```
 
   </div>
-
-  <!-- MAIN -->
 
   <div class="main">
 
@@ -236,96 +250,69 @@ thead th:nth-child(5), tbody td:nth-child(5) { display: none; }
 <div class="page active" id="page-dashboard">
   <div class="topbar">
     <div>
-      <div class="topbar-title">Buen día, <em>Admin</em> 👋</div>
-      <div class="topbar-date" id="fecha-hoy"></div>
+      <div class="topbar-title">Buen dia, <em>Admin</em></div>
+      <div class="topbar-sub" id="fecha-hoy"></div>
     </div>
+    <div class="topbar-badge" id="badge-sucursal">Sede El Poblado</div>
   </div>
 
   <div class="stats-grid">
     <div class="stat-card accent">
-      <div class="stat-card-label">Citas hoy</div>
-      <div class="stat-card-num" id="stat-hoy">0</div>
-      <div class="stat-card-sub">agendadas</div>
+      <div class="sc-label">Citas hoy</div>
+      <div class="sc-num" id="stat-hoy">0</div>
+      <div class="sc-sub">agendadas</div>
     </div>
     <div class="stat-card">
-      <div class="stat-card-label">Esta semana</div>
-      <div class="stat-card-num" id="stat-semana">0</div>
-      <div class="stat-card-sub">citas totales</div>
+      <div class="sc-label">Esta semana</div>
+      <div class="sc-num" id="stat-semana">0</div>
+      <div class="sc-sub">citas</div>
     </div>
     <div class="stat-card">
-      <div class="stat-card-label">Total citas</div>
-      <div class="stat-card-num" id="stat-total">0</div>
-      <div class="stat-card-sub">en el sistema</div>
+      <div class="sc-label">Total citas</div>
+      <div class="sc-num" id="stat-total">0</div>
+      <div class="sc-sub">en el sistema</div>
     </div>
     <div class="stat-card">
-      <div class="stat-card-label">Clientas</div>
-      <div class="stat-card-num" id="stat-clientes">0</div>
-      <div class="stat-card-sub">registradas</div>
+      <div class="sc-label">Clientas</div>
+      <div class="sc-num" id="stat-clientes">0</div>
+      <div class="sc-sub">registradas</div>
     </div>
   </div>
 
-  <!-- CITAS DE HOY -->
   <div class="card">
-    <div class="card-title">
-      Citas de hoy
-      <span class="card-title-right" id="citas-hoy-count">0 citas</span>
-    </div>
+    <div class="card-title">Citas de hoy <span class="ct-right" id="hoy-count">0 citas</span></div>
     <div class="tabla-wrap">
       <table>
-        <thead>
-          <tr>
-            <th>Clienta</th>
-            <th>Servicio</th>
-            <th>Profesional</th>
-            <th>Hora</th>
-            <th>Estado</th>
-            <th>Acción</th>
-          </tr>
-        </thead>
-        <tbody id="tabla-hoy">
-          <tr><td colspan="6"><div class="empty-state"><div class="empty-icon">📅</div><div class="empty-text">Cargando citas...</div></div></td></tr>
-        </tbody>
+        <thead><tr><th>Clienta</th><th>Servicio</th><th>Profesional</th><th>Hora</th><th>Estado</th><th>Accion</th></tr></thead>
+        <tbody id="tabla-hoy"></tbody>
       </table>
     </div>
   </div>
 
-  <!-- VENTAS POR PROFESIONAL HOY -->
   <div class="card">
-    <div class="card-title">Rendimiento de profesionales hoy</div>
-    <div class="pro-stats-grid" id="pro-stats-hoy">
-      <div class="empty-state"><div class="empty-icon">👩</div><div class="empty-text">Sin datos aún</div></div>
-    </div>
+    <div class="card-title">Rendimiento hoy por profesional</div>
+    <div class="pro-grid" id="pro-hoy"></div>
   </div>
 </div>
 
 <!-- CITAS -->
 <div class="page" id="page-citas">
   <div class="topbar">
-    <div class="topbar-title">Todas las <em>citas</em></div>
+    <div><div class="topbar-title">Todas las <em>citas</em></div></div>
+    <div class="topbar-badge" id="badge-sucursal-citas">Sede El Poblado</div>
   </div>
   <div class="card">
     <div class="filtros">
-      <button class="filtro-btn active" onclick="filtrarCitas('todas', this)">Todas</button>
-      <button class="filtro-btn" onclick="filtrarCitas('pendiente', this)">Pendientes</button>
-      <button class="filtro-btn" onclick="filtrarCitas('confirmada', this)">Confirmadas</button>
-      <button class="filtro-btn" onclick="filtrarCitas('atendida', this)">Atendidas</button>
-      <button class="filtro-btn" onclick="filtrarCitas('cancelada', this)">Canceladas</button>
+      <button class="fb active" onclick="filtrarCitas('todas', this)">Todas</button>
+      <button class="fb" onclick="filtrarCitas('pendiente', this)">Pendientes</button>
+      <button class="fb" onclick="filtrarCitas('confirmada', this)">Confirmadas</button>
+      <button class="fb" onclick="filtrarCitas('atendida', this)">Atendidas</button>
+      <button class="fb" onclick="filtrarCitas('cancelada', this)">Canceladas</button>
     </div>
     <div class="tabla-wrap">
       <table>
-        <thead>
-          <tr>
-            <th>Clienta</th>
-            <th>Servicio</th>
-            <th>Profesional</th>
-            <th>Fecha · Hora</th>
-            <th>Estado</th>
-            <th>Acción</th>
-          </tr>
-        </thead>
-        <tbody id="tabla-todas">
-          <tr><td colspan="6"><div class="empty-state"><div class="empty-icon">📅</div><div class="empty-text">Cargando...</div></div></td></tr>
-        </tbody>
+        <thead><tr><th>Clienta</th><th>Servicio</th><th>Profesional</th><th>Fecha y Hora</th><th>Estado</th><th>Accion</th></tr></thead>
+        <tbody id="tabla-todas"></tbody>
       </table>
     </div>
   </div>
@@ -334,45 +321,57 @@ thead th:nth-child(5), tbody td:nth-child(5) { display: none; }
 <!-- PROFESIONALES -->
 <div class="page" id="page-profesionales">
   <div class="topbar">
-    <div class="topbar-title">Ventas por <em>profesional</em></div>
+    <div><div class="topbar-title">Ventas por <em>profesional</em></div></div>
+    <div class="topbar-badge" id="badge-sucursal-pro">Sede El Poblado</div>
   </div>
   <div class="card">
-    <div class="pro-stats-grid" id="pro-stats-total">
-      <div class="empty-state"><div class="empty-icon">👩</div><div class="empty-text">Cargando...</div></div>
+    <div class="card-title">Filtrar por periodo</div>
+    <div class="filtros-rapidos filtros" style="margin-bottom:16px">
+      <button class="fb active" onclick="filtrarPro('hoy', this)">Hoy</button>
+      <button class="fb" onclick="filtrarPro('semana', this)">Esta semana</button>
+      <button class="fb" onclick="filtrarPro('mes', this)">Este mes</button>
+      <button class="fb" onclick="filtrarPro('todo', this)">Todo el tiempo</button>
     </div>
+    <div class="filtro-fechas">
+      <label>Desde</label>
+      <input type="date" id="pro-desde">
+      <label>Hasta</label>
+      <input type="date" id="pro-hasta">
+      <button class="btn-filtrar" onclick="filtrarProRango()">Filtrar</button>
+    </div>
+    <div class="pro-grid" id="pro-total"></div>
   </div>
 </div>
 
 <!-- CRM -->
 <div class="page" id="page-crm">
   <div class="topbar">
-    <div class="topbar-title">CRM <em>Clientas</em></div>
+    <div><div class="topbar-title">CRM <em>Clientas</em></div></div>
+    <div class="topbar-badge" id="badge-sucursal-crm">Sede El Poblado</div>
   </div>
-  <div class="card">
-    <div class="tabla-wrap">
-      <table>
-        <thead>
-          <tr>
-            <th>Clienta</th>
-            <th>WhatsApp</th>
-            <th>Visitas</th>
-            <th>Puntos</th>
-            <th>Estado</th>
-          </tr>
-        </thead>
-        <tbody id="tabla-crm">
-          <tr><td colspan="5"><div class="empty-state"><div class="empty-icon">👥</div><div class="empty-text">Cargando...</div></div></td></tr>
-        </tbody>
-      </table>
-    </div>
+
+  <!-- RESUMEN CRM -->
+  <div class="crm-grid" style="margin-bottom:20px">
+    <div class="crm-stat"><div class="crm-stat-num" id="crm-total">0</div><div class="crm-stat-label">Total clientas</div></div>
+    <div class="crm-stat"><div class="crm-stat-num" id="crm-activas" style="color:#1a7a3d">0</div><div class="crm-stat-label">Activas (30 dias)</div></div>
+    <div class="crm-stat"><div class="crm-stat-num" id="crm-perdidas" style="color:#7a1a1a">0</div><div class="crm-stat-label">Perdidas (+60 dias)</div></div>
   </div>
+
+  <!-- FILTROS CRM -->
+  <div class="filtros" style="margin-bottom:16px">
+    <button class="fb active" onclick="filtrarCRM('todas', this)">Todas</button>
+    <button class="fb" onclick="filtrarCRM('activa', this)">Activas</button>
+    <button class="fb" onclick="filtrarCRM('tibia', this)">Tibias</button>
+    <button class="fb" onclick="filtrarCRM('perdida', this)">Perdidas</button>
+    <button class="fb" onclick="filtrarCRM('nueva', this)">Nuevas</button>
+  </div>
+
+  <div id="crm-lista"></div>
 </div>
 ```
 
   </div>
 </div>
-
-<!-- FIREBASE -->
 
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-app.js";
@@ -392,29 +391,51 @@ thead th:nth-child(5), tbody td:nth-child(5) { display: none; }
   const db   = getFirestore(app);
   const auth = getAuth(app);
 
-  let todasLasCitas = [];
-  let todosLosClientes = [];
+  let todasCitas = [];
+  let todosClientes = [];
+  let sucursalActual = 'glamnails';
+  let filtroCRMActual = 'todas';
 
-  // ── TOAST ──
-  function showToast(msg, type = '') {
+  const hoy = new Date();
+  const fechaHoyStr = hoy.toISOString().split('T')[0];
+
+  const PROS = [
+    { nombre: 'Valentina G.', color: '#f9e4dc', emoji: String.fromCodePoint(0x1F469, 0x1F3FD) },
+    { nombre: 'Daniela R.',   color: '#e8d5f0', emoji: String.fromCodePoint(0x1F469, 0x1F3FB) },
+    { nombre: 'Juliana M.',   color: '#fce8d5', emoji: String.fromCodePoint(0x1F469, 0x1F3FE) },
+    { nombre: 'Camila S.',    color: '#d5f0e8', emoji: String.fromCodePoint(0x1F469, 0x1F3FC) }
+  ];
+
+  const PRECIOS = {
+    'Manicure Gel': 45000, 'Unas Acrilicas': 80000, 'Uñas Acrílicas': 80000,
+    'Pedicure Spa': 55000, 'Nail Art': 30000, 'Semipermanente': 38000,
+    'Manicure + Pedicure': 75000
+  };
+
+  function getPrecio(servicio) {
+    if (!servicio) return 0;
+    const base = servicio.split('—')[0].trim().split('–')[0].trim();
+    return PRECIOS[base] || 0;
+  }
+
+  // TOAST
+  function toast(msg, tipo) {
     const t = document.getElementById('toast');
     t.textContent = msg;
-    t.className = 'toast show ' + type;
+    t.className = 'toast show' + (tipo ? ' ' + tipo : '');
     setTimeout(() => { t.className = 'toast'; }, 3000);
   }
 
-  // ── FECHA HOY ──
-  const hoy = new Date();
-  const fechaHoyStr = hoy.toISOString().split('T')[0];
+  // FECHA
   const opciones = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
   document.getElementById('fecha-hoy').textContent = hoy.toLocaleDateString('es-CO', opciones);
 
-  // ── AUTH ──
-  onAuthStateChanged(auth, (user) => {
+  // AUTH
+  onAuthStateChanged(auth, user => {
     if (user) {
       document.getElementById('login-screen').style.display = 'none';
       document.getElementById('app').style.display = 'block';
-      document.getElementById('sidebar-user').textContent = user.email;
+      document.getElementById('sb-user').textContent = user.email;
       cargarDatos();
     } else {
       document.getElementById('login-screen').style.display = 'flex';
@@ -425,226 +446,257 @@ thead th:nth-child(5), tbody td:nth-child(5) { display: none; }
   window.loginAdmin = async function() {
     const email = document.getElementById('admin-email').value.trim();
     const pass  = document.getElementById('admin-pass').value;
-    const errEl = document.getElementById('login-error');
+    const errEl = document.getElementById('lerror');
     errEl.style.display = 'none';
-
     try {
       await signInWithEmailAndPassword(auth, email, pass);
-    } catch (e) {
+    } catch(e) {
       errEl.style.display = 'block';
     }
   }
 
-  window.logoutAdmin = async function() {
-    await signOut(auth);
+  window.logoutAdmin = async function() { await signOut(auth); }
+
+  // CAMBIAR SUCURSAL
+  window.cambiarSucursal = function(val) {
+    sucursalActual = val;
+    const nombres = { 'glamnails': 'Sede El Poblado', 'glamnails-laureles': 'Sede Laureles', 'glamnails-envigado': 'Sede Envigado' };
+    const nombre = nombres[val] || val;
+    ['badge-sucursal','badge-sucursal-citas','badge-sucursal-pro','badge-sucursal-crm'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.textContent = nombre;
+    });
+    cargarDatos();
   }
 
-  // ── CARGAR DATOS ──
+  // CARGAR DATOS
   async function cargarDatos() {
     try {
-      // Cargar citas
-      const citasSnap = await getDocs(query(
-        collection(db, 'spas', 'glamnails', 'citas'),
-        orderBy('creadoEn', 'desc')
-      ));
-      todasLasCitas = citasSnap.docs.map(d => ({ id: d.id, ...d.data() }));
+      const citasSnap = await getDocs(query(collection(db, 'spas', sucursalActual, 'citas'), orderBy('creadoEn', 'desc')));
+      todasCitas = citasSnap.docs.map(d => ({ id: d.id, ...d.data() }));
 
-      // Cargar clientes
-      const clientesSnap = await getDocs(collection(db, 'spas', 'glamnails', 'clientes'));
-      todosLosClientes = clientesSnap.docs.map(d => ({ id: d.id, ...d.data() }));
+      const clientesSnap = await getDocs(collection(db, 'spas', sucursalActual, 'clientes'));
+      todosClientes = clientesSnap.docs.map(d => ({ id: d.id, ...d.data() }));
 
       actualizarDashboard();
-      renderTablaTodasCitas(todasLasCitas);
-      renderProStatsTotal();
-      renderCRM();
-
-    } catch (e) {
+      renderTablaTodas(todasCitas);
+      renderProGrid('pro-total', todasCitas);
+      renderCRM('todas');
+    } catch(e) {
       console.error(e);
-      showToast('Error cargando datos', 'error');
+      toast('Error cargando datos', 'err');
     }
   }
 
-  // ── DASHBOARD ──
+  // DASHBOARD
   function actualizarDashboard() {
-    const citasHoy = todasLasCitas.filter(c => c.fecha === fechaHoyStr);
+    const citasHoy = todasCitas.filter(c => c.fecha === fechaHoyStr);
 
-    // Stats semana
     const inicioSemana = new Date(hoy);
     inicioSemana.setDate(hoy.getDate() - hoy.getDay());
-    const citasSemana = todasLasCitas.filter(c => {
-      if (!c.fecha) return false;
-      return new Date(c.fecha) >= inicioSemana;
-    });
+    const citasSemana = todasCitas.filter(c => c.fecha && new Date(c.fecha + 'T00:00:00') >= inicioSemana);
 
     document.getElementById('stat-hoy').textContent    = citasHoy.length;
     document.getElementById('stat-semana').textContent = citasSemana.length;
-    document.getElementById('stat-total').textContent  = todasLasCitas.length;
-    document.getElementById('stat-clientes').textContent = todosLosClientes.length;
-    document.getElementById('citas-hoy-count').textContent = citasHoy.length + ' citas';
+    document.getElementById('stat-total').textContent  = todasCitas.length;
+    document.getElementById('stat-clientes').textContent = todosClientes.length;
+    document.getElementById('hoy-count').textContent   = citasHoy.length + ' citas';
 
-    // Tabla hoy
     renderTabla('tabla-hoy', citasHoy, true);
-
-    // Pro stats hoy
-    renderProStats('pro-stats-hoy', citasHoy);
+    renderProGrid('pro-hoy', citasHoy);
   }
 
-  // ── RENDER TABLA ──
-  function renderTabla(idTabla, citas, esHoy = false) {
+  // RENDER TABLA
+  function renderTabla(idTabla, citas, esHoy) {
     const tbody = document.getElementById(idTabla);
+    if (!tbody) return;
     if (citas.length === 0) {
-      tbody.innerHTML = `<tr><td colspan="6"><div class="empty-state"><div class="empty-icon">📅</div><div class="empty-text">${esHoy ? 'No hay citas para hoy' : 'No hay citas'}</div></div></td></tr>`;
+      tbody.innerHTML = '<tr><td colspan="6"><div class="empty"><div class="empty-ico">&#128197;</div><div class="empty-txt">' + (esHoy ? 'No hay citas para hoy' : 'No hay citas') + '</div></div></td></tr>';
       return;
     }
-
     const colores = { 'Valentina G.': '#e8c4b8', 'Daniela R.': '#c9a8e0', 'Juliana M.': '#f0c4a0', 'Camila S.': '#a8e0cc' };
-
-    tbody.innerHTML = citas.map(c => `
-      <tr>
-        <td>
-          <div class="td-name">${c.nombre || '—'}</div>
-          <div class="td-phone">${c.whatsapp || ''}</div>
-        </td>
-        <td>${c.servicio ? c.servicio.split('—')[0].trim() : '—'}</td>
-        <td>
-          <div class="td-pro">
-            <div class="pro-dot" style="background:${colores[c.profesional] || '#cccccc'}"></div>
-            ${c.profesional || '—'}
-          </div>
-        </td>
-        <td>${esHoy ? (c.hora || '—') : ((c.fecha || '') + ' · ' + (c.hora || ''))}</td>
-        <td><span class="badge-estado badge-${c.estado || 'pendiente'}">${c.estado || 'pendiente'}</span></td>
-        <td>
-          ${c.estado === 'pendiente' ? `
-            <button class="btn-confirmar-cita" onclick="cambiarEstado('${c.id}', 'confirmada')">✅ Confirmar</button>
-            <button class="btn-cancelar-cita" onclick="cambiarEstado('${c.id}', 'cancelada')">❌</button>
-          ` : c.estado === 'confirmada' ? `
-            <button class="btn-confirmar-cita" onclick="cambiarEstado('${c.id}', 'atendida')">✔ Atendida</button>
-          ` : '—'}
-        </td>
-      </tr>
-    `).join('');
-  }
-
-  function renderTablaTodasCitas(citas) {
-    renderTabla('tabla-todas', citas, false);
-  }
-
-  // ── FILTRAR CITAS ──
-  window.filtrarCitas = function(estado, btn) {
-    document.querySelectorAll('.filtro-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    const filtradas = estado === 'todas' ? todasLasCitas : todasLasCitas.filter(c => c.estado === estado);
-    renderTablaTodasCitas(filtradas);
-  }
-
-  // ── CAMBIAR ESTADO CITA ──
-  window.cambiarEstado = async function(idCita, nuevoEstado) {
-    try {
-      await updateDoc(doc(db, 'spas', 'glamnails', 'citas', idCita), { estado: nuevoEstado });
-      const idx = todasLasCitas.findIndex(c => c.id === idCita);
-      if (idx !== -1) todasLasCitas[idx].estado = nuevoEstado;
-      actualizarDashboard();
-      renderTablaTodasCitas(todasLasCitas);
-      showToast('✅ Cita ' + nuevoEstado, 'success');
-    } catch (e) {
-      showToast('❌ Error actualizando', 'error');
-    }
-  }
-
-  // ── PRO STATS ──
-  function renderProStats(idContenedor, citas) {
-    const pros = ['Valentina G.', 'Daniela R.', 'Juliana M.', 'Camila S.'];
-    const colores = ['#f9e4dc', '#e8d5f0', '#fce8d5', '#d5f0e8'];
-    const emojis  = ['👩🏽', '👩🏻', '👩🏾', '👩🏼'];
-
-    const precios = { 'Manicure Gel': 45000, 'Uñas Acrílicas': 80000, 'Pedicure Spa': 55000, 'Nail Art': 30000, 'Semipermanente': 38000, 'Manicure + Pedicure': 75000 };
-
-    const stats = pros.map((pro, i) => {
-      const citasPro = citas.filter(c => c.profesional === pro && c.estado !== 'cancelada');
-      const ingresos = citasPro.reduce((sum, c) => {
-        const svc = c.servicio ? c.servicio.split('—')[0].trim() : '';
-        return sum + (precios[svc] || 0);
-      }, 0);
-      return { pro, citasPro: citasPro.length, ingresos, color: colores[i], emoji: emojis[i] };
-    });
-
-    const contenedor = document.getElementById(idContenedor);
-    if (stats.every(s => s.citasPro === 0)) {
-      contenedor.innerHTML = `<div class="empty-state"><div class="empty-icon">👩</div><div class="empty-text">Sin citas aún</div></div>`;
-      return;
-    }
-
-    contenedor.innerHTML = stats.map(s => `
-      <div class="pro-stat-card">
-        <div class="pro-stat-header">
-          <div class="pro-stat-avatar" style="background:${s.color}">${s.emoji}</div>
-          <div>
-            <div class="pro-stat-name">${s.pro}</div>
-          </div>
-        </div>
-        <div class="pro-stat-row"><span class="pro-stat-key">Citas</span><span class="pro-stat-val">${s.citasPro}</span></div>
-        <div class="pro-stat-row"><span class="pro-stat-key">Ingresos</span><span class="pro-stat-val green">$${s.ingresos.toLocaleString('es-CO')}</span></div>
-      </div>
-    `).join('');
-  }
-
-  function renderProStatsTotal() {
-    renderProStats('pro-stats-total', todasLasCitas);
-  }
-
-  // ── CRM ──
-  function renderCRM() {
-    const tbody = document.getElementById('tabla-crm');
-    if (todosLosClientes.length === 0) {
-      tbody.innerHTML = `<tr><td colspan="5"><div class="empty-state"><div class="empty-icon">👥</div><div class="empty-text">No hay clientas registradas aún</div></div></td></tr>`;
-      return;
-    }
-
-    // Enriquecer con datos de citas
-    const clientesEnriquecidos = todosLosClientes.map(c => {
-      const citasCliente = todasLasCitas.filter(cita => cita.uid === c.id && cita.estado !== 'cancelada');
-      const ultimaCita = citasCliente.sort((a, b) => (b.fecha || '').localeCompare(a.fecha || ''))[0];
-      const diasSinVenir = ultimaCita ? Math.floor((hoy - new Date(ultimaCita.fecha)) / (1000 * 60 * 60 * 24)) : null;
-      return { ...c, visitas: citasCliente.length, ultimaCita: ultimaCita?.fecha, diasSinVenir };
-    });
-
-    tbody.innerHTML = clientesEnriquecidos.map(c => {
-      let estadoBadge = '';
-      if (c.diasSinVenir === null) {
-        estadoBadge = '<span class="badge-estado badge-pendiente">Sin visitas</span>';
-      } else if (c.diasSinVenir <= 30) {
-        estadoBadge = '<span class="badge-estado badge-confirmada">Activa 🟢</span>';
-      } else if (c.diasSinVenir <= 60) {
-        estadoBadge = '<span class="badge-estado badge-pendiente">Tibia 🟡</span>';
+    tbody.innerHTML = citas.map(c => {
+      const estado = c.estado || 'pendiente';
+      let accion = '';
+      if (estado === 'pendiente') {
+        accion = '<button class="btn-ok" onclick="cambiarEstado(\'' + c.id + '\',\'confirmada\')">Confirmar</button><button class="btn-no" onclick="cambiarEstado(\'' + c.id + '\',\'cancelada\')">Cancelar</button>';
+      } else if (estado === 'confirmada') {
+        accion = '<button class="btn-at" onclick="cambiarEstado(\'' + c.id + '\',\'atendida\')">Atendida</button>';
       } else {
-        estadoBadge = '<span class="badge-estado badge-cancelada">Perdida 🔴</span>';
+        accion = '<span style="color:#cccccc;font-size:0.78rem">—</span>';
       }
-
-      return `
-        <tr>
-          <td><div class="td-name">${c.nombre || 'Sin nombre'}</div><div class="td-phone">${c.ultimaCita ? 'Última: ' + c.ultimaCita : 'Sin visitas'}</div></td>
-          <td>${c.whatsapp || '—'}</td>
-          <td>${c.visitas || 0}</td>
-          <td>⭐ ${c.puntos || 0}</td>
-          <td>${estadoBadge}</td>
-        </tr>
-      `;
+      const svc = c.servicio ? c.servicio.split('—')[0].trim().split('–')[0].trim() : '—';
+      const fechaHora = esHoy ? (c.hora || '—') : ((c.fecha || '') + ' ' + (c.hora || ''));
+      return '<tr>' +
+        '<td><div class="td-name">' + (c.nombre || '—') + '</div><div class="td-sub">' + (c.whatsapp || '') + '</div></td>' +
+        '<td>' + svc + '</td>' +
+        '<td><div class="td-pro"><div class="pro-dot" style="background:' + (colores[c.profesional] || '#ccc') + '"></div>' + (c.profesional || '—') + '</div></td>' +
+        '<td>' + fechaHora + '</td>' +
+        '<td><span class="badge-e be-' + estado + '">' + estado + '</span></td>' +
+        '<td>' + accion + '</td>' +
+        '</tr>';
     }).join('');
   }
 
-  // ── NAVEGACIÓN ──
+  function renderTablaTodas(citas) { renderTabla('tabla-todas', citas, false); }
+
+  // FILTRAR CITAS
+  window.filtrarCitas = function(estado, btn) {
+    document.querySelectorAll('#page-citas .fb').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const f = estado === 'todas' ? todasCitas : todasCitas.filter(c => c.estado === estado);
+    renderTablaTodas(f);
+  }
+
+  // CAMBIAR ESTADO
+  window.cambiarEstado = async function(idCita, nuevoEstado) {
+    try {
+      await updateDoc(doc(db, 'spas', sucursalActual, 'citas', idCita), { estado: nuevoEstado });
+      const idx = todasCitas.findIndex(c => c.id === idCita);
+      if (idx !== -1) todasCitas[idx].estado = nuevoEstado;
+      actualizarDashboard();
+      renderTablaTodas(todasCitas);
+      toast('Cita ' + nuevoEstado, 'ok');
+    } catch(e) { toast('Error actualizando', 'err'); }
+  }
+
+  // PRO GRID
+  function renderProGrid(idContenedor, citas) {
+    const contenedor = document.getElementById(idContenedor);
+    if (!contenedor) return;
+    const proStats = PROS.map(p => {
+      const cp = citas.filter(c => c.profesional === p.nombre && c.estado !== 'cancelada');
+      const ingresos = cp.reduce((s, c) => s + getPrecio(c.servicio), 0);
+      const atendidas = citas.filter(c => c.profesional === p.nombre && c.estado === 'atendida').length;
+      return { ...p, citas: cp.length, ingresos, atendidas };
+    });
+    if (proStats.every(p => p.citas === 0)) {
+      contenedor.innerHTML = '<div class="empty"><div class="empty-ico">&#128105;</div><div class="empty-txt">Sin citas aun</div></div>';
+      return;
+    }
+    const maxIngresos = Math.max(...proStats.map(p => p.ingresos));
+    contenedor.innerHTML = proStats.map(p => {
+      const esMejor = p.ingresos === maxIngresos && maxIngresos > 0;
+      return '<div class="pro-card">' +
+        '<div class="pro-card-hdr"><div class="pro-avatar" style="background:' + p.color + '">' + p.emoji + '</div>' +
+        '<div><div class="pro-card-name">' + p.nombre + (esMejor ? '<span class="best">Top</span>' : '') + '</div><div class="pro-card-spec">Profesional</div></div></div>' +
+        '<div class="pro-row"><span class="pro-key">Citas agendadas</span><span class="pro-val">' + p.citas + '</span></div>' +
+        '<div class="pro-row"><span class="pro-key">Citas atendidas</span><span class="pro-val">' + p.atendidas + '</span></div>' +
+        '<div class="pro-row"><span class="pro-key">Ingresos generados</span><span class="pro-val green">$' + p.ingresos.toLocaleString('es-CO') + '</span></div>' +
+        '</div>';
+    }).join('');
+  }
+
+  // FILTRAR PROFESIONALES
+  window.filtrarPro = function(periodo, btn) {
+    document.querySelectorAll('#page-profesionales .fb').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    let citas = todasCitas;
+    const ahora = new Date();
+    if (periodo === 'hoy') {
+      citas = todasCitas.filter(c => c.fecha === fechaHoyStr);
+    } else if (periodo === 'semana') {
+      const ini = new Date(ahora); ini.setDate(ahora.getDate() - ahora.getDay());
+      citas = todasCitas.filter(c => c.fecha && new Date(c.fecha + 'T00:00:00') >= ini);
+    } else if (periodo === 'mes') {
+      const ini = new Date(ahora.getFullYear(), ahora.getMonth(), 1);
+      citas = todasCitas.filter(c => c.fecha && new Date(c.fecha + 'T00:00:00') >= ini);
+    }
+    renderProGrid('pro-total', citas);
+  }
+
+  window.filtrarProRango = function() {
+    const desde = document.getElementById('pro-desde').value;
+    const hasta = document.getElementById('pro-hasta').value;
+    if (!desde || !hasta) { toast('Selecciona las dos fechas', 'err'); return; }
+    const citas = todasCitas.filter(c => c.fecha && c.fecha >= desde && c.fecha <= hasta);
+    document.querySelectorAll('#page-profesionales .fb').forEach(b => b.classList.remove('active'));
+    renderProGrid('pro-total', citas);
+    toast('Mostrando ' + citas.length + ' citas entre ' + desde + ' y ' + hasta);
+  }
+
+  // CRM
+  function renderCRM(filtro) {
+    filtroCRMActual = filtro;
+    const lista = document.getElementById('crm-lista');
+
+    const clientesEnriquecidos = todosClientes.map(c => {
+      const citasC = todasCitas.filter(ct => ct.uid === c.id && ct.estado !== 'cancelada');
+      const atendidas = todasCitas.filter(ct => ct.uid === c.id && ct.estado === 'atendida');
+      const ultimaCita = citasC.sort((a,b) => (b.fecha||'').localeCompare(a.fecha||''))[0];
+      const diasSinVenir = ultimaCita ? Math.floor((hoy - new Date(ultimaCita.fecha + 'T00:00:00')) / 86400000) : 999;
+      const totalGastado = atendidas.reduce((s, ct) => s + getPrecio(ct.servicio), 0);
+
+      // Servicio favorito
+      const freq = {};
+      citasC.forEach(ct => { const s = ct.servicio ? ct.servicio.split('—')[0].trim().split('–')[0].trim() : ''; if (s) freq[s] = (freq[s]||0)+1; });
+      const favorito = Object.keys(freq).sort((a,b) => freq[b]-freq[a])[0] || null;
+
+      // Estado
+      let estado = 'nueva';
+      if (diasSinVenir <= 30 && citasC.length > 0) estado = 'activa';
+      else if (diasSinVenir <= 60 && citasC.length > 0) estado = 'tibia';
+      else if (diasSinVenir > 60 && citasC.length > 0) estado = 'perdida';
+
+      return { ...c, visitas: atendidas.length, diasSinVenir, totalGastado, favorito, estado, ultimaFecha: ultimaCita?.fecha };
+    }).sort((a,b) => b.visitas - a.visitas);
+
+    // Stats resumen
+    document.getElementById('crm-total').textContent = clientesEnriquecidos.length;
+    document.getElementById('crm-activas').textContent = clientesEnriquecidos.filter(c => c.estado === 'activa').length;
+    document.getElementById('crm-perdidas').textContent = clientesEnriquecidos.filter(c => c.estado === 'perdida').length;
+
+    // Filtrar
+    const filtrados = filtro === 'todas' ? clientesEnriquecidos : clientesEnriquecidos.filter(c => c.estado === filtro);
+
+    if (filtrados.length === 0) {
+      lista.innerHTML = '<div class="empty"><div class="empty-ico">&#128101;</div><div class="empty-txt">No hay clientas en esta categoria</div></div>';
+      return;
+    }
+
+    const etiquetas = { activa: 'Activa', tibia: 'Tibia', perdida: 'Perdida', nueva: 'Nueva' };
+    const iconos    = { activa: '&#128994;', tibia: '&#128993;', perdida: '&#128308;', nueva: '&#128309;' };
+
+    lista.innerHTML = filtrados.map((c, i) => {
+      const esMasRecurrente = i === 0 && c.visitas > 0;
+      return '<div class="crm-cliente-card">' +
+        '<div class="crm-cliente-hdr">' +
+          '<div>' +
+            '<div class="crm-cliente-name">' + (c.nombre || 'Sin nombre') + (esMasRecurrente ? ' <span class="best">&#11088; Mas frecuente</span>' : '') + '</div>' +
+            '<div class="crm-cliente-phone">' + (c.whatsapp || c.id) + '</div>' +
+          '</div>' +
+          '<span class="badge-e be-' + c.estado + '">' + iconos[c.estado] + ' ' + etiquetas[c.estado] + '</span>' +
+        '</div>' +
+        '<div class="crm-cliente-stats">' +
+          '<div class="crm-cs"><div class="crm-cs-val">' + c.visitas + '</div><div class="crm-cs-label">Visitas</div></div>' +
+          '<div class="crm-cs"><div class="crm-cs-val">&#11088; ' + (c.puntos || 0) + '</div><div class="crm-cs-label">Puntos</div></div>' +
+          '<div class="crm-cs"><div class="crm-cs-val">$' + c.totalGastado.toLocaleString('es-CO') + '</div><div class="crm-cs-label">Total gastado</div></div>' +
+          '<div class="crm-cs"><div class="crm-cs-val">' + (c.diasSinVenir === 999 ? '—' : c.diasSinVenir + 'd') + '</div><div class="crm-cs-label">Sin visitar</div></div>' +
+        '</div>' +
+        (c.favorito ? '<div class="crm-fav">Servicio favorito: ' + c.favorito + '</div>' : '') +
+        (c.ultimaFecha ? '<div style="font-size:0.72rem;color:#8a7a76;margin-top:8px">Ultima visita: ' + c.ultimaFecha + '</div>' : '') +
+      '</div>';
+    }).join('');
+  }
+
+  window.filtrarCRM = function(filtro, btn) {
+    document.querySelectorAll('#page-crm .fb').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    renderCRM(filtro);
+  }
+
+  // NAVEGACIÓN
   window.showPage = function(pageName, btn) {
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-    document.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('active'));
+    document.querySelectorAll('.slink').forEach(l => l.classList.remove('active'));
     document.getElementById('page-' + pageName).classList.add('active');
     btn.classList.add('active');
-    if (window.innerWidth <= 900) toggleSidebar();
+    if (window.innerWidth <= 960) toggleSidebar();
   }
 
   window.toggleSidebar = function() {
     document.getElementById('sidebar').classList.toggle('open');
-    document.getElementById('sidebar-overlay').classList.toggle('open');
+    document.getElementById('overlay').classList.toggle('open');
   }
 </script>
 
