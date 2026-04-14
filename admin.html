@@ -222,28 +222,45 @@ html,body{overflow-x:hidden}
 <div class="modal-overlay" id="modal-pro">
   <div class="modal">
     <div class="modal-title" id="modal-pro-title">Agregar profesional</div>
-    <img class="avatar-preview" id="avatar-preview" src="" alt="preview">
-    <div class="modal-form-group">
-      <label class="modal-label">Foto (URL de imagen)</label>
-      <input class="modal-input" id="pro-foto-url" type="url" placeholder="https://ejemplo.com/foto.jpg" oninput="previewFoto(this.value)">
+
+```
+<!-- FOTO UPLOAD -->
+<div style="text-align:center;margin-bottom:20px">
+  <div id="foto-placeholder" style="width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,#f9e4dc,#e8c4b8);display:flex;align-items:center;justify-content:center;margin:0 auto 12px;border:3px solid #e8c4b8;cursor:pointer" onclick="document.getElementById('pro-foto-file').click()">
+    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#7a3d35" stroke-width="2" stroke-linecap="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+  </div>
+  <img id="avatar-preview" style="width:80px;height:80px;border-radius:50%;object-fit:cover;border:3px solid #e8c4b8;margin:0 auto 12px;display:none;cursor:pointer" src="" alt="preview" onclick="document.getElementById('pro-foto-file').click()">
+  <div style="font-size:0.78rem;color:#8a7a76;margin-bottom:8px">Toca para seleccionar foto</div>
+  <input type="file" id="pro-foto-file" accept="image/*" style="display:none" onchange="seleccionarFoto(this)">
+  <div id="foto-nombre" style="font-size:0.75rem;color:#c27b6e;display:none"></div>
+  <div id="foto-progress" style="display:none;margin-top:8px">
+    <div style="height:4px;background:#f5ede6;border-radius:50px;overflow:hidden">
+      <div id="foto-progress-bar" style="height:100%;background:#c27b6e;border-radius:50px;width:0%;transition:width 0.3s"></div>
     </div>
-    <div class="modal-form-group">
-      <label class="modal-label">Nombre completo</label>
-      <input class="modal-input" id="pro-nombre" type="text" placeholder="Valentina Garcia">
-    </div>
-    <div class="modal-form-group">
-      <label class="modal-label">Especialidad</label>
-      <input class="modal-input" id="pro-especialidad" type="text" placeholder="Nail Art - Acrilicas">
-    </div>
-    <div class="modal-form-group">
-      <label class="modal-label">Horario</label>
-      <input class="modal-input" id="pro-horario" type="text" placeholder="Lun-Vie 8am-6pm">
-    </div>
-    <input type="hidden" id="pro-edit-id">
-    <div class="modal-actions">
-      <button class="btn-modal-cancel" onclick="cerrarModalPro()">Cancelar</button>
-      <button class="btn-modal-ok" onclick="guardarPro()">Guardar</button>
-    </div>
+    <div id="foto-progress-txt" style="font-size:0.72rem;color:#8a7a76;margin-top:4px">Subiendo foto...</div>
+  </div>
+</div>
+
+<div class="modal-form-group">
+  <label class="modal-label">Nombre completo</label>
+  <input class="modal-input" id="pro-nombre" type="text" placeholder="Valentina Garcia">
+</div>
+<div class="modal-form-group">
+  <label class="modal-label">Especialidad</label>
+  <input class="modal-input" id="pro-especialidad" type="text" placeholder="Nail Art - Acrilicas">
+</div>
+<div class="modal-form-group">
+  <label class="modal-label">Horario</label>
+  <input class="modal-input" id="pro-horario" type="text" placeholder="Lun-Vie 8am-6pm">
+</div>
+<input type="hidden" id="pro-edit-id">
+<input type="hidden" id="pro-foto-url">
+<div class="modal-actions">
+  <button class="btn-modal-cancel" onclick="cerrarModalPro()">Cancelar</button>
+  <button class="btn-modal-ok" id="btn-guardar-pro" onclick="guardarPro()">Guardar</button>
+</div>
+```
+
   </div>
 </div>
 
@@ -448,6 +465,7 @@ html,body{overflow-x:hidden}
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-app.js";
 import { getFirestore, collection, getDocs, doc, updateDoc, addDoc, deleteDoc, query, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-firestore.js";
 import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-auth.js";
+import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-storage.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBBZInWQZVJyBTP5TG8MrTBOfe7UQFR5uU",
@@ -693,7 +711,54 @@ window.filtrarProRango=function(){
   toast('Mostrando '+citas.length+' citas');
 };
 
-// GESTIONAR PROFESIONALES
+const storage = getStorage(app);
+let archivoFotoSeleccionado = null;
+
+// SELECCIONAR FOTO
+window.seleccionarFoto = function(input) {
+  const file = input.files[0];
+  if (!file) return;
+  if (file.size > 5 * 1024 * 1024) { toast('La foto debe pesar menos de 5MB', 'err'); return; }
+  archivoFotoSeleccionado = file;
+  // Preview local
+  const reader = new FileReader();
+  reader.onload = e => {
+    const prev = document.getElementById('avatar-preview');
+    const placeholder = document.getElementById('foto-placeholder');
+    prev.src = e.target.result;
+    prev.style.display = 'block';
+    placeholder.style.display = 'none';
+    document.getElementById('foto-nombre').style.display = 'block';
+    document.getElementById('foto-nombre').textContent = file.name;
+  };
+  reader.readAsDataURL(file);
+};
+
+// SUBIR FOTO A STORAGE
+async function subirFoto(file, nombrePro) {
+  return new Promise((resolve, reject) => {
+    const ext = file.name.split('.').pop();
+    const path = 'spas/' + sucursalActual + '/profesionales/' + nombrePro.replace(/\s/g,'_') + '_' + Date.now() + '.' + ext;
+    const storageRef = ref(storage, path);
+    const uploadTask = uploadBytesResumable(storageRef, file);
+
+    document.getElementById('foto-progress').style.display = 'block';
+
+    uploadTask.on('state_changed',
+      snapshot => {
+        const pct = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
+        document.getElementById('foto-progress-bar').style.width = pct + '%';
+        document.getElementById('foto-progress-txt').textContent = 'Subiendo... ' + pct + '%';
+      },
+      err => reject(err),
+      async () => {
+        const url = await getDownloadURL(uploadTask.snapshot.ref);
+        document.getElementById('foto-progress-txt').textContent = 'Foto subida correctamente';
+        resolve(url);
+      }
+    );
+  });
+}
 function renderProsAdmin(){
   const grid=document.getElementById('pros-admin-grid');
   if(!grid)return;
@@ -707,28 +772,44 @@ function renderProsAdmin(){
   }).join('');
 }
 
+// GESTIONAR PROFESIONALES
 window.abrirModalPro=function(){
+  archivoFotoSeleccionado = null;
   document.getElementById('pro-edit-id').value='';
   document.getElementById('pro-nombre').value='';
   document.getElementById('pro-especialidad').value='';
   document.getElementById('pro-horario').value='';
   document.getElementById('pro-foto-url').value='';
+  document.getElementById('pro-foto-file').value='';
   document.getElementById('avatar-preview').style.display='none';
+  document.getElementById('foto-placeholder').style.display='flex';
+  document.getElementById('foto-nombre').style.display='none';
+  document.getElementById('foto-progress').style.display='none';
+  document.getElementById('foto-progress-bar').style.width='0%';
   document.getElementById('modal-pro-title').textContent='Agregar profesional';
   document.getElementById('modal-pro').classList.add('open');
 };
 
-window.cerrarModalPro=function(){document.getElementById('modal-pro').classList.remove('open');};
-
-window.editarPro=function(id){
+window.cerrarModalPro=function(){document.getElementById('modal-pro').classList.remove('open');};=function(id){
   const p=todasPros.find(x=>x.id===id);
   if(!p)return;
+  archivoFotoSeleccionado = null;
   document.getElementById('pro-edit-id').value=id;
   document.getElementById('pro-nombre').value=p.nombre||'';
   document.getElementById('pro-especialidad').value=p.especialidad||'';
   document.getElementById('pro-horario').value=p.horario||'';
   document.getElementById('pro-foto-url').value=p.foto||'';
-  if(p.foto){const prev=document.getElementById('avatar-preview');prev.src=p.foto;prev.style.display='block';}
+  document.getElementById('pro-foto-file').value='';
+  document.getElementById('foto-progress').style.display='none';
+  document.getElementById('foto-nombre').style.display='none';
+  if(p.foto){
+    const prev=document.getElementById('avatar-preview');
+    prev.src=p.foto;prev.style.display='block';
+    document.getElementById('foto-placeholder').style.display='none';
+  } else {
+    document.getElementById('avatar-preview').style.display='none';
+    document.getElementById('foto-placeholder').style.display='flex';
+  }
   document.getElementById('modal-pro-title').textContent='Editar profesional';
   document.getElementById('modal-pro').classList.add('open');
 };
@@ -743,20 +824,37 @@ window.guardarPro=async function(){
   const nombre=document.getElementById('pro-nombre').value.trim();
   const especialidad=document.getElementById('pro-especialidad').value.trim();
   const horario=document.getElementById('pro-horario').value.trim();
-  const foto=document.getElementById('pro-foto-url').value.trim();
   const editId=document.getElementById('pro-edit-id').value;
   if(!nombre){toast('Ingresa el nombre','err');return;}
+
+  const btn=document.getElementById('btn-guardar-pro');
+  btn.disabled=true;
+  btn.textContent='Guardando...';
+
   try{
+    let fotoUrl = document.getElementById('pro-foto-url').value || '';
+
+    // Si hay archivo nuevo, subirlo primero
+    if(archivoFotoSeleccionado){
+      fotoUrl = await subirFoto(archivoFotoSeleccionado, nombre);
+    }
+
     if(editId){
-      await updateDoc(doc(db,'spas',sucursalActual,'profesionales',editId),{nombre,especialidad,horario,foto});
+      await updateDoc(doc(db,'spas',sucursalActual,'profesionales',editId),{nombre,especialidad,horario,foto:fotoUrl});
       toast('Profesional actualizada','ok');
     } else {
-      await addDoc(collection(db,'spas',sucursalActual,'profesionales'),{nombre,especialidad,horario,foto,creadoEn:serverTimestamp()});
+      await addDoc(collection(db,'spas',sucursalActual,'profesionales'),{nombre,especialidad,horario,foto:fotoUrl,creadoEn:serverTimestamp()});
       toast('Profesional agregada','ok');
     }
     cerrarModalPro();
     await cargarDatos();
-  }catch(e){toast('Error guardando','err');}
+  }catch(e){
+    console.error(e);
+    toast('Error guardando','err');
+  }
+
+  btn.disabled=false;
+  btn.textContent='Guardar';
 };
 
 window.eliminarPro=async function(id){
