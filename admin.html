@@ -285,10 +285,6 @@ tbody td{padding:13px 14px;color:#1a1a1a;vertical-align:middle}
   <label class="modal-label">Especialidad</label>
   <input class="modal-input" id="pro-especialidad" type="text" placeholder="Nail Art - Acrilicas">
 </div>
-<div class="modal-form-group">
-  <label class="modal-label">Horario</label>
-  <input class="modal-input" id="pro-horario" type="text" placeholder="Lun-Vie 8am-6pm">
-</div>
 <input type="hidden" id="pro-edit-id">
 <input type="hidden" id="pro-foto-url">
 <div class="modal-actions">
@@ -863,7 +859,7 @@ function abrirModalPro(){
   document.getElementById('pro-edit-id').value='';
   document.getElementById('pro-nombre').value='';
   document.getElementById('pro-especialidad').value='';
-  document.getElementById('pro-horario').value='';
+  document.getElementById('pro-horario')&&(document.getElementById('pro-horario').value='');
   document.getElementById('pro-foto-url').value='';
   document.getElementById('pro-foto-file').value='';
   document.getElementById('avatar-preview').style.display='none';
@@ -885,7 +881,6 @@ function editarPro(id){
   document.getElementById('pro-edit-id').value=id;
   document.getElementById('pro-nombre').value=p.nombre||'';
   document.getElementById('pro-especialidad').value=p.especialidad||'';
-  document.getElementById('pro-horario').value=p.horario||'';
   document.getElementById('pro-foto-url').value=p.foto||'';
   document.getElementById('pro-foto-file').value='';
   document.getElementById('foto-progress').style.display='none';
@@ -905,7 +900,7 @@ function editarPro(id){
 function guardarPro(){
   var nombre=document.getElementById('pro-nombre').value.trim();
   var especialidad=document.getElementById('pro-especialidad').value.trim();
-  var horario=document.getElementById('pro-horario').value.trim();
+  var horario='';
   var editId=document.getElementById('pro-edit-id').value;
   if(!nombre){toast('Ingresa el nombre','err');return;}
   var btn=document.getElementById('btn-guardar-pro');
