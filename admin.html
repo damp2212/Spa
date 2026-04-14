@@ -5,180 +5,210 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="color-scheme" content="light">
-<title>GlamNails — Admin</title>
+<title>GlamNails - Admin</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
 <style>
-* { margin: 0; padding: 0; box-sizing: border-box; -webkit-text-size-adjust: 100%; }
-html, body { background: #f4f6f9; font-family: 'DM Sans', Georgia, sans-serif; color: #1a1a1a; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+*{margin:0;padding:0;box-sizing:border-box;-webkit-text-size-adjust:100%}
+html{background:#f4f6f9;overflow-x:hidden}
+body{font-family:'DM Sans',Georgia,sans-serif;background:#f4f6f9;color:#1a1a1a;-webkit-font-smoothing:antialiased;overflow-x:hidden}
 
-#login-screen { min-height: 100vh; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #7a3d35, #c27b6e); padding: 24px; }
-.login-card { background: #ffffff; border-radius: 24px; padding: 40px 32px; width: 100%; max-width: 400px; box-shadow: 0 20px 60px rgba(0,0,0,0.2); }
-.login-logo { font-family: ‘Playfair Display’, Georgia, serif; font-size: 1.8rem; font-weight: 700; color: #7a3d35; margin-bottom: 4px; }
-.login-logo span { color: #c27b6e; font-style: italic; }
-.login-sub { font-size: 0.85rem; color: #8a7a76; margin-bottom: 32px; }
-.lbl { display: block; font-size: 0.72rem; color: #8a7a76; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 500; margin-bottom: 7px; }
-.linput { width: 100%; padding: 13px 16px; border: 1.5px solid #e8c4b8; border-radius: 12px; font-size: 0.9rem; color: #1a1a1a; background: #fdf8f5; font-family: ‘DM Sans’, sans-serif; outline: none; margin-bottom: 16px; -webkit-appearance: none; appearance: none; }
-.linput:focus { border-color: #c27b6e; }
-.lbtn { width: 100%; background: #7a3d35; color: #ffffff; border: none; border-radius: 50px; padding: 15px; font-size: 0.92rem; font-weight: 500; cursor: pointer; font-family: ‘DM Sans’, sans-serif; }
-.lerror { font-size: 0.8rem; color: #c0392b; margin-top: 12px; text-align: center; display: none; }
+/* LOGIN */
+#login-screen{min-height:100vh;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#7a3d35,#c27b6e);padding:24px}
+.login-card{background:#fff;border-radius:24px;padding:40px 32px;width:100%;max-width:400px;box-shadow:0 20px 60px rgba(0,0,0,0.2)}
+.login-logo{font-family:‘Playfair Display’,Georgia,serif;font-size:1.8rem;font-weight:700;color:#7a3d35;margin-bottom:4px}
+.login-logo span{color:#c27b6e;font-style:italic}
+.login-sub{font-size:0.85rem;color:#8a7a76;margin-bottom:32px}
+.lbl{display:block;font-size:0.72rem;color:#8a7a76;text-transform:uppercase;letter-spacing:0.5px;font-weight:500;margin-bottom:7px}
+.linput{width:100%;padding:13px 16px;border:1.5px solid #e8c4b8;border-radius:12px;font-size:0.9rem;color:#1a1a1a;background:#fdf8f5;font-family:‘DM Sans’,sans-serif;outline:none;margin-bottom:16px;-webkit-appearance:none;appearance:none}
+.linput:focus{border-color:#c27b6e}
+.lbtn{width:100%;background:#7a3d35;color:#fff;border:none;border-radius:50px;padding:15px;font-size:0.92rem;font-weight:500;cursor:pointer;font-family:‘DM Sans’,sans-serif}
+.lerror{font-size:0.8rem;color:#c0392b;margin-top:12px;text-align:center;display:none}
 
-#app { display: none; min-height: 100vh; }
+/* APP */
+#app{display:none;min-height:100vh}
 
-.sidebar { position: fixed; top: 0; left: 0; bottom: 0; width: 240px; background: #1a1a1a; padding: 28px 0; z-index: 100; display: flex; flex-direction: column; overflow-y: auto; }
-.sl { font-family: ‘Playfair Display’, Georgia, serif; font-size: 1.4rem; color: #ffffff; padding: 0 24px; margin-bottom: 4px; }
-.sl span { color: #c27b6e; font-style: italic; }
-.sr { font-size: 0.72rem; color: #777777; padding: 0 24px; margin-bottom: 28px; text-transform: uppercase; letter-spacing: 1px; }
+/* MOBILE HEADER */
+.mob-header{display:none;background:#1a1a1a;padding:15px 20px;position:fixed;top:0;left:0;right:0;z-index:300;align-items:center;justify-content:space-between}
+.mob-logo{font-family:‘Playfair Display’,Georgia,serif;font-size:1.2rem;color:#fff}
+.mob-logo span{color:#c27b6e;font-style:italic}
+.hamburger{background:none;border:none;color:#fff;cursor:pointer;padding:4px;display:flex;align-items:center}
 
-/* SELECTOR SUCURSAL */
-.sucursal-select-wrap { padding: 0 16px; margin-bottom: 20px; }
-.sucursal-select { width: 100%; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.12); border-radius: 10px; color: #ffffff; padding: 9px 12px; font-size: 0.8rem; font-family: ‘DM Sans’, sans-serif; outline: none; -webkit-appearance: none; appearance: none; cursor: pointer; }
-.sucursal-select option { background: #1a1a1a; color: #ffffff; }
+/* OVERLAY */
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:150}
+.overlay.open{display:block}
 
-.ss { font-size: 0.68rem; color: #555555; text-transform: uppercase; letter-spacing: 1px; padding: 0 24px; margin-bottom: 8px; margin-top: 16px; }
-.slink { display: flex; align-items: center; gap: 10px; padding: 11px 24px; color: #aaaaaa; font-size: 0.85rem; font-weight: 500; transition: all 0.2s; cursor: pointer; border: none; background: none; width: 100%; text-align: left; border-left: 3px solid transparent; }
-.slink:hover { color: #ffffff; background: rgba(255,255,255,0.05); }
-.slink.active { color: #ffffff; background: rgba(194,123,110,0.15); border-left-color: #c27b6e; }
-.slink .ico { width: 18px; height: 18px; flex-shrink: 0; }
-.sb { margin-top: auto; padding: 16px 24px; border-top: 1px solid #333333; }
-.sb-user { font-size: 0.75rem; color: #777777; margin-bottom: 10px; word-break: break-all; }
-.btn-out { font-size: 0.78rem; color: #c27b6e; background: none; border: none; cursor: pointer; font-family: ‘DM Sans’, sans-serif; }
+/* SIDEBAR */
+.sidebar{position:fixed;top:0;left:0;bottom:0;width:240px;background:#1a1a1a;z-index:200;display:flex;flex-direction:column;overflow-y:auto;overflow-x:hidden;transition:transform 0.3s ease}
+.sl{font-family:‘Playfair Display’,Georgia,serif;font-size:1.4rem;color:#fff;padding:28px 24px 4px;flex-shrink:0}
+.sl span{color:#c27b6e;font-style:italic}
+.sr{font-size:0.72rem;color:#777;padding:0 24px;margin-bottom:16px;text-transform:uppercase;letter-spacing:1px;flex-shrink:0}
+.suc-wrap{padding:0 16px;margin-bottom:16px;flex-shrink:0}
+.suc-sel{width:100%;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);border-radius:10px;color:#fff;padding:9px 12px;font-size:0.8rem;font-family:‘DM Sans’,sans-serif;outline:none;-webkit-appearance:none;appearance:none;cursor:pointer}
+.suc-sel option{background:#1a1a1a;color:#fff}
+.ss{font-size:0.68rem;color:#555;text-transform:uppercase;letter-spacing:1px;padding:0 24px;margin-bottom:6px;margin-top:14px;flex-shrink:0}
+.slink{display:flex;align-items:center;gap:10px;padding:11px 24px;color:#aaa;font-size:0.85rem;font-weight:500;transition:all 0.2s;cursor:pointer;border:none;background:none;width:100%;text-align:left;border-left:3px solid transparent;flex-shrink:0}
+.slink:hover{color:#fff;background:rgba(255,255,255,0.05)}
+.slink.active{color:#fff;background:rgba(194,123,110,0.15);border-left-color:#c27b6e}
+.slink svg{width:17px;height:17px;flex-shrink:0;stroke:currentColor}
+.sb{margin-top:auto;padding:16px 24px;border-top:1px solid #333;flex-shrink:0}
+.sb-user{font-size:0.75rem;color:#777;margin-bottom:10px;word-break:break-all}
+.btn-out{font-size:0.78rem;color:#c27b6e;background:none;border:none;cursor:pointer;font-family:‘DM Sans’,sans-serif}
 
-.main { margin-left: 240px; padding: 32px; min-height: 100vh; }
-.page { display: none; }
-.page.active { display: block; }
+/* MAIN */
+.main{margin-left:240px;padding:32px;min-height:100vh}
+.page{display:none}
+.page.active{display:block}
 
-.topbar { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 28px; flex-wrap: wrap; gap: 12px; }
-.topbar-title { font-family: ‘Playfair Display’, Georgia, serif; font-size: 1.8rem; color: #1a1a1a; line-height: 1.2; }
-.topbar-title em { font-style: italic; color: #c27b6e; }
-.topbar-sub { font-size: 0.82rem; color: #8a7a76; margin-top: 4px; }
-.topbar-badge { background: #f5ede6; color: #7a3d35; font-size: 0.75rem; font-weight: 600; padding: 6px 14px; border-radius: 50px; border: 1px solid #e8c4b8; }
+/* TOPBAR */
+.topbar{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:28px;flex-wrap:wrap;gap:12px}
+.topbar-title{font-family:‘Playfair Display’,Georgia,serif;font-size:1.8rem;color:#1a1a1a;line-height:1.2}
+.topbar-title em{font-style:italic;color:#c27b6e}
+.topbar-sub{font-size:0.82rem;color:#8a7a76;margin-top:4px}
+.topbar-badge{background:#f5ede6;color:#7a3d35;font-size:0.75rem;font-weight:600;padding:6px 14px;border-radius:50px;border:1px solid #e8c4b8}
 
-.stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px; }
-.stat-card { background: #ffffff; border-radius: 16px; padding: 22px 20px; border: 1px solid #eeeeee; }
-.stat-card.accent { background: #7a3d35; border-color: #7a3d35; }
-.sc-label { font-size: 0.72rem; color: #8a7a76; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
-.accent .sc-label { color: rgba(245,237,230,0.65); }
-.sc-num { font-family: ‘Playfair Display’, Georgia, serif; font-size: 2rem; font-weight: 700; color: #1a1a1a; line-height: 1; margin-bottom: 4px; }
-.accent .sc-num { color: #ffffff; }
-.sc-sub { font-size: 0.72rem; color: #8a7a76; }
-.accent .sc-sub { color: rgba(245,237,230,0.55); }
+/* STATS */
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px}
+.stat-card{background:#fff;border-radius:16px;padding:22px 20px;border:1px solid #eee}
+.stat-card.accent{background:#7a3d35;border-color:#7a3d35}
+.sc-label{font-size:0.72rem;color:#8a7a76;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px}
+.accent .sc-label{color:rgba(245,237,230,0.65)}
+.sc-num{font-family:‘Playfair Display’,Georgia,serif;font-size:2rem;font-weight:700;color:#1a1a1a;line-height:1;margin-bottom:4px}
+.accent .sc-num{color:#fff}
+.sc-sub{font-size:0.72rem;color:#8a7a76}
+.accent .sc-sub{color:rgba(245,237,230,0.55)}
 
-.card { background: #ffffff; border-radius: 16px; padding: 24px; border: 1px solid #eeeeee; margin-bottom: 20px; }
-.card-title { font-family: ‘Playfair Display’, Georgia, serif; font-size: 1.05rem; color: #1a1a1a; margin-bottom: 18px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
-.ct-right { font-size: 0.78rem; color: #8a7a76; font-family: ‘DM Sans’, sans-serif; font-weight: 400; }
+/* CARD */
+.card{background:#fff;border-radius:16px;padding:24px;border:1px solid #eee;margin-bottom:20px}
+.card-title{font-family:‘Playfair Display’,Georgia,serif;font-size:1.05rem;color:#1a1a1a;margin-bottom:18px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
+.ct-right{font-size:0.78rem;color:#8a7a76;font-family:‘DM Sans’,sans-serif;font-weight:400}
 
 /* FILTROS */
-.filtros { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
-.fb { padding: 7px 14px; border-radius: 50px; font-size: 0.75rem; font-weight: 500; cursor: pointer; font-family: ‘DM Sans’, sans-serif; border: 1.5px solid #e0e0e0; background: #ffffff; color: #8a7a76; transition: all 0.2s; }
-.fb.active { background: #7a3d35; color: #ffffff; border-color: #7a3d35; }
-
-/* FILTRO FECHAS */
-.filtro-fechas { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin-bottom: 20px; }
-.filtro-fechas input { padding: 8px 12px; border: 1.5px solid #e8c4b8; border-radius: 10px; font-size: 0.82rem; font-family: ‘DM Sans’, sans-serif; color: #1a1a1a; background: #fdf8f5; outline: none; -webkit-appearance: none; appearance: none; }
-.filtro-fechas label { font-size: 0.75rem; color: #8a7a76; font-weight: 500; }
-.btn-filtrar { background: #7a3d35; color: #ffffff; border: none; border-radius: 50px; padding: 8px 18px; font-size: 0.78rem; font-weight: 500; cursor: pointer; font-family: ‘DM Sans’, sans-serif; }
-.filtros-rapidos { display: flex; gap: 6px; flex-wrap: wrap; }
+.filtros{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
+.fb{padding:7px 14px;border-radius:50px;font-size:0.75rem;font-weight:500;cursor:pointer;font-family:‘DM Sans’,sans-serif;border:1.5px solid #e0e0e0;background:#fff;color:#8a7a76;transition:all 0.2s}
+.fb.active{background:#7a3d35;color:#fff;border-color:#7a3d35}
+.filtro-fechas{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:20px;padding:16px;background:#f9f9f9;border-radius:12px}
+.filtro-fechas label{font-size:0.75rem;color:#8a7a76;font-weight:500}
+.filtro-fechas input{padding:8px 12px;border:1.5px solid #e8c4b8;border-radius:10px;font-size:0.82rem;font-family:‘DM Sans’,sans-serif;color:#1a1a1a;background:#fff;outline:none;-webkit-appearance:none;appearance:none}
+.btn-filtrar{background:#7a3d35;color:#fff;border:none;border-radius:50px;padding:8px 18px;font-size:0.78rem;font-weight:500;cursor:pointer;font-family:‘DM Sans’,sans-serif}
 
 /* TABLA */
-.tabla-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
-table { width: 100%; border-collapse: collapse; font-size: 0.83rem; min-width: 500px; }
-thead th { text-align: left; font-size: 0.7rem; color: #8a7a76; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600; padding: 0 14px 12px; border-bottom: 1px solid #eeeeee; white-space: nowrap; }
-tbody tr { border-bottom: 1px solid #f5f5f5; transition: background 0.15s; }
-tbody tr:hover { background: #fdf8f5; }
-tbody td { padding: 13px 14px; color: #1a1a1a; vertical-align: middle; }
-.td-name { font-weight: 600; font-size: 0.85rem; }
-.td-sub { color: #8a7a76; font-size: 0.75rem; margin-top: 2px; }
-.td-pro { display: flex; align-items: center; gap: 7px; }
-.pro-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
-
-.best { display: inline-flex; align-items: center; gap: 4px; font-size: 0.7rem; background: #fff3cd; color: #856404; padding: 2px 8px; border-radius: 50px; font-weight: 600; margin-left: 6px; }
+.tabla-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
+table{width:100%;border-collapse:collapse;font-size:0.83rem;min-width:480px}
+thead th{text-align:left;font-size:0.7rem;color:#8a7a76;text-transform:uppercase;letter-spacing:0.5px;font-weight:600;padding:0 14px 12px;border-bottom:1px solid #eee;white-space:nowrap}
+tbody tr{border-bottom:1px solid #f5f5f5;transition:background 0.15s}
+tbody tr:hover{background:#fdf8f5}
+tbody td{padding:13px 14px;color:#1a1a1a;vertical-align:middle}
+.td-name{font-weight:600;font-size:0.85rem}
+.td-sub{color:#8a7a76;font-size:0.75rem;margin-top:2px}
+.td-pro{display:flex;align-items:center;gap:7px}
+.pro-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
 
 /* BADGES */
-.badge-e { display: inline-flex; align-items: center; gap: 4px; padding: 4px 10px; border-radius: 50px; font-size: 0.7rem; font-weight: 600; white-space: nowrap; }
-.be-pendiente { background: #fff3cd; color: #856404; }
-.be-confirmada { background: #d4edda; color: #155724; }
-.be-cancelada { background: #f8d7da; color: #721c24; }
-.be-atendida { background: #d1ecf1; color: #0c5460; }
-.be-activa { background: #d4edda; color: #155724; }
-.be-tibia { background: #fff3cd; color: #856404; }
-.be-perdida { background: #f8d7da; color: #721c24; }
-.be-nueva { background: #d1ecf1; color: #0c5460; }
+.badge-e{display:inline-flex;align-items:center;gap:4px;padding:4px 10px;border-radius:50px;font-size:0.7rem;font-weight:600;white-space:nowrap}
+.be-pendiente{background:#fff3cd;color:#856404}
+.be-confirmada{background:#d4edda;color:#155724}
+.be-cancelada{background:#f8d7da;color:#721c24}
+.be-atendida{background:#d1ecf1;color:#0c5460}
+.be-activa{background:#d4edda;color:#155724}
+.be-tibia{background:#fff3cd;color:#856404}
+.be-perdida{background:#f8d7da;color:#721c24}
+.be-nueva{background:#d1ecf1;color:#0c5460}
 
-/* BOTONES ACCIÓN */
-.btn-ok { background: #d4edda; color: #155724; border: none; border-radius: 50px; padding: 5px 12px; font-size: 0.72rem; cursor: pointer; font-family: ‘DM Sans’, sans-serif; font-weight: 600; margin-right: 4px; white-space: nowrap; }
-.btn-no { background: #f8d7da; color: #721c24; border: none; border-radius: 50px; padding: 5px 12px; font-size: 0.72rem; cursor: pointer; font-family: ‘DM Sans’, sans-serif; font-weight: 600; white-space: nowrap; }
-.btn-at { background: #d1ecf1; color: #0c5460; border: none; border-radius: 50px; padding: 5px 12px; font-size: 0.72rem; cursor: pointer; font-family: ‘DM Sans’, sans-serif; font-weight: 600; white-space: nowrap; }
+/* BOTONES ACCION */
+.btn-ok{background:#d4edda;color:#155724;border:none;border-radius:50px;padding:5px 12px;font-size:0.72rem;cursor:pointer;font-family:‘DM Sans’,sans-serif;font-weight:600;margin-right:4px;white-space:nowrap}
+.btn-no{background:#f8d7da;color:#721c24;border:none;border-radius:50px;padding:5px 12px;font-size:0.72rem;cursor:pointer;font-family:‘DM Sans’,sans-serif;font-weight:600;white-space:nowrap}
+.btn-at{background:#d1ecf1;color:#0c5460;border:none;border-radius:50px;padding:5px 12px;font-size:0.72rem;cursor:pointer;font-family:‘DM Sans’,sans-serif;font-weight:600;white-space:nowrap}
 
 /* PRO GRID */
-.pro-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
-.pro-card { background: #f9f9f9; border-radius: 14px; padding: 20px; border: 1px solid #eeeeee; }
-.pro-card-hdr { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
-.pro-avatar { width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; flex-shrink: 0; }
-.pro-card-name { font-weight: 600; font-size: 0.9rem; color: #1a1a1a; }
-.pro-card-spec { font-size: 0.73rem; color: #8a7a76; }
-.pro-row { display: flex; justify-content: space-between; font-size: 0.8rem; margin-bottom: 7px; padding-bottom: 7px; border-bottom: 1px solid #eeeeee; }
-.pro-row:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
-.pro-key { color: #8a7a76; }
-.pro-val { font-weight: 600; color: #1a1a1a; }
-.pro-val.green { color: #1a7a3d; }
-.pro-val.rose { color: #7a3d35; }
+.pro-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+.pro-card{background:#f9f9f9;border-radius:14px;padding:20px;border:1px solid #eee}
+.pro-card-hdr{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+.pro-avatar-img{width:48px;height:48px;border-radius:50%;object-fit:cover;border:2px solid #e8c4b8;flex-shrink:0}
+.pro-avatar-placeholder{width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,#f9e4dc,#e8c4b8);display:flex;align-items:center;justify-content:center;flex-shrink:0;border:2px solid #e8c4b8}
+.pro-avatar-placeholder svg{width:24px;height:24px;stroke:#7a3d35}
+.pro-card-name{font-weight:600;font-size:0.9rem;color:#1a1a1a}
+.pro-card-spec{font-size:0.73rem;color:#8a7a76}
+.pro-row{display:flex;justify-content:space-between;font-size:0.8rem;margin-bottom:7px;padding-bottom:7px;border-bottom:1px solid #eee}
+.pro-row:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}
+.pro-key{color:#8a7a76}
+.pro-val{font-weight:600;color:#1a1a1a}
+.pro-val.green{color:#1a7a3d}
+.best{display:inline-flex;align-items:center;gap:4px;font-size:0.7rem;background:#fff3cd;color:#856404;padding:2px 8px;border-radius:50px;font-weight:600;margin-left:6px}
 
-/* CRM CARDS */
-.crm-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 20px; }
-.crm-stat { background: #ffffff; border-radius: 14px; padding: 18px; border: 1px solid #eeeeee; text-align: center; }
-.crm-stat-num { font-family: ‘Playfair Display’, Georgia, serif; font-size: 1.6rem; font-weight: 700; color: #7a3d35; }
-.crm-stat-label { font-size: 0.72rem; color: #8a7a76; margin-top: 4px; }
+/* CRM */
+.crm-resumen{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px}
+.crm-stat{background:#fff;border-radius:14px;padding:18px;border:1px solid #eee;text-align:center}
+.crm-stat-num{font-family:‘Playfair Display’,Georgia,serif;font-size:1.6rem;font-weight:700;color:#7a3d35}
+.crm-stat-label{font-size:0.72rem;color:#8a7a76;margin-top:4px}
+.crm-card{background:#fff;border-radius:14px;padding:18px;border:1px solid #eee;margin-bottom:10px}
+.crm-card-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;flex-wrap:wrap;gap:8px}
+.crm-card-name{font-weight:600;font-size:0.92rem;color:#1a1a1a}
+.crm-card-phone{font-size:0.75rem;color:#8a7a76}
+.crm-card-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.crm-cs{text-align:center;background:#f9f9f9;border-radius:10px;padding:10px 6px}
+.crm-cs-val{font-weight:700;font-size:0.92rem;color:#1a1a1a}
+.crm-cs-label{font-size:0.65rem;color:#8a7a76;margin-top:2px}
+.crm-fav{font-size:0.72rem;color:#7a3d35;background:#f5ede6;padding:3px 10px;border-radius:50px;margin-top:10px;display:inline-block}
 
-/* CRM CLIENTE CARD */
-.crm-cliente-card { background: #ffffff; border-radius: 14px; padding: 18px; border: 1px solid #eeeeee; margin-bottom: 10px; }
-.crm-cliente-hdr { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; flex-wrap: wrap; gap: 8px; }
-.crm-cliente-name { font-weight: 600; font-size: 0.92rem; color: #1a1a1a; }
-.crm-cliente-phone { font-size: 0.75rem; color: #8a7a76; }
-.crm-cliente-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
-.crm-cs { text-align: center; background: #f9f9f9; border-radius: 10px; padding: 10px 6px; }
-.crm-cs-val { font-weight: 700; font-size: 0.92rem; color: #1a1a1a; }
-.crm-cs-label { font-size: 0.65rem; color: #8a7a76; margin-top: 2px; }
-.crm-fav { font-size: 0.72rem; color: #7a3d35; background: #f5ede6; padding: 3px 10px; border-radius: 50px; margin-top: 10px; display: inline-block; }
+/* PROFESIONALES MODULO */
+.pros-admin-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:20px}
+.pro-admin-card{background:#f9f9f9;border-radius:16px;padding:20px;border:1px solid #eee;text-align:center;position:relative}
+.pro-admin-avatar{width:72px;height:72px;border-radius:50%;object-fit:cover;border:3px solid #e8c4b8;margin:0 auto 12px;display:block}
+.pro-admin-avatar-placeholder{width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,#f9e4dc,#e8c4b8);display:flex;align-items:center;justify-content:center;margin:0 auto 12px;border:3px solid #e8c4b8}
+.pro-admin-avatar-placeholder svg{width:32px;height:32px;stroke:#7a3d35}
+.pro-admin-name{font-family:‘Playfair Display’,Georgia,serif;font-size:1rem;color:#1a1a1a;margin-bottom:4px}
+.pro-admin-spec{font-size:0.78rem;color:#8a7a76;margin-bottom:14px}
+.pro-admin-actions{display:flex;gap:8px;justify-content:center}
+.btn-edit{background:#f5ede6;color:#7a3d35;border:none;border-radius:50px;padding:6px 14px;font-size:0.75rem;cursor:pointer;font-family:‘DM Sans’,sans-serif;font-weight:500}
+.btn-del{background:#f8d7da;color:#721c24;border:none;border-radius:50px;padding:6px 14px;font-size:0.75rem;cursor:pointer;font-family:‘DM Sans’,sans-serif;font-weight:500}
+.btn-add-pro{display:flex;align-items:center;gap:8px;background:#7a3d35;color:#fff;border:none;border-radius:50px;padding:10px 20px;font-size:0.85rem;font-weight:500;cursor:pointer;font-family:‘DM Sans’,sans-serif;margin-bottom:20px}
+.btn-add-pro svg{width:16px;height:16px;stroke:currentColor}
+
+/* MODAL */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:500;align-items:center;justify-content:center;padding:20px}
+.modal-overlay.open{display:flex}
+.modal{background:#fff;border-radius:20px;padding:28px 24px;width:100%;max-width:440px;max-height:90vh;overflow-y:auto}
+.modal-title{font-family:‘Playfair Display’,Georgia,serif;font-size:1.3rem;color:#1a1a1a;margin-bottom:20px}
+.modal-form-group{margin-bottom:16px}
+.modal-label{display:block;font-size:0.72rem;color:#8a7a76;text-transform:uppercase;letter-spacing:0.5px;font-weight:500;margin-bottom:7px}
+.modal-input{width:100%;padding:12px 14px;border:1.5px solid #e8c4b8;border-radius:10px;font-size:0.88rem;color:#1a1a1a;background:#fdf8f5;font-family:‘DM Sans’,sans-serif;outline:none;-webkit-appearance:none;appearance:none}
+.modal-input:focus{border-color:#c27b6e}
+.modal-actions{display:flex;gap:10px;margin-top:20px}
+.btn-modal-ok{flex:1;background:#7a3d35;color:#fff;border:none;border-radius:50px;padding:12px;font-size:0.88rem;font-weight:500;cursor:pointer;font-family:‘DM Sans’,sans-serif}
+.btn-modal-cancel{flex:1;background:#f5f5f5;color:#8a7a76;border:none;border-radius:50px;padding:12px;font-size:0.88rem;font-weight:500;cursor:pointer;font-family:‘DM Sans’,sans-serif}
+.avatar-preview{width:80px;height:80px;border-radius:50%;object-fit:cover;border:3px solid #e8c4b8;margin-bottom:12px;display:none}
+.avatar-preview.show{display:block}
 
 /* EMPTY */
-.empty { text-align: center; padding: 40px 20px; color: #8a7a76; }
-.empty-ico { display: none; }
-.empty-txt { font-size: 0.85rem; }
+.empty{text-align:center;padding:40px 20px;color:#aaa}
+.empty svg{width:40px;height:40px;stroke:#ccc;margin-bottom:12px;display:block;margin-left:auto;margin-right:auto}
+.empty-txt{font-size:0.85rem}
 
 /* TOAST */
-.toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: #1a1a1a; color: #ffffff; padding: 12px 24px; border-radius: 50px; font-size: 0.82rem; font-weight: 500; z-index: 9999; opacity: 0; transition: opacity 0.3s; pointer-events: none; white-space: nowrap; }
-.toast.show { opacity: 1; }
-.toast.ok { background: #1a7a3d; }
-.toast.err { background: #7a1a1a; }
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#1a1a1a;color:#fff;padding:12px 24px;border-radius:50px;font-size:0.82rem;font-weight:500;z-index:9999;opacity:0;transition:opacity 0.3s;pointer-events:none;white-space:nowrap}
+.toast.show{opacity:1}
+.toast.ok{background:#1a7a3d}
+.toast.err{background:#7a1a1a}
 
-/* MOBILE */
-.mob-header { display: none; background: #1a1a1a; padding: 15px 20px; position: fixed; top: 0; left: 0; right: 0; z-index: 200; align-items: center; justify-content: space-between; }
-.mob-logo { font-family: ‘Playfair Display’, Georgia, serif; font-size: 1.2rem; color: #ffffff; }
-.mob-logo span { color: #c27b6e; font-style: italic; }
-.hamburger { background: none; border: none; color: #ffffff; font-size: 1.4rem; cursor: pointer; line-height: 1; }
-.overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.55); z-index: 99; }
-
-@media (max-width: 960px) {
-html, body { overflow-x: hidden; }
-.sidebar { transform: translateX(-240px); transition: transform 0.3s; z-index: 150; overflow: hidden; }
-.sidebar.open { transform: translateX(0); }
-.overlay.open { display: block; }
-.main { margin-left: 0; padding: 76px 16px 24px; overflow-x: hidden; }
-.mob-header { display: flex; }
-.stats-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
-.pro-grid { grid-template-columns: 1fr; }
-.crm-grid { grid-template-columns: repeat(3, 1fr); }
-.crm-cliente-stats { grid-template-columns: repeat(2, 1fr); }
-.topbar-title { font-size: 1.4rem; }
-.tabla-wrap { margin: 0 -4px; }
+/* RESPONSIVE */
+@media(max-width:960px){
+html,body{overflow-x:hidden}
+.sidebar{transform:translateX(-240px)}
+.sidebar.open{transform:translateX(0)}
+.main{margin-left:0;padding:76px 16px 24px}
+.mob-header{display:flex}
+.stats-grid{grid-template-columns:repeat(2,1fr);gap:12px}
+.pro-grid{grid-template-columns:1fr}
+.pros-admin-grid{grid-template-columns:repeat(2,1fr)}
+.crm-resumen{grid-template-columns:repeat(3,1fr)}
+.crm-card-stats{grid-template-columns:repeat(2,1fr)}
+.topbar-title{font-size:1.4rem}
 }
-
-@media (max-width: 480px) {
-.stats-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
-.sc-num { font-size: 1.5rem; }
-.crm-grid { grid-template-columns: repeat(3, 1fr); gap: 8px; }
-.crm-stat-num { font-size: 1.3rem; }
-.filtro-fechas { flex-direction: column; align-items: flex-start; }
+@media(max-width:480px){
+.stats-grid{grid-template-columns:repeat(2,1fr);gap:10px}
+.sc-num{font-size:1.5rem}
+.pros-admin-grid{grid-template-columns:1fr}
+.filtro-fechas{flex-direction:column;align-items:flex-start}
 }
 </style>
 
@@ -187,18 +217,48 @@ html, body { overflow-x: hidden; }
 
 <div class="toast" id="toast"></div>
 
+<!-- MODAL PROFESIONAL -->
+
+<div class="modal-overlay" id="modal-pro">
+  <div class="modal">
+    <div class="modal-title" id="modal-pro-title">Agregar profesional</div>
+    <img class="avatar-preview" id="avatar-preview" src="" alt="preview">
+    <div class="modal-form-group">
+      <label class="modal-label">Foto (URL de imagen)</label>
+      <input class="modal-input" id="pro-foto-url" type="url" placeholder="https://ejemplo.com/foto.jpg" oninput="previewFoto(this.value)">
+    </div>
+    <div class="modal-form-group">
+      <label class="modal-label">Nombre completo</label>
+      <input class="modal-input" id="pro-nombre" type="text" placeholder="Valentina Garcia">
+    </div>
+    <div class="modal-form-group">
+      <label class="modal-label">Especialidad</label>
+      <input class="modal-input" id="pro-especialidad" type="text" placeholder="Nail Art - Acrilicas">
+    </div>
+    <div class="modal-form-group">
+      <label class="modal-label">Horario</label>
+      <input class="modal-input" id="pro-horario" type="text" placeholder="Lun-Vie 8am-6pm">
+    </div>
+    <input type="hidden" id="pro-edit-id">
+    <div class="modal-actions">
+      <button class="btn-modal-cancel" onclick="cerrarModalPro()">Cancelar</button>
+      <button class="btn-modal-ok" onclick="guardarPro()">Guardar</button>
+    </div>
+  </div>
+</div>
+
 <!-- LOGIN -->
 
 <div id="login-screen">
   <div class="login-card">
     <div class="login-logo">Glam<span>Nails</span></div>
-    <div class="login-sub">Panel de administración</div>
-    <label class="lbl">Correo electrónico</label>
+    <div class="login-sub">Panel de administracion</div>
+    <label class="lbl">Correo electronico</label>
     <input class="linput" id="admin-email" type="email" placeholder="admin@glamnails.com">
-    <label class="lbl">Contraseña</label>
-    <input class="linput" id="admin-pass" type="password" placeholder="••••••••">
+    <label class="lbl">Contrasena</label>
+    <input class="linput" id="admin-pass" type="password" placeholder="Contrasena">
     <button class="lbtn" onclick="loginAdmin()">Ingresar al panel</button>
-    <div class="lerror" id="lerror">Correo o contraseña incorrectos</div>
+    <div class="lerror" id="lerror">Correo o contrasena incorrectos</div>
   </div>
 </div>
 
@@ -208,7 +268,9 @@ html, body { overflow-x: hidden; }
 
   <div class="mob-header">
     <div class="mob-logo">Glam<span>Nails</span></div>
-    <button class="hamburger" onclick="toggleSidebar()">&#9776;</button>
+    <button class="hamburger" onclick="toggleSidebar()">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
   </div>
 
   <div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
@@ -218,9 +280,8 @@ html, body { overflow-x: hidden; }
     <div class="sr">Panel Admin</div>
 
 ```
-<!-- SELECTOR SUCURSAL -->
-<div class="sucursal-select-wrap">
-  <select class="sucursal-select" id="sucursal-select" onchange="cambiarSucursal(this.value)">
+<div class="suc-wrap">
+  <select class="suc-sel" id="suc-sel" onchange="cambiarSucursal(this.value)">
     <option value="glamnails">Sede El Poblado</option>
     <option value="glamnails-laureles">Sede Laureles</option>
     <option value="glamnails-envigado">Sede Envigado</option>
@@ -228,24 +289,28 @@ html, body { overflow-x: hidden; }
 </div>
 
 <div class="ss">Principal</div>
-<button class="slink active" onclick="showPage('dashboard', this)">
-  <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+<button class="slink active" onclick="showPage('dashboard',this)">
+  <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
   Dashboard
 </button>
 
 <div class="ss">Operacion</div>
-<button class="slink" onclick="showPage('citas', this)">
-  <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+<button class="slink" onclick="showPage('citas',this)">
+  <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
   Citas
 </button>
-<button class="slink" onclick="showPage('profesionales', this)">
-  <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-  Profesionales
+<button class="slink" onclick="showPage('profesionales-stats',this)">
+  <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+  Ventas profesionales
+</button>
+<button class="slink" onclick="showPage('profesionales-mgmt',this)">
+  <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>
+  Gestionar equipo
 </button>
 
 <div class="ss">Clientes</div>
-<button class="slink" onclick="showPage('crm', this)">
-  <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+<button class="slink" onclick="showPage('crm',this)">
+  <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
   CRM Clientas
 </button>
 
@@ -267,45 +332,30 @@ html, body { overflow-x: hidden; }
       <div class="topbar-title">Buen dia, <em>Admin</em></div>
       <div class="topbar-sub" id="fecha-hoy"></div>
     </div>
-    <div class="topbar-badge" id="badge-sucursal">Sede El Poblado</div>
+    <div class="topbar-badge" id="badge-dash">Sede El Poblado</div>
   </div>
-
   <div class="stats-grid">
-    <div class="stat-card accent">
-      <div class="sc-label">Citas hoy</div>
-      <div class="sc-num" id="stat-hoy">0</div>
-      <div class="sc-sub">agendadas</div>
-    </div>
-    <div class="stat-card">
-      <div class="sc-label">Esta semana</div>
-      <div class="sc-num" id="stat-semana">0</div>
-      <div class="sc-sub">citas</div>
-    </div>
-    <div class="stat-card">
-      <div class="sc-label">Total citas</div>
-      <div class="sc-num" id="stat-total">0</div>
-      <div class="sc-sub">en el sistema</div>
-    </div>
-    <div class="stat-card">
-      <div class="sc-label">Clientas</div>
-      <div class="sc-num" id="stat-clientes">0</div>
-      <div class="sc-sub">registradas</div>
-    </div>
+    <div class="stat-card accent"><div class="sc-label">Esta semana</div><div class="sc-num" id="stat-semana">0</div><div class="sc-sub">citas</div></div>
+    <div class="stat-card"><div class="sc-label">Este mes</div><div class="sc-num" id="stat-mes">0</div><div class="sc-sub">citas</div></div>
+    <div class="stat-card"><div class="sc-label">Total citas</div><div class="sc-num" id="stat-total">0</div><div class="sc-sub">en el sistema</div></div>
+    <div class="stat-card"><div class="sc-label">Clientas</div><div class="sc-num" id="stat-clientes">0</div><div class="sc-sub">registradas</div></div>
   </div>
-
   <div class="card">
-    <div class="card-title">Citas de hoy <span class="ct-right" id="hoy-count">0 citas</span></div>
-    <div class="tabla-wrap">
-      <table>
-        <thead><tr><th>Clienta</th><th>Servicio</th><th>Profesional</th><th>Hora</th><th>Estado</th><th>Accion</th></tr></thead>
-        <tbody id="tabla-hoy"></tbody>
-      </table>
+    <div class="card-title">Proximas citas <span class="ct-right" id="prox-count">0 citas</span></div>
+    <div class="filtros">
+      <button class="fb active" onclick="filtrarProximas('hoy',this)">Hoy</button>
+      <button class="fb" onclick="filtrarProximas('manana',this)">Manana</button>
+      <button class="fb" onclick="filtrarProximas('semana',this)">Esta semana</button>
+      <button class="fb" onclick="filtrarProximas('todas',this)">Todas</button>
     </div>
+    <div class="tabla-wrap"><table>
+      <thead><tr><th>Clienta</th><th>Servicio</th><th>Profesional</th><th>Fecha y Hora</th><th>Estado</th><th>Accion</th></tr></thead>
+      <tbody id="tabla-proximas"></tbody>
+    </table></div>
   </div>
-
   <div class="card">
-    <div class="card-title">Rendimiento hoy por profesional</div>
-    <div class="pro-grid" id="pro-hoy"></div>
+    <div class="card-title">Rendimiento esta semana</div>
+    <div class="pro-grid" id="pro-semana"></div>
   </div>
 </div>
 
@@ -313,73 +363,80 @@ html, body { overflow-x: hidden; }
 <div class="page" id="page-citas">
   <div class="topbar">
     <div><div class="topbar-title">Todas las <em>citas</em></div></div>
-    <div class="topbar-badge" id="badge-sucursal-citas">Sede El Poblado</div>
+    <div class="topbar-badge" id="badge-citas">Sede El Poblado</div>
   </div>
   <div class="card">
     <div class="filtros">
-      <button class="fb active" onclick="filtrarCitas('todas', this)">Todas</button>
-      <button class="fb" onclick="filtrarCitas('pendiente', this)">Pendientes</button>
-      <button class="fb" onclick="filtrarCitas('confirmada', this)">Confirmadas</button>
-      <button class="fb" onclick="filtrarCitas('atendida', this)">Atendidas</button>
-      <button class="fb" onclick="filtrarCitas('cancelada', this)">Canceladas</button>
+      <button class="fb active" onclick="filtrarCitas('todas',this)">Todas</button>
+      <button class="fb" onclick="filtrarCitas('pendiente',this)">Pendientes</button>
+      <button class="fb" onclick="filtrarCitas('confirmada',this)">Confirmadas</button>
+      <button class="fb" onclick="filtrarCitas('atendida',this)">Atendidas</button>
+      <button class="fb" onclick="filtrarCitas('cancelada',this)">Canceladas</button>
     </div>
-    <div class="tabla-wrap">
-      <table>
-        <thead><tr><th>Clienta</th><th>Servicio</th><th>Profesional</th><th>Fecha y Hora</th><th>Estado</th><th>Accion</th></tr></thead>
-        <tbody id="tabla-todas"></tbody>
-      </table>
+    <div class="filtro-fechas">
+      <label>Desde</label><input type="date" id="citas-desde">
+      <label>Hasta</label><input type="date" id="citas-hasta">
+      <button class="btn-filtrar" onclick="filtrarCitasRango()">Filtrar</button>
     </div>
+    <div class="tabla-wrap"><table>
+      <thead><tr><th>Clienta</th><th>Servicio</th><th>Profesional</th><th>Fecha y Hora</th><th>Estado</th><th>Accion</th></tr></thead>
+      <tbody id="tabla-todas"></tbody>
+    </table></div>
   </div>
 </div>
 
-<!-- PROFESIONALES -->
-<div class="page" id="page-profesionales">
+<!-- VENTAS PROFESIONALES -->
+<div class="page" id="page-profesionales-stats">
   <div class="topbar">
     <div><div class="topbar-title">Ventas por <em>profesional</em></div></div>
-    <div class="topbar-badge" id="badge-sucursal-pro">Sede El Poblado</div>
+    <div class="topbar-badge" id="badge-pro-stats">Sede El Poblado</div>
   </div>
   <div class="card">
-    <div class="card-title">Filtrar por periodo</div>
-    <div class="filtros-rapidos filtros" style="margin-bottom:16px">
-      <button class="fb active" onclick="filtrarPro('hoy', this)">Hoy</button>
-      <button class="fb" onclick="filtrarPro('semana', this)">Esta semana</button>
-      <button class="fb" onclick="filtrarPro('mes', this)">Este mes</button>
-      <button class="fb" onclick="filtrarPro('todo', this)">Todo el tiempo</button>
+    <div class="filtros">
+      <button class="fb active" onclick="filtrarPro('semana',this)">Esta semana</button>
+      <button class="fb" onclick="filtrarPro('mes',this)">Este mes</button>
+      <button class="fb" onclick="filtrarPro('todo',this)">Todo el tiempo</button>
     </div>
     <div class="filtro-fechas">
-      <label>Desde</label>
-      <input type="date" id="pro-desde">
-      <label>Hasta</label>
-      <input type="date" id="pro-hasta">
+      <label>Desde</label><input type="date" id="pro-desde">
+      <label>Hasta</label><input type="date" id="pro-hasta">
       <button class="btn-filtrar" onclick="filtrarProRango()">Filtrar</button>
     </div>
     <div class="pro-grid" id="pro-total"></div>
   </div>
 </div>
 
+<!-- GESTIONAR EQUIPO -->
+<div class="page" id="page-profesionales-mgmt">
+  <div class="topbar">
+    <div><div class="topbar-title">Gestionar <em>equipo</em></div></div>
+    <div class="topbar-badge" id="badge-mgmt">Sede El Poblado</div>
+  </div>
+  <button class="btn-add-pro" onclick="abrirModalPro()">
+    <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+    Agregar profesional
+  </button>
+  <div class="pros-admin-grid" id="pros-admin-grid"></div>
+</div>
+
 <!-- CRM -->
 <div class="page" id="page-crm">
   <div class="topbar">
     <div><div class="topbar-title">CRM <em>Clientas</em></div></div>
-    <div class="topbar-badge" id="badge-sucursal-crm">Sede El Poblado</div>
+    <div class="topbar-badge" id="badge-crm">Sede El Poblado</div>
   </div>
-
-  <!-- RESUMEN CRM -->
-  <div class="crm-grid" style="margin-bottom:20px">
+  <div class="crm-resumen">
     <div class="crm-stat"><div class="crm-stat-num" id="crm-total">0</div><div class="crm-stat-label">Total clientas</div></div>
-    <div class="crm-stat"><div class="crm-stat-num" id="crm-activas" style="color:#1a7a3d">0</div><div class="crm-stat-label">Activas (30 dias)</div></div>
-    <div class="crm-stat"><div class="crm-stat-num" id="crm-perdidas" style="color:#7a1a1a">0</div><div class="crm-stat-label">Perdidas (+60 dias)</div></div>
+    <div class="crm-stat"><div class="crm-stat-num" id="crm-activas" style="color:#1a7a3d">0</div><div class="crm-stat-label">Activas</div></div>
+    <div class="crm-stat"><div class="crm-stat-num" id="crm-perdidas" style="color:#7a1a1a">0</div><div class="crm-stat-label">Perdidas</div></div>
   </div>
-
-  <!-- FILTROS CRM -->
-  <div class="filtros" style="margin-bottom:16px">
-    <button class="fb active" onclick="filtrarCRM('todas', this)">Todas</button>
-    <button class="fb" onclick="filtrarCRM('activa', this)">Activas</button>
-    <button class="fb" onclick="filtrarCRM('tibia', this)">Tibias</button>
-    <button class="fb" onclick="filtrarCRM('perdida', this)">Perdidas</button>
-    <button class="fb" onclick="filtrarCRM('nueva', this)">Nuevas</button>
+  <div class="filtros">
+    <button class="fb active" onclick="filtrarCRM('todas',this)">Todas</button>
+    <button class="fb" onclick="filtrarCRM('activa',this)">Activas</button>
+    <button class="fb" onclick="filtrarCRM('tibia',this)">Tibias</button>
+    <button class="fb" onclick="filtrarCRM('perdida',this)">Perdidas</button>
+    <button class="fb" onclick="filtrarCRM('nueva',this)">Nuevas</button>
   </div>
-
   <div id="crm-lista"></div>
 </div>
 ```
@@ -388,330 +445,409 @@ html, body { overflow-x: hidden; }
 </div>
 
 <script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-app.js";
-  import { getFirestore, collection, getDocs, doc, updateDoc, query, orderBy } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-firestore.js";
-  import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-auth.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-app.js";
+import { getFirestore, collection, getDocs, doc, updateDoc, addDoc, deleteDoc, query, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-firestore.js";
+import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-auth.js";
 
-  const firebaseConfig = {
-    apiKey: "AIzaSyBBZInWQZVJyBTP5TG8MrTBOfe7UQFR5uU",
-    authDomain: "mapos-spas.firebaseapp.com",
-    projectId: "mapos-spas",
-    storageBucket: "mapos-spas.firebasestorage.app",
-    messagingSenderId: "704720438670",
-    appId: "1:704720438670:web:fd94574e51e97964cd10df"
-  };
+const firebaseConfig = {
+  apiKey: "AIzaSyBBZInWQZVJyBTP5TG8MrTBOfe7UQFR5uU",
+  authDomain: "mapos-spas.firebaseapp.com",
+  projectId: "mapos-spas",
+  storageBucket: "mapos-spas.firebasestorage.app",
+  messagingSenderId: "704720438670",
+  appId: "1:704720438670:web:fd94574e51e97964cd10df"
+};
 
-  const app  = initializeApp(firebaseConfig);
-  const db   = getFirestore(app);
-  const auth = getAuth(app);
+const app  = initializeApp(firebaseConfig);
+const db   = getFirestore(app);
+const auth = getAuth(app);
 
-  let todasCitas = [];
-  let todosClientes = [];
-  let sucursalActual = 'glamnails';
-  let filtroCRMActual = 'todas';
+let todasCitas = [];
+let todosClientes = [];
+let todasPros = [];
+let sucursalActual = 'glamnails';
 
-  const hoy = new Date();
-  const fechaHoyStr = hoy.toISOString().split('T')[0];
+const hoy = new Date();
+const fechaHoyStr = hoy.toISOString().split('T')[0];
+const manana = new Date(hoy); manana.setDate(hoy.getDate()+1);
+const fechaMananaStr = manana.toISOString().split('T')[0];
 
-  const PROS = [
-    { nombre: 'Valentina G.', color: '#f9e4dc', emoji: String.fromCodePoint(0x1F469, 0x1F3FD) },
-    { nombre: 'Daniela R.',   color: '#e8d5f0', emoji: String.fromCodePoint(0x1F469, 0x1F3FB) },
-    { nombre: 'Juliana M.',   color: '#fce8d5', emoji: String.fromCodePoint(0x1F469, 0x1F3FE) },
-    { nombre: 'Camila S.',    color: '#d5f0e8', emoji: String.fromCodePoint(0x1F469, 0x1F3FC) }
-  ];
+const PRECIOS = {'Manicure Gel':45000,'Unas Acrilicas':80000,'Pedicure Spa':55000,'Nail Art':30000,'Semipermanente':38000,'Manicure + Pedicure':75000};
+function getPrecio(s){if(!s)return 0;const b=s.split('—')[0].trim().split('–')[0].trim();return PRECIOS[b]||0;}
 
-  const PRECIOS = {
-    'Manicure Gel': 45000, 'Unas Acrilicas': 80000, 'Uñas Acrílicas': 80000,
-    'Pedicure Spa': 55000, 'Nail Art': 30000, 'Semipermanente': 38000,
-    'Manicure + Pedicure': 75000
-  };
+// TOAST
+function toast(msg,tipo){
+  const t=document.getElementById('toast');
+  t.textContent=msg;
+  t.className='toast show'+(tipo?' '+tipo:'');
+  setTimeout(()=>{t.className='toast';},3000);
+}
 
-  function getPrecio(servicio) {
-    if (!servicio) return 0;
-    const base = servicio.split('—')[0].trim().split('–')[0].trim();
-    return PRECIOS[base] || 0;
-  }
+// FECHA
+const opc={weekday:'long',year:'numeric',month:'long',day:'numeric'};
+document.getElementById('fecha-hoy').textContent=hoy.toLocaleDateString('es-CO',opc);
 
-  // TOAST
-  function toast(msg, tipo) {
-    const t = document.getElementById('toast');
-    t.textContent = msg;
-    t.className = 'toast show' + (tipo ? ' ' + tipo : '');
-    setTimeout(() => { t.className = 'toast'; }, 3000);
-  }
-
-  // FECHA
-  const opciones = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-  document.getElementById('fecha-hoy').textContent = hoy.toLocaleDateString('es-CO', opciones);
-
-  // AUTH
-  onAuthStateChanged(auth, user => {
-    if (user) {
-      document.getElementById('login-screen').style.display = 'none';
-      document.getElementById('app').style.display = 'block';
-      document.getElementById('sb-user').textContent = user.email;
-      cargarDatos();
-    } else {
-      document.getElementById('login-screen').style.display = 'flex';
-      document.getElementById('app').style.display = 'none';
-    }
-  });
-
-  window.loginAdmin = async function() {
-    const email = document.getElementById('admin-email').value.trim();
-    const pass  = document.getElementById('admin-pass').value;
-    const errEl = document.getElementById('lerror');
-    errEl.style.display = 'none';
-    try {
-      await signInWithEmailAndPassword(auth, email, pass);
-    } catch(e) {
-      errEl.style.display = 'block';
-    }
-  }
-
-  window.logoutAdmin = async function() { await signOut(auth); }
-
-  // CAMBIAR SUCURSAL
-  window.cambiarSucursal = function(val) {
-    sucursalActual = val;
-    const nombres = { 'glamnails': 'Sede El Poblado', 'glamnails-laureles': 'Sede Laureles', 'glamnails-envigado': 'Sede Envigado' };
-    const nombre = nombres[val] || val;
-    ['badge-sucursal','badge-sucursal-citas','badge-sucursal-pro','badge-sucursal-crm'].forEach(id => {
-      const el = document.getElementById(id);
-      if (el) el.textContent = nombre;
-    });
+// AUTH
+onAuthStateChanged(auth,user=>{
+  if(user){
+    document.getElementById('login-screen').style.display='none';
+    document.getElementById('app').style.display='block';
+    document.getElementById('sb-user').textContent=user.email;
     cargarDatos();
+  } else {
+    document.getElementById('login-screen').style.display='flex';
+    document.getElementById('app').style.display='none';
   }
+});
 
-  // CARGAR DATOS
-  async function cargarDatos() {
-    try {
-      const citasSnap = await getDocs(query(collection(db, 'spas', sucursalActual, 'citas'), orderBy('creadoEn', 'desc')));
-      todasCitas = citasSnap.docs.map(d => ({ id: d.id, ...d.data() }));
+window.loginAdmin=async function(){
+  const email=document.getElementById('admin-email').value.trim();
+  const pass=document.getElementById('admin-pass').value;
+  const err=document.getElementById('lerror');
+  err.style.display='none';
+  try{await signInWithEmailAndPassword(auth,email,pass);}
+  catch(e){err.style.display='block';}
+};
 
-      const clientesSnap = await getDocs(collection(db, 'spas', sucursalActual, 'clientes'));
-      todosClientes = clientesSnap.docs.map(d => ({ id: d.id, ...d.data() }));
+window.logoutAdmin=async function(){await signOut(auth);};
 
-      actualizarDashboard();
-      renderTablaTodas(todasCitas);
-      renderProGrid('pro-total', todasCitas);
-      renderCRM('todas');
-    } catch(e) {
-      console.error(e);
-      toast('Error cargando datos', 'err');
-    }
+// CAMBIAR SUCURSAL
+window.cambiarSucursal=function(val){
+  sucursalActual=val;
+  const nombres={'glamnails':'Sede El Poblado','glamnails-laureles':'Sede Laureles','glamnails-envigado':'Sede Envigado'};
+  const n=nombres[val]||val;
+  ['badge-dash','badge-citas','badge-pro-stats','badge-mgmt','badge-crm'].forEach(id=>{
+    const el=document.getElementById(id);if(el)el.textContent=n;
+  });
+  cargarDatos();
+};
+
+// CARGAR DATOS
+async function cargarDatos(){
+  try{
+    const [citasSnap,clientesSnap,prosSnap]=await Promise.all([
+      getDocs(query(collection(db,'spas',sucursalActual,'citas'),orderBy('creadoEn','desc'))),
+      getDocs(collection(db,'spas',sucursalActual,'clientes')),
+      getDocs(collection(db,'spas',sucursalActual,'profesionales'))
+    ]);
+    todasCitas=citasSnap.docs.map(d=>({id:d.id,...d.data()}));
+    todosClientes=clientesSnap.docs.map(d=>({id:d.id,...d.data()}));
+    todasPros=prosSnap.docs.map(d=>({id:d.id,...d.data()}));
+
+    actualizarDashboard();
+    renderTablaTodas(todasCitas);
+    renderProGrid('pro-total',todasCitas);
+    renderProsAdmin();
+    renderCRM('todas');
+  }catch(e){
+    console.error(e);
+    toast('Error cargando datos','err');
   }
+}
 
-  // DASHBOARD
-  function actualizarDashboard() {
-    const citasHoy = todasCitas.filter(c => c.fecha === fechaHoyStr);
+// DASHBOARD
+function actualizarDashboard(){
+  const ini_sem=new Date(hoy);ini_sem.setDate(hoy.getDate()-hoy.getDay());
+  const ini_mes=new Date(hoy.getFullYear(),hoy.getMonth(),1);
+  const semana=todasCitas.filter(c=>c.fecha&&new Date(c.fecha+'T00:00:00')>=ini_sem);
+  const mes=todasCitas.filter(c=>c.fecha&&new Date(c.fecha+'T00:00:00')>=ini_mes);
 
-    const inicioSemana = new Date(hoy);
-    inicioSemana.setDate(hoy.getDate() - hoy.getDay());
-    const citasSemana = todasCitas.filter(c => c.fecha && new Date(c.fecha + 'T00:00:00') >= inicioSemana);
+  document.getElementById('stat-semana').textContent=semana.length;
+  document.getElementById('stat-mes').textContent=mes.length;
+  document.getElementById('stat-total').textContent=todasCitas.length;
+  document.getElementById('stat-clientes').textContent=todosClientes.length;
 
-    document.getElementById('stat-hoy').textContent    = citasHoy.length;
-    document.getElementById('stat-semana').textContent = citasSemana.length;
-    document.getElementById('stat-total').textContent  = todasCitas.length;
-    document.getElementById('stat-clientes').textContent = todosClientes.length;
-    document.getElementById('hoy-count').textContent   = citasHoy.length + ' citas';
+  filtrarProximas('hoy',document.querySelector('#page-dashboard .fb.active'));
+  renderProGrid('pro-semana',semana);
+}
 
-    renderTabla('tabla-hoy', citasHoy, true);
-    renderProGrid('pro-hoy', citasHoy);
-  }
-
-  // RENDER TABLA
-  function renderTabla(idTabla, citas, esHoy) {
-    const tbody = document.getElementById(idTabla);
-    if (!tbody) return;
-    if (citas.length === 0) {
-      tbody.innerHTML = '<tr><td colspan="6"><div class="empty"><div class="empty-ico">&#128197;</div><div class="empty-txt">' + (esHoy ? 'No hay citas para hoy' : 'No hay citas') + '</div></div></td></tr>';
-      return;
-    }
-    const colores = { 'Valentina G.': '#e8c4b8', 'Daniela R.': '#c9a8e0', 'Juliana M.': '#f0c4a0', 'Camila S.': '#a8e0cc' };
-    tbody.innerHTML = citas.map(c => {
-      const estado = c.estado || 'pendiente';
-      let accion = '';
-      if (estado === 'pendiente') {
-        accion = '<button class="btn-ok" onclick="cambiarEstado(\'' + c.id + '\',\'confirmada\')">Confirmar</button><button class="btn-no" onclick="cambiarEstado(\'' + c.id + '\',\'cancelada\')">Cancelar</button>';
-      } else if (estado === 'confirmada') {
-        accion = '<button class="btn-at" onclick="cambiarEstado(\'' + c.id + '\',\'atendida\')">Atendida</button>';
-      } else {
-        accion = '<span style="color:#cccccc;font-size:0.78rem">—</span>';
-      }
-      const svc = c.servicio ? c.servicio.split('—')[0].trim().split('–')[0].trim() : '—';
-      const fechaHora = esHoy ? (c.hora || '—') : ((c.fecha || '') + ' ' + (c.hora || ''));
-      return '<tr>' +
-        '<td><div class="td-name">' + (c.nombre || '—') + '</div><div class="td-sub">' + (c.whatsapp || '') + '</div></td>' +
-        '<td>' + svc + '</td>' +
-        '<td><div class="td-pro"><div class="pro-dot" style="background:' + (colores[c.profesional] || '#ccc') + '"></div>' + (c.profesional || '—') + '</div></td>' +
-        '<td>' + fechaHora + '</td>' +
-        '<td><span class="badge-e be-' + estado + '">' + estado + '</span></td>' +
-        '<td>' + accion + '</td>' +
-        '</tr>';
-    }).join('');
-  }
-
-  function renderTablaTodas(citas) { renderTabla('tabla-todas', citas, false); }
-
-  // FILTRAR CITAS
-  window.filtrarCitas = function(estado, btn) {
-    document.querySelectorAll('#page-citas .fb').forEach(b => b.classList.remove('active'));
+// PROXIMAS CITAS
+window.filtrarProximas=function(periodo,btn){
+  if(btn){
+    document.querySelectorAll('#page-dashboard .filtros .fb').forEach(b=>b.classList.remove('active'));
     btn.classList.add('active');
-    const f = estado === 'todas' ? todasCitas : todasCitas.filter(c => c.estado === estado);
-    renderTablaTodas(f);
   }
-
-  // CAMBIAR ESTADO
-  window.cambiarEstado = async function(idCita, nuevoEstado) {
-    try {
-      await updateDoc(doc(db, 'spas', sucursalActual, 'citas', idCita), { estado: nuevoEstado });
-      const idx = todasCitas.findIndex(c => c.id === idCita);
-      if (idx !== -1) todasCitas[idx].estado = nuevoEstado;
-      actualizarDashboard();
-      renderTablaTodas(todasCitas);
-      toast('Cita ' + nuevoEstado, 'ok');
-    } catch(e) { toast('Error actualizando', 'err'); }
+  let citas=[];
+  if(periodo==='hoy') citas=todasCitas.filter(c=>c.fecha===fechaHoyStr&&c.estado!=='cancelada');
+  else if(periodo==='manana') citas=todasCitas.filter(c=>c.fecha===fechaMananaStr&&c.estado!=='cancelada');
+  else if(periodo==='semana'){
+    const ini=new Date(hoy);ini.setDate(hoy.getDate()-hoy.getDay());
+    citas=todasCitas.filter(c=>c.fecha&&new Date(c.fecha+'T00:00:00')>=ini&&c.estado!=='cancelada');
+  } else {
+    citas=todasCitas.filter(c=>c.estado!=='cancelada');
   }
+  citas.sort((a,b)=>(a.fecha||'').localeCompare(b.fecha||'')||(a.hora||'').localeCompare(b.hora||''));
+  document.getElementById('prox-count').textContent=citas.length+' citas';
+  renderTabla('tabla-proximas',citas,false);
+};
 
-  // PRO GRID
-  function renderProGrid(idContenedor, citas) {
-    const contenedor = document.getElementById(idContenedor);
-    if (!contenedor) return;
-    const proStats = PROS.map(p => {
-      const cp = citas.filter(c => c.profesional === p.nombre && c.estado !== 'cancelada');
-      const ingresos = cp.reduce((s, c) => s + getPrecio(c.servicio), 0);
-      const atendidas = citas.filter(c => c.profesional === p.nombre && c.estado === 'atendida').length;
-      return { ...p, citas: cp.length, ingresos, atendidas };
-    });
-    if (proStats.every(p => p.citas === 0)) {
-      contenedor.innerHTML = '<div class="empty"><div class="empty-ico">&#128105;</div><div class="empty-txt">Sin citas aun</div></div>';
-      return;
-    }
-    const maxIngresos = Math.max(...proStats.map(p => p.ingresos));
-    contenedor.innerHTML = proStats.map(p => {
-      const esMejor = p.ingresos === maxIngresos && maxIngresos > 0;
-      return '<div class="pro-card">' +
-        '<div class="pro-card-hdr"><div class="pro-avatar" style="background:' + p.color + '">' + p.emoji + '</div>' +
-        '<div><div class="pro-card-name">' + p.nombre + (esMejor ? '<span class="best">Top</span>' : '') + '</div><div class="pro-card-spec">Profesional</div></div></div>' +
-        '<div class="pro-row"><span class="pro-key">Citas agendadas</span><span class="pro-val">' + p.citas + '</span></div>' +
-        '<div class="pro-row"><span class="pro-key">Citas atendidas</span><span class="pro-val">' + p.atendidas + '</span></div>' +
-        '<div class="pro-row"><span class="pro-key">Ingresos generados</span><span class="pro-val green">$' + p.ingresos.toLocaleString('es-CO') + '</span></div>' +
-        '</div>';
-    }).join('');
+// RENDER TABLA
+function renderTabla(idTabla,citas,esHoy){
+  const tbody=document.getElementById(idTabla);
+  if(!tbody)return;
+  if(citas.length===0){
+    tbody.innerHTML='<tr><td colspan="6"><div class="empty"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/></svg><div class="empty-txt">Sin citas en este periodo</div></div></td></tr>';
+    return;
   }
+  const colores={'Valentina G.':'#e8c4b8','Daniela R.':'#c9a8e0','Juliana M.':'#f0c4a0','Camila S.':'#a8e0cc'};
+  tbody.innerHTML=citas.map(c=>{
+    const estado=c.estado||'pendiente';
+    let accion='';
+    if(estado==='pendiente') accion='<button class="btn-ok" onclick="cambiarEstado(\''+c.id+'\',\'confirmada\')">Confirmar</button><button class="btn-no" onclick="cambiarEstado(\''+c.id+'\',\'cancelada\')">Cancelar</button>';
+    else if(estado==='confirmada') accion='<button class="btn-at" onclick="cambiarEstado(\''+c.id+'\',\'atendida\')">Atendida</button>';
+    else accion='<span style="color:#ccc;font-size:0.78rem">-</span>';
+    const svc=c.servicio?c.servicio.split('—')[0].trim().split('–')[0].trim():'—';
+    return '<tr>'+
+      '<td><div class="td-name">'+(c.nombre||'—')+'</div><div class="td-sub">'+(c.whatsapp||'')+'</div></td>'+
+      '<td>'+svc+'</td>'+
+      '<td><div class="td-pro"><div class="pro-dot" style="background:'+(colores[c.profesional]||'#ccc')+'"></div>'+(c.profesional||'—')+'</div></td>'+
+      '<td>'+(c.fecha||'')+'<br><span style="color:#8a7a76;font-size:0.78rem">'+(c.hora||'')+'</span></td>'+
+      '<td><span class="badge-e be-'+estado+'">'+estado+'</span></td>'+
+      '<td>'+accion+'</td>'+
+      '</tr>';
+  }).join('');
+}
 
-  // FILTRAR PROFESIONALES
-  window.filtrarPro = function(periodo, btn) {
-    document.querySelectorAll('#page-profesionales .fb').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    let citas = todasCitas;
-    const ahora = new Date();
-    if (periodo === 'hoy') {
-      citas = todasCitas.filter(c => c.fecha === fechaHoyStr);
-    } else if (periodo === 'semana') {
-      const ini = new Date(ahora); ini.setDate(ahora.getDate() - ahora.getDay());
-      citas = todasCitas.filter(c => c.fecha && new Date(c.fecha + 'T00:00:00') >= ini);
-    } else if (periodo === 'mes') {
-      const ini = new Date(ahora.getFullYear(), ahora.getMonth(), 1);
-      citas = todasCitas.filter(c => c.fecha && new Date(c.fecha + 'T00:00:00') >= ini);
-    }
-    renderProGrid('pro-total', citas);
+function renderTablaTodas(citas){renderTabla('tabla-todas',citas,false);}
+
+// FILTRAR CITAS
+window.filtrarCitas=function(estado,btn){
+  document.querySelectorAll('#page-citas .filtros .fb').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  const f=estado==='todas'?todasCitas:todasCitas.filter(c=>c.estado===estado);
+  renderTablaTodas(f);
+};
+
+window.filtrarCitasRango=function(){
+  const desde=document.getElementById('citas-desde').value;
+  const hasta=document.getElementById('citas-hasta').value;
+  if(!desde||!hasta){toast('Selecciona las dos fechas','err');return;}
+  const f=todasCitas.filter(c=>c.fecha&&c.fecha>=desde&&c.fecha<=hasta);
+  document.querySelectorAll('#page-citas .filtros .fb').forEach(b=>b.classList.remove('active'));
+  renderTablaTodas(f);
+  toast('Mostrando '+f.length+' citas');
+};
+
+// CAMBIAR ESTADO
+window.cambiarEstado=async function(idCita,nuevoEstado){
+  try{
+    await updateDoc(doc(db,'spas',sucursalActual,'citas',idCita),{estado:nuevoEstado});
+    const idx=todasCitas.findIndex(c=>c.id===idCita);
+    if(idx!==-1)todasCitas[idx].estado=nuevoEstado;
+    actualizarDashboard();
+    renderTablaTodas(todasCitas);
+    toast('Cita '+nuevoEstado,'ok');
+  }catch(e){toast('Error actualizando','err');}
+};
+
+// PRO GRID
+function renderProGrid(idContenedor,citas){
+  const cont=document.getElementById(idContenedor);
+  if(!cont)return;
+  const pros=todasPros.length>0?todasPros:[
+    {nombre:'Valentina G.',especialidad:'Nail Art - Acrilicas',foto:'',color:'#f9e4dc'},
+    {nombre:'Daniela R.',especialidad:'Gel - Semipermanente',foto:'',color:'#e8d5f0'},
+    {nombre:'Juliana M.',especialidad:'Pedicure - Spa',foto:'',color:'#fce8d5'},
+    {nombre:'Camila S.',especialidad:'Acrilicas - Nail Art',foto:'',color:'#d5f0e8'}
+  ];
+  const stats=pros.map(p=>{
+    const cp=citas.filter(c=>c.profesional===p.nombre&&c.estado!=='cancelada');
+    const atendidas=citas.filter(c=>c.profesional===p.nombre&&c.estado==='atendida').length;
+    const ingresos=cp.reduce((s,c)=>s+getPrecio(c.servicio),0);
+    return{...p,citas:cp.length,atendidas,ingresos};
+  });
+  if(stats.every(p=>p.citas===0)){
+    cont.innerHTML='<div class="empty"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><div class="empty-txt">Sin citas en este periodo</div></div>';
+    return;
   }
-
-  window.filtrarProRango = function() {
-    const desde = document.getElementById('pro-desde').value;
-    const hasta = document.getElementById('pro-hasta').value;
-    if (!desde || !hasta) { toast('Selecciona las dos fechas', 'err'); return; }
-    const citas = todasCitas.filter(c => c.fecha && c.fecha >= desde && c.fecha <= hasta);
-    document.querySelectorAll('#page-profesionales .fb').forEach(b => b.classList.remove('active'));
-    renderProGrid('pro-total', citas);
-    toast('Mostrando ' + citas.length + ' citas entre ' + desde + ' y ' + hasta);
-  }
-
-  // CRM
-  function renderCRM(filtro) {
-    filtroCRMActual = filtro;
-    const lista = document.getElementById('crm-lista');
-
-    const clientesEnriquecidos = todosClientes.map(c => {
-      const citasC = todasCitas.filter(ct => ct.uid === c.id && ct.estado !== 'cancelada');
-      const atendidas = todasCitas.filter(ct => ct.uid === c.id && ct.estado === 'atendida');
-      const ultimaCita = citasC.sort((a,b) => (b.fecha||'').localeCompare(a.fecha||''))[0];
-      const diasSinVenir = ultimaCita ? Math.floor((hoy - new Date(ultimaCita.fecha + 'T00:00:00')) / 86400000) : 999;
-      const totalGastado = atendidas.reduce((s, ct) => s + getPrecio(ct.servicio), 0);
-
-      // Servicio favorito
-      const freq = {};
-      citasC.forEach(ct => { const s = ct.servicio ? ct.servicio.split('—')[0].trim().split('–')[0].trim() : ''; if (s) freq[s] = (freq[s]||0)+1; });
-      const favorito = Object.keys(freq).sort((a,b) => freq[b]-freq[a])[0] || null;
-
-      // Estado
-      let estado = 'nueva';
-      if (diasSinVenir <= 30 && citasC.length > 0) estado = 'activa';
-      else if (diasSinVenir <= 60 && citasC.length > 0) estado = 'tibia';
-      else if (diasSinVenir > 60 && citasC.length > 0) estado = 'perdida';
-
-      return { ...c, visitas: atendidas.length, diasSinVenir, totalGastado, favorito, estado, ultimaFecha: ultimaCita?.fecha };
-    }).sort((a,b) => b.visitas - a.visitas);
-
-    // Stats resumen
-    document.getElementById('crm-total').textContent = clientesEnriquecidos.length;
-    document.getElementById('crm-activas').textContent = clientesEnriquecidos.filter(c => c.estado === 'activa').length;
-    document.getElementById('crm-perdidas').textContent = clientesEnriquecidos.filter(c => c.estado === 'perdida').length;
-
-    // Filtrar
-    const filtrados = filtro === 'todas' ? clientesEnriquecidos : clientesEnriquecidos.filter(c => c.estado === filtro);
-
-    if (filtrados.length === 0) {
-      lista.innerHTML = '<div class="empty"><div class="empty-ico">&#128101;</div><div class="empty-txt">No hay clientas en esta categoria</div></div>';
-      return;
-    }
-
-    const etiquetas = { activa: 'Activa', tibia: 'Tibia', perdida: 'Perdida', nueva: 'Nueva' };
-    const iconos    = { activa: '&#128994;', tibia: '&#128993;', perdida: '&#128308;', nueva: '&#128309;' };
-
-    lista.innerHTML = filtrados.map((c, i) => {
-      const esMasRecurrente = i === 0 && c.visitas > 0;
-      return '<div class="crm-cliente-card">' +
-        '<div class="crm-cliente-hdr">' +
-          '<div>' +
-            '<div class="crm-cliente-name">' + (c.nombre || 'Sin nombre') + (esMasRecurrente ? ' <span class="best">&#11088; Mas frecuente</span>' : '') + '</div>' +
-            '<div class="crm-cliente-phone">' + (c.whatsapp || c.id) + '</div>' +
-          '</div>' +
-          '<span class="badge-e be-' + c.estado + '">' + iconos[c.estado] + ' ' + etiquetas[c.estado] + '</span>' +
-        '</div>' +
-        '<div class="crm-cliente-stats">' +
-          '<div class="crm-cs"><div class="crm-cs-val">' + c.visitas + '</div><div class="crm-cs-label">Visitas</div></div>' +
-          '<div class="crm-cs"><div class="crm-cs-val">&#11088; ' + (c.puntos || 0) + '</div><div class="crm-cs-label">Puntos</div></div>' +
-          '<div class="crm-cs"><div class="crm-cs-val">$' + c.totalGastado.toLocaleString('es-CO') + '</div><div class="crm-cs-label">Total gastado</div></div>' +
-          '<div class="crm-cs"><div class="crm-cs-val">' + (c.diasSinVenir === 999 ? '—' : c.diasSinVenir + 'd') + '</div><div class="crm-cs-label">Sin visitar</div></div>' +
-        '</div>' +
-        (c.favorito ? '<div class="crm-fav">Servicio favorito: ' + c.favorito + '</div>' : '') +
-        (c.ultimaFecha ? '<div style="font-size:0.72rem;color:#8a7a76;margin-top:8px">Ultima visita: ' + c.ultimaFecha + '</div>' : '') +
+  const maxIng=Math.max(...stats.map(p=>p.ingresos));
+  cont.innerHTML=stats.map(p=>{
+    const esTop=p.ingresos===maxIng&&maxIng>0;
+    const avatar=p.foto?'<img class="pro-avatar-img" src="'+p.foto+'" onerror="this.style.display=\'none\'">':'<div class="pro-avatar-placeholder"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>';
+    return '<div class="pro-card">'+
+      '<div class="pro-card-hdr">'+avatar+'<div><div class="pro-card-name">'+p.nombre+(esTop?'<span class="best">Top</span>':'')+'</div><div class="pro-card-spec">'+(p.especialidad||'')+'</div></div></div>'+
+      '<div class="pro-row"><span class="pro-key">Citas agendadas</span><span class="pro-val">'+p.citas+'</span></div>'+
+      '<div class="pro-row"><span class="pro-key">Citas atendidas</span><span class="pro-val">'+p.atendidas+'</span></div>'+
+      '<div class="pro-row"><span class="pro-key">Ingresos generados</span><span class="pro-val green">$'+p.ingresos.toLocaleString('es-CO')+'</span></div>'+
       '</div>';
-    }).join('');
+  }).join('');
+}
+
+window.filtrarPro=function(periodo,btn){
+  document.querySelectorAll('#page-profesionales-stats .filtros .fb').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  let citas=todasCitas;
+  const ahora=new Date();
+  if(periodo==='semana'){const ini=new Date(ahora);ini.setDate(ahora.getDate()-ahora.getDay());citas=todasCitas.filter(c=>c.fecha&&new Date(c.fecha+'T00:00:00')>=ini);}
+  else if(periodo==='mes'){const ini=new Date(ahora.getFullYear(),ahora.getMonth(),1);citas=todasCitas.filter(c=>c.fecha&&new Date(c.fecha+'T00:00:00')>=ini);}
+  renderProGrid('pro-total',citas);
+};
+
+window.filtrarProRango=function(){
+  const desde=document.getElementById('pro-desde').value;
+  const hasta=document.getElementById('pro-hasta').value;
+  if(!desde||!hasta){toast('Selecciona las dos fechas','err');return;}
+  const citas=todasCitas.filter(c=>c.fecha&&c.fecha>=desde&&c.fecha<=hasta);
+  document.querySelectorAll('#page-profesionales-stats .filtros .fb').forEach(b=>b.classList.remove('active'));
+  renderProGrid('pro-total',citas);
+  toast('Mostrando '+citas.length+' citas');
+};
+
+// GESTIONAR PROFESIONALES
+function renderProsAdmin(){
+  const grid=document.getElementById('pros-admin-grid');
+  if(!grid)return;
+  if(todasPros.length===0){
+    grid.innerHTML='<div class="empty" style="grid-column:1/-1"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><div class="empty-txt">Aun no hay profesionales agregadas</div></div>';
+    return;
+  }
+  grid.innerHTML=todasPros.map(p=>{
+    const avatar=p.foto?'<img class="pro-admin-avatar" src="'+p.foto+'" onerror="this.src=\'\'">':'<div class="pro-admin-avatar-placeholder"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>';
+    return '<div class="pro-admin-card">'+avatar+'<div class="pro-admin-name">'+p.nombre+'</div><div class="pro-admin-spec">'+(p.especialidad||'')+'</div><div class="pro-admin-actions"><button class="btn-edit" onclick="editarPro(\''+p.id+'\')">Editar</button><button class="btn-del" onclick="eliminarPro(\''+p.id+'\')">Eliminar</button></div></div>';
+  }).join('');
+}
+
+window.abrirModalPro=function(){
+  document.getElementById('pro-edit-id').value='';
+  document.getElementById('pro-nombre').value='';
+  document.getElementById('pro-especialidad').value='';
+  document.getElementById('pro-horario').value='';
+  document.getElementById('pro-foto-url').value='';
+  document.getElementById('avatar-preview').style.display='none';
+  document.getElementById('modal-pro-title').textContent='Agregar profesional';
+  document.getElementById('modal-pro').classList.add('open');
+};
+
+window.cerrarModalPro=function(){document.getElementById('modal-pro').classList.remove('open');};
+
+window.editarPro=function(id){
+  const p=todasPros.find(x=>x.id===id);
+  if(!p)return;
+  document.getElementById('pro-edit-id').value=id;
+  document.getElementById('pro-nombre').value=p.nombre||'';
+  document.getElementById('pro-especialidad').value=p.especialidad||'';
+  document.getElementById('pro-horario').value=p.horario||'';
+  document.getElementById('pro-foto-url').value=p.foto||'';
+  if(p.foto){const prev=document.getElementById('avatar-preview');prev.src=p.foto;prev.style.display='block';}
+  document.getElementById('modal-pro-title').textContent='Editar profesional';
+  document.getElementById('modal-pro').classList.add('open');
+};
+
+window.previewFoto=function(url){
+  const prev=document.getElementById('avatar-preview');
+  if(url){prev.src=url;prev.style.display='block';}
+  else{prev.style.display='none';}
+};
+
+window.guardarPro=async function(){
+  const nombre=document.getElementById('pro-nombre').value.trim();
+  const especialidad=document.getElementById('pro-especialidad').value.trim();
+  const horario=document.getElementById('pro-horario').value.trim();
+  const foto=document.getElementById('pro-foto-url').value.trim();
+  const editId=document.getElementById('pro-edit-id').value;
+  if(!nombre){toast('Ingresa el nombre','err');return;}
+  try{
+    if(editId){
+      await updateDoc(doc(db,'spas',sucursalActual,'profesionales',editId),{nombre,especialidad,horario,foto});
+      toast('Profesional actualizada','ok');
+    } else {
+      await addDoc(collection(db,'spas',sucursalActual,'profesionales'),{nombre,especialidad,horario,foto,creadoEn:serverTimestamp()});
+      toast('Profesional agregada','ok');
+    }
+    cerrarModalPro();
+    await cargarDatos();
+  }catch(e){toast('Error guardando','err');}
+};
+
+window.eliminarPro=async function(id){
+  if(!confirm('Eliminar esta profesional?'))return;
+  try{
+    await deleteDoc(doc(db,'spas',sucursalActual,'profesionales',id));
+    toast('Profesional eliminada','ok');
+    await cargarDatos();
+  }catch(e){toast('Error eliminando','err');}
+};
+
+// CRM
+function renderCRM(filtro){
+  const lista=document.getElementById('crm-lista');
+  const clientesEnriquecidos=todosClientes.map(c=>{
+    const citasC=todasCitas.filter(ct=>ct.uid===c.id&&ct.estado!=='cancelada');
+    const atendidas=todasCitas.filter(ct=>ct.uid===c.id&&ct.estado==='atendida');
+    const ordenadas=citasC.sort((a,b)=>(b.fecha||'').localeCompare(a.fecha||''));
+    const ultimaCita=ordenadas[0];
+    const diasSinVenir=ultimaCita?Math.floor((hoy-new Date(ultimaCita.fecha+'T00:00:00'))/86400000):999;
+    const totalGastado=atendidas.reduce((s,ct)=>s+getPrecio(ct.servicio),0);
+    const freq={};
+    citasC.forEach(ct=>{const s=ct.servicio?ct.servicio.split('—')[0].trim().split('–')[0].trim():'';if(s)freq[s]=(freq[s]||0)+1;});
+    const favorito=Object.keys(freq).sort((a,b)=>freq[b]-freq[a])[0]||null;
+    let estado='nueva';
+    if(diasSinVenir<=30&&citasC.length>0)estado='activa';
+    else if(diasSinVenir<=60&&citasC.length>0)estado='tibia';
+    else if(diasSinVenir>60&&citasC.length>0)estado='perdida';
+    return{...c,visitas:atendidas.length,diasSinVenir,totalGastado,favorito,estado,ultimaFecha:ultimaCita?.fecha};
+  }).sort((a,b)=>b.visitas-a.visitas);
+
+  document.getElementById('crm-total').textContent=clientesEnriquecidos.length;
+  document.getElementById('crm-activas').textContent=clientesEnriquecidos.filter(c=>c.estado==='activa').length;
+  document.getElementById('crm-perdidas').textContent=clientesEnriquecidos.filter(c=>c.estado==='perdida').length;
+
+  const filtrados=filtro==='todas'?clientesEnriquecidos:clientesEnriquecidos.filter(c=>c.estado===filtro);
+
+  if(filtrados.length===0){
+    lista.innerHTML='<div class="empty"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg><div class="empty-txt">No hay clientas en esta categoria</div></div>';
+    return;
   }
 
-  window.filtrarCRM = function(filtro, btn) {
-    document.querySelectorAll('#page-crm .fb').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    renderCRM(filtro);
-  }
+  const etiquetas={activa:'Activa',tibia:'Tibia',perdida:'Perdida',nueva:'Nueva'};
+  const svgEstado={
+    activa:'<svg width="10" height="10" viewBox="0 0 10 10"><circle cx="5" cy="5" r="4" fill="#1a7a3d"/></svg>',
+    tibia:'<svg width="10" height="10" viewBox="0 0 10 10"><circle cx="5" cy="5" r="4" fill="#856404"/></svg>',
+    perdida:'<svg width="10" height="10" viewBox="0 0 10 10"><circle cx="5" cy="5" r="4" fill="#721c24"/></svg>',
+    nueva:'<svg width="10" height="10" viewBox="0 0 10 10"><circle cx="5" cy="5" r="4" fill="#0c5460"/></svg>'
+  };
 
-  // NAVEGACIÓN
-  window.showPage = function(pageName, btn) {
-    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-    document.querySelectorAll('.slink').forEach(l => l.classList.remove('active'));
-    document.getElementById('page-' + pageName).classList.add('active');
-    btn.classList.add('active');
-    if (window.innerWidth <= 960) toggleSidebar();
-  }
+  lista.innerHTML=filtrados.map((c,i)=>{
+    const esMasRecurrente=i===0&&c.visitas>0;
+    return '<div class="crm-card">'+
+      '<div class="crm-card-hdr">'+
+        '<div>'+
+          '<div class="crm-card-name">'+(c.nombre||'Sin nombre')+(esMasRecurrente?'<span class="best">Mas frecuente</span>':'')+'</div>'+
+          '<div class="crm-card-phone">'+(c.whatsapp||c.id)+'</div>'+
+        '</div>'+
+        '<span class="badge-e be-'+c.estado+'">'+svgEstado[c.estado]+' '+etiquetas[c.estado]+'</span>'+
+      '</div>'+
+      '<div class="crm-card-stats">'+
+        '<div class="crm-cs"><div class="crm-cs-val">'+c.visitas+'</div><div class="crm-cs-label">Visitas</div></div>'+
+        '<div class="crm-cs"><div class="crm-cs-val">'+( c.puntos||0)+'</div><div class="crm-cs-label">Puntos</div></div>'+
+        '<div class="crm-cs"><div class="crm-cs-val">$'+c.totalGastado.toLocaleString('es-CO')+'</div><div class="crm-cs-label">Total gastado</div></div>'+
+        '<div class="crm-cs"><div class="crm-cs-val">'+(c.diasSinVenir===999?'—':c.diasSinVenir+'d')+'</div><div class="crm-cs-label">Sin visitar</div></div>'+
+      '</div>'+
+      (c.favorito?'<div class="crm-fav">Servicio favorito: '+c.favorito+'</div>':'')+
+      (c.ultimaFecha?'<div style="font-size:0.72rem;color:#8a7a76;margin-top:8px">Ultima visita: '+c.ultimaFecha+'</div>':'')+
+    '</div>';
+  }).join('');
+}
 
-  window.toggleSidebar = function() {
-    document.getElementById('sidebar').classList.toggle('open');
-    document.getElementById('overlay').classList.toggle('open');
-  }
+window.filtrarCRM=function(filtro,btn){
+  document.querySelectorAll('#page-crm .filtros .fb').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderCRM(filtro);
+};
+
+// NAVEGACION
+window.showPage=function(pageName,btn){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.slink').forEach(l=>l.classList.remove('active'));
+  document.getElementById('page-'+pageName).classList.add('active');
+  btn.classList.add('active');
+  if(window.innerWidth<=960)toggleSidebar();
+};
+
+window.toggleSidebar=function(){
+  document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('overlay').classList.toggle('open');
+};
 </script>
 
 </body>
