@@ -271,7 +271,7 @@ footer { background-color: #1a1a1a; padding: 52px 24px 32px; }
         <option>4:00 PM</option><option>5:00 PM</option>
       </select>
     </div>
-    <button class="btn-book" id="btn-confirmar" onclick="guardarCita()">Confirmar por WhatsApp 💬</button>
+    <button class="btn-book" id="btn-confirmar" onclick="guardarCita()">Confirmar cita 💅</button>
     <div class="wa-note">Recibirás confirmación en tu WhatsApp</div>
   </div>
 </section>
@@ -345,23 +345,23 @@ footer { background-color: #1a1a1a; padding: 52px 24px 32px; }
   onAuthStateChanged(auth, async (user) => {
     if (user) {
       usuarioActual = user;
-      // Cargar perfil del usuario
       const perfilRef = doc(db, 'spas', 'glamnails', 'clientes', user.uid);
       const perfil = await getDoc(perfilRef);
       if (perfil.exists()) {
         const data = perfil.data();
-        // Prellenar formulario con datos guardados
         if (data.nombre) document.getElementById('f-nombre').value = data.nombre;
         if (data.whatsapp) document.getElementById('f-whatsapp').value = data.whatsapp;
-        // Actualizar puntos si existen
         if (data.puntos !== undefined) {
           document.querySelector('.puntos-num').textContent = data.puntos;
         }
       }
-      mostrarEstadoLogin(user.phoneNumber);
+      // Ocultar overlay si estaba visible y mostrar número en nav
+      document.getElementById('login-overlay').style.display = 'none';
+      const navUser = document.getElementById('nav-user');
+      if (navUser) navUser.textContent = '👤 ' + (user.phoneNumber || 'Mi cuenta');
     } else {
       usuarioActual = null;
-      mostrarPantallaLogin();
+      // NO mostrar login automáticamente — solo cuando intente agendar
     }
   });
 
@@ -462,11 +462,6 @@ footer { background-color: #1a1a1a; padding: 52px 24px 32px; }
 
   // ── SELECCIONAR PROFESIONAL ──
   window.agendarCon = function(nombre) {
-    if (!usuarioActual) {
-      mostrarPantallaLogin();
-      showToast('Primero ingresá con tu número 📱', 'error');
-      return;
-    }
     document.getElementById('f-profesional').value = nombre;
     document.getElementById('agendar').scrollIntoView({ behavior: 'smooth' });
     showToast('Seleccionaste a ' + nombre + ' ✨');
@@ -474,9 +469,12 @@ footer { background-color: #1a1a1a; padding: 52px 24px 32px; }
 
   // ── GUARDAR CITA ──
   window.guardarCita = async function() {
+    // Si no está logueada, mostrar login primero
     if (!usuarioActual) {
-      mostrarPantallaLogin();
-      showToast('Primero ingresá con tu número 📱', 'error');
+      document.getElementById('login-overlay').style.display = 'flex';
+      document.getElementById('paso-telefono').style.display = 'block';
+      document.getElementById('paso-codigo').style.display = 'none';
+      showToast('Primero ingresa con tu numero 📱', 'error');
       return;
     }
 
