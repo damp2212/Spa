@@ -461,12 +461,15 @@ html,body{overflow-x:hidden}
   </div>
 </div>
 
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-app.js";
-import { getFirestore, collection, getDocs, doc, updateDoc, addDoc, deleteDoc, query, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-firestore.js";
-import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-auth.js";
-import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-storage.js";
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
+
+<script>
 const firebaseConfig = {
   apiKey: "AIzaSyBBZInWQZVJyBTP5TG8MrTBOfe7UQFR5uU",
   authDomain: "mapos-spas.firebaseapp.com",
@@ -476,37 +479,36 @@ const firebaseConfig = {
   appId: "1:704720438670:web:fd94574e51e97964cd10df"
 };
 
-const app  = initializeApp(firebaseConfig);
-const db   = getFirestore(app);
-const auth = getAuth(app);
+firebase.initializeApp(firebaseConfig);
+var db      = firebase.firestore();
+var auth    = firebase.auth();
+var storage = firebase.storage();
 
-let todasCitas = [];
-let todosClientes = [];
-let todasPros = [];
-let sucursalActual = 'glamnails';
+var todasCitas = [];
+var todosClientes = [];
+var todasPros = [];
+var sucursalActual = 'glamnails';
+var archivoFotoSeleccionado = null;
 
-const hoy = new Date();
-const fechaHoyStr = hoy.toISOString().split('T')[0];
-const manana = new Date(hoy); manana.setDate(hoy.getDate()+1);
-const fechaMananaStr = manana.toISOString().split('T')[0];
+var hoy = new Date();
+var fechaHoyStr = hoy.toISOString().split('T')[0];
+var manana = new Date(hoy); manana.setDate(hoy.getDate()+1);
+var fechaMananaStr = manana.toISOString().split('T')[0];
 
-const PRECIOS = {'Manicure Gel':45000,'Unas Acrilicas':80000,'Pedicure Spa':55000,'Nail Art':30000,'Semipermanente':38000,'Manicure + Pedicure':75000};
-function getPrecio(s){if(!s)return 0;const b=s.split('—')[0].trim().split('–')[0].trim();return PRECIOS[b]||0;}
+var PRECIOS = {'Manicure Gel':45000,'Unas Acrilicas':80000,'Pedicure Spa':55000,'Nail Art':30000,'Semipermanente':38000,'Manicure + Pedicure':75000};
+function getPrecio(s){if(!s)return 0;var b=s.split('\u2014')[0].trim().split('\u2013')[0].trim();return PRECIOS[b]||0;}
 
-// TOAST
 function toast(msg,tipo){
-  const t=document.getElementById('toast');
+  var t=document.getElementById('toast');
   t.textContent=msg;
   t.className='toast show'+(tipo?' '+tipo:'');
-  setTimeout(()=>{t.className='toast';},3000);
+  setTimeout(function(){t.className='toast';},3000);
 }
 
-// FECHA
-const opc={weekday:'long',year:'numeric',month:'long',day:'numeric'};
+var opc={weekday:'long',year:'numeric',month:'long',day:'numeric'};
 document.getElementById('fecha-hoy').textContent=hoy.toLocaleDateString('es-CO',opc);
 
-// AUTH
-onAuthStateChanged(auth,user=>{
+auth.onAuthStateChanged(function(user){
   if(user){
     document.getElementById('login-screen').style.display='none';
     document.getElementById('app').style.display='block';
@@ -518,263 +520,248 @@ onAuthStateChanged(auth,user=>{
   }
 });
 
-window.loginAdmin=async function(){
-  const email=document.getElementById('admin-email').value.trim();
-  const pass=document.getElementById('admin-pass').value;
-  const err=document.getElementById('lerror');
+function loginAdmin(){
+  var email=document.getElementById('admin-email').value.trim();
+  var pass=document.getElementById('admin-pass').value;
+  var err=document.getElementById('lerror');
   err.style.display='none';
-  try{await signInWithEmailAndPassword(auth,email,pass);}
-  catch(e){err.style.display='block';}
-};
+  auth.signInWithEmailAndPassword(email,pass).catch(function(){err.style.display='block';});
+}
 
-window.logoutAdmin=async function(){await signOut(auth);};
+function logoutAdmin(){auth.signOut();}
 
-// CAMBIAR SUCURSAL
-window.cambiarSucursal=function(val){
+function cambiarSucursal(val){
   sucursalActual=val;
-  const nombres={'glamnails':'Sede El Poblado','glamnails-laureles':'Sede Laureles','glamnails-envigado':'Sede Envigado'};
-  const n=nombres[val]||val;
-  ['badge-dash','badge-citas','badge-pro-stats','badge-mgmt','badge-crm'].forEach(id=>{
-    const el=document.getElementById(id);if(el)el.textContent=n;
+  var nombres={'glamnails':'Sede El Poblado','glamnails-laureles':'Sede Laureles','glamnails-envigado':'Sede Envigado'};
+  var n=nombres[val]||val;
+  ['badge-dash','badge-citas','badge-pro-stats','badge-mgmt','badge-crm'].forEach(function(id){
+    var el=document.getElementById(id);if(el)el.textContent=n;
   });
   cargarDatos();
-};
+}
 
-// CARGAR DATOS
-async function cargarDatos(){
-  try{
-    const [citasSnap,clientesSnap,prosSnap]=await Promise.all([
-      getDocs(query(collection(db,'spas',sucursalActual,'citas'),orderBy('creadoEn','desc'))),
-      getDocs(collection(db,'spas',sucursalActual,'clientes')),
-      getDocs(collection(db,'spas',sucursalActual,'profesionales'))
-    ]);
-    todasCitas=citasSnap.docs.map(d=>({id:d.id,...d.data()}));
-    todosClientes=clientesSnap.docs.map(d=>({id:d.id,...d.data()}));
-    todasPros=prosSnap.docs.map(d=>({id:d.id,...d.data()}));
+function cargarDatos(){
+  var citasRef=db.collection('spas').doc(sucursalActual).collection('citas').orderBy('creadoEn','desc');
+  var clientesRef=db.collection('spas').doc(sucursalActual).collection('clientes');
+  var prosRef=db.collection('spas').doc(sucursalActual).collection('profesionales');
 
+  Promise.all([citasRef.get(),clientesRef.get(),prosRef.get()]).then(function(results){
+    todasCitas=results[0].docs.map(function(d){var o=d.data();o.id=d.id;return o;});
+    todosClientes=results[1].docs.map(function(d){var o=d.data();o.id=d.id;return o;});
+    todasPros=results[2].docs.map(function(d){var o=d.data();o.id=d.id;return o;});
     actualizarDashboard();
     renderTablaTodas(todasCitas);
     renderProGrid('pro-total',todasCitas);
     renderProsAdmin();
     renderCRM('todas');
-  }catch(e){
-    console.error(e);
-    toast('Error cargando datos','err');
-  }
+  }).catch(function(e){console.error(e);toast('Error cargando datos','err');});
 }
 
-// DASHBOARD
 function actualizarDashboard(){
-  const ini_sem=new Date(hoy);ini_sem.setDate(hoy.getDate()-hoy.getDay());
-  const ini_mes=new Date(hoy.getFullYear(),hoy.getMonth(),1);
-  const semana=todasCitas.filter(c=>c.fecha&&new Date(c.fecha+'T00:00:00')>=ini_sem);
-  const mes=todasCitas.filter(c=>c.fecha&&new Date(c.fecha+'T00:00:00')>=ini_mes);
-
+  var ini_sem=new Date(hoy);ini_sem.setDate(hoy.getDate()-hoy.getDay());
+  var ini_mes=new Date(hoy.getFullYear(),hoy.getMonth(),1);
+  var semana=todasCitas.filter(function(c){return c.fecha&&new Date(c.fecha+'T00:00:00')>=ini_sem;});
+  var mes=todasCitas.filter(function(c){return c.fecha&&new Date(c.fecha+'T00:00:00')>=ini_mes;});
   document.getElementById('stat-semana').textContent=semana.length;
   document.getElementById('stat-mes').textContent=mes.length;
   document.getElementById('stat-total').textContent=todasCitas.length;
   document.getElementById('stat-clientes').textContent=todosClientes.length;
-
   filtrarProximas('hoy',document.querySelector('#page-dashboard .fb.active'));
   renderProGrid('pro-semana',semana);
 }
 
-// PROXIMAS CITAS
-window.filtrarProximas=function(periodo,btn){
+function filtrarProximas(periodo,btn){
   if(btn){
-    document.querySelectorAll('#page-dashboard .filtros .fb').forEach(b=>b.classList.remove('active'));
+    document.querySelectorAll('#page-dashboard .filtros .fb').forEach(function(b){b.classList.remove('active');});
     btn.classList.add('active');
   }
-  let citas=[];
-  if(periodo==='hoy') citas=todasCitas.filter(c=>c.fecha===fechaHoyStr&&c.estado!=='cancelada');
-  else if(periodo==='manana') citas=todasCitas.filter(c=>c.fecha===fechaMananaStr&&c.estado!=='cancelada');
+  var citas=[];
+  if(periodo==='hoy') citas=todasCitas.filter(function(c){return c.fecha===fechaHoyStr&&c.estado!=='cancelada';});
+  else if(periodo==='manana') citas=todasCitas.filter(function(c){return c.fecha===fechaMananaStr&&c.estado!=='cancelada';});
   else if(periodo==='semana'){
-    const ini=new Date(hoy);ini.setDate(hoy.getDate()-hoy.getDay());
-    citas=todasCitas.filter(c=>c.fecha&&new Date(c.fecha+'T00:00:00')>=ini&&c.estado!=='cancelada');
+    var ini=new Date(hoy);ini.setDate(hoy.getDate()-hoy.getDay());
+    citas=todasCitas.filter(function(c){return c.fecha&&new Date(c.fecha+'T00:00:00')>=ini&&c.estado!=='cancelada';});
   } else {
-    citas=todasCitas.filter(c=>c.estado!=='cancelada');
+    citas=todasCitas.filter(function(c){return c.estado!=='cancelada';});
   }
-  citas.sort((a,b)=>(a.fecha||'').localeCompare(b.fecha||'')||(a.hora||'').localeCompare(b.hora||''));
+  citas.sort(function(a,b){return (a.fecha||'').localeCompare(b.fecha||'')||(a.hora||'').localeCompare(b.hora||'');});
   document.getElementById('prox-count').textContent=citas.length+' citas';
-  renderTabla('tabla-proximas',citas,false);
-};
+  renderTabla('tabla-proximas',citas);
+}
 
-// RENDER TABLA
-function renderTabla(idTabla,citas,esHoy){
-  const tbody=document.getElementById(idTabla);
+function renderTabla(idTabla,citas){
+  var tbody=document.getElementById(idTabla);
   if(!tbody)return;
   if(citas.length===0){
     tbody.innerHTML='<tr><td colspan="6"><div class="empty"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/></svg><div class="empty-txt">Sin citas en este periodo</div></div></td></tr>';
     return;
   }
-  const colores={'Valentina G.':'#e8c4b8','Daniela R.':'#c9a8e0','Juliana M.':'#f0c4a0','Camila S.':'#a8e0cc'};
-  tbody.innerHTML=citas.map(c=>{
-    const estado=c.estado||'pendiente';
-    let accion='';
+  var colores={'Valentina G.':'#e8c4b8','Daniela R.':'#c9a8e0','Juliana M.':'#f0c4a0','Camila S.':'#a8e0cc'};
+  var html='';
+  for(var i=0;i<citas.length;i++){
+    var c=citas[i];
+    var estado=c.estado||'pendiente';
+    var accion='';
     if(estado==='pendiente') accion='<button class="btn-ok" onclick="cambiarEstado(\''+c.id+'\',\'confirmada\')">Confirmar</button><button class="btn-no" onclick="cambiarEstado(\''+c.id+'\',\'cancelada\')">Cancelar</button>';
     else if(estado==='confirmada') accion='<button class="btn-at" onclick="cambiarEstado(\''+c.id+'\',\'atendida\')">Atendida</button>';
     else accion='<span style="color:#ccc;font-size:0.78rem">-</span>';
-    const svc=c.servicio?c.servicio.split('—')[0].trim().split('–')[0].trim():'—';
-    return '<tr>'+
-      '<td><div class="td-name">'+(c.nombre||'—')+'</div><div class="td-sub">'+(c.whatsapp||'')+'</div></td>'+
+    var svc=c.servicio?c.servicio.split('\u2014')[0].trim().split('\u2013')[0].trim():'\u2014';
+    html+='<tr>'+
+      '<td><div class="td-name">'+(c.nombre||'\u2014')+'</div><div class="td-sub">'+(c.whatsapp||'')+'</div></td>'+
       '<td>'+svc+'</td>'+
-      '<td><div class="td-pro"><div class="pro-dot" style="background:'+(colores[c.profesional]||'#ccc')+'"></div>'+(c.profesional||'—')+'</div></td>'+
+      '<td><div class="td-pro"><div class="pro-dot" style="background:'+(colores[c.profesional]||'#ccc')+'"></div>'+(c.profesional||'\u2014')+'</div></td>'+
       '<td>'+(c.fecha||'')+'<br><span style="color:#8a7a76;font-size:0.78rem">'+(c.hora||'')+'</span></td>'+
       '<td><span class="badge-e be-'+estado+'">'+estado+'</span></td>'+
       '<td>'+accion+'</td>'+
       '</tr>';
-  }).join('');
+  }
+  tbody.innerHTML=html;
 }
 
-function renderTablaTodas(citas){renderTabla('tabla-todas',citas,false);}
+function renderTablaTodas(citas){renderTabla('tabla-todas',citas);}
 
-// FILTRAR CITAS
-window.filtrarCitas=function(estado,btn){
-  document.querySelectorAll('#page-citas .filtros .fb').forEach(b=>b.classList.remove('active'));
+function filtrarCitas(estado,btn){
+  document.querySelectorAll('#page-citas .filtros .fb').forEach(function(b){b.classList.remove('active');});
   btn.classList.add('active');
-  const f=estado==='todas'?todasCitas:todasCitas.filter(c=>c.estado===estado);
+  var f=estado==='todas'?todasCitas:todasCitas.filter(function(c){return c.estado===estado;});
   renderTablaTodas(f);
-};
+}
 
-window.filtrarCitasRango=function(){
-  const desde=document.getElementById('citas-desde').value;
-  const hasta=document.getElementById('citas-hasta').value;
+function filtrarCitasRango(){
+  var desde=document.getElementById('citas-desde').value;
+  var hasta=document.getElementById('citas-hasta').value;
   if(!desde||!hasta){toast('Selecciona las dos fechas','err');return;}
-  const f=todasCitas.filter(c=>c.fecha&&c.fecha>=desde&&c.fecha<=hasta);
-  document.querySelectorAll('#page-citas .filtros .fb').forEach(b=>b.classList.remove('active'));
+  var f=todasCitas.filter(function(c){return c.fecha&&c.fecha>=desde&&c.fecha<=hasta;});
+  document.querySelectorAll('#page-citas .filtros .fb').forEach(function(b){b.classList.remove('active');});
   renderTablaTodas(f);
   toast('Mostrando '+f.length+' citas');
-};
+}
 
-// CAMBIAR ESTADO
-window.cambiarEstado=async function(idCita,nuevoEstado){
-  try{
-    await updateDoc(doc(db,'spas',sucursalActual,'citas',idCita),{estado:nuevoEstado});
-    const idx=todasCitas.findIndex(c=>c.id===idCita);
-    if(idx!==-1)todasCitas[idx].estado=nuevoEstado;
+function cambiarEstado(idCita,nuevoEstado){
+  db.collection('spas').doc(sucursalActual).collection('citas').doc(idCita).update({estado:nuevoEstado}).then(function(){
+    for(var i=0;i<todasCitas.length;i++){if(todasCitas[i].id===idCita){todasCitas[i].estado=nuevoEstado;break;}}
     actualizarDashboard();
     renderTablaTodas(todasCitas);
     toast('Cita '+nuevoEstado,'ok');
-  }catch(e){toast('Error actualizando','err');}
-};
+  }).catch(function(){toast('Error actualizando','err');});
+}
 
-// PRO GRID
 function renderProGrid(idContenedor,citas){
-  const cont=document.getElementById(idContenedor);
+  var cont=document.getElementById(idContenedor);
   if(!cont)return;
-  const pros=todasPros.length>0?todasPros:[
-    {nombre:'Valentina G.',especialidad:'Nail Art - Acrilicas',foto:'',color:'#f9e4dc'},
-    {nombre:'Daniela R.',especialidad:'Gel - Semipermanente',foto:'',color:'#e8d5f0'},
-    {nombre:'Juliana M.',especialidad:'Pedicure - Spa',foto:'',color:'#fce8d5'},
-    {nombre:'Camila S.',especialidad:'Acrilicas - Nail Art',foto:'',color:'#d5f0e8'}
+  var pros=todasPros.length>0?todasPros:[
+    {nombre:'Valentina G.',especialidad:'Nail Art - Acrilicas',foto:''},
+    {nombre:'Daniela R.',especialidad:'Gel - Semipermanente',foto:''},
+    {nombre:'Juliana M.',especialidad:'Pedicure - Spa',foto:''},
+    {nombre:'Camila S.',especialidad:'Acrilicas - Nail Art',foto:''}
   ];
-  const stats=pros.map(p=>{
-    const cp=citas.filter(c=>c.profesional===p.nombre&&c.estado!=='cancelada');
-    const atendidas=citas.filter(c=>c.profesional===p.nombre&&c.estado==='atendida').length;
-    const ingresos=cp.reduce((s,c)=>s+getPrecio(c.servicio),0);
-    return{...p,citas:cp.length,atendidas,ingresos};
-  });
-  if(stats.every(p=>p.citas===0)){
+  var stats=[];
+  for(var i=0;i<pros.length;i++){
+    var p=pros[i];
+    var cp=citas.filter(function(c){return c.profesional===p.nombre&&c.estado!=='cancelada';});
+    var atendidas=citas.filter(function(c){return c.profesional===p.nombre&&c.estado==='atendida';}).length;
+    var ingresos=cp.reduce(function(s,c){return s+getPrecio(c.servicio);},0);
+    stats.push({nombre:p.nombre,especialidad:p.especialidad,foto:p.foto,citas:cp.length,atendidas:atendidas,ingresos:ingresos});
+  }
+  var todosCero=true;
+  for(var i=0;i<stats.length;i++){if(stats[i].citas>0){todosCero=false;break;}}
+  if(todosCero){
     cont.innerHTML='<div class="empty"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><div class="empty-txt">Sin citas en este periodo</div></div>';
     return;
   }
-  const maxIng=Math.max(...stats.map(p=>p.ingresos));
-  cont.innerHTML=stats.map(p=>{
-    const esTop=p.ingresos===maxIng&&maxIng>0;
-    const avatar=p.foto?'<img class="pro-avatar-img" src="'+p.foto+'" onerror="this.style.display=\'none\'">':'<div class="pro-avatar-placeholder"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>';
-    return '<div class="pro-card">'+
+  var maxIng=0;
+  for(var i=0;i<stats.length;i++){if(stats[i].ingresos>maxIng)maxIng=stats[i].ingresos;}
+  var html='';
+  for(var i=0;i<stats.length;i++){
+    var p=stats[i];
+    var esTop=p.ingresos===maxIng&&maxIng>0;
+    var avatar=p.foto?'<img class="pro-avatar-img" src="'+p.foto+'" onerror="this.style.display=\'none\'">':'<div class="pro-avatar-placeholder"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>';
+    html+='<div class="pro-card">'+
       '<div class="pro-card-hdr">'+avatar+'<div><div class="pro-card-name">'+p.nombre+(esTop?'<span class="best">Top</span>':'')+'</div><div class="pro-card-spec">'+(p.especialidad||'')+'</div></div></div>'+
       '<div class="pro-row"><span class="pro-key">Citas agendadas</span><span class="pro-val">'+p.citas+'</span></div>'+
       '<div class="pro-row"><span class="pro-key">Citas atendidas</span><span class="pro-val">'+p.atendidas+'</span></div>'+
       '<div class="pro-row"><span class="pro-key">Ingresos generados</span><span class="pro-val green">$'+p.ingresos.toLocaleString('es-CO')+'</span></div>'+
       '</div>';
-  }).join('');
+  }
+  cont.innerHTML=html;
 }
 
-window.filtrarPro=function(periodo,btn){
-  document.querySelectorAll('#page-profesionales-stats .filtros .fb').forEach(b=>b.classList.remove('active'));
+function filtrarPro(periodo,btn){
+  document.querySelectorAll('#page-profesionales-stats .filtros .fb').forEach(function(b){b.classList.remove('active');});
   btn.classList.add('active');
-  let citas=todasCitas;
-  const ahora=new Date();
-  if(periodo==='semana'){const ini=new Date(ahora);ini.setDate(ahora.getDate()-ahora.getDay());citas=todasCitas.filter(c=>c.fecha&&new Date(c.fecha+'T00:00:00')>=ini);}
-  else if(periodo==='mes'){const ini=new Date(ahora.getFullYear(),ahora.getMonth(),1);citas=todasCitas.filter(c=>c.fecha&&new Date(c.fecha+'T00:00:00')>=ini);}
+  var citas=todasCitas;
+  var ahora=new Date();
+  if(periodo==='semana'){var ini=new Date(ahora);ini.setDate(ahora.getDate()-ahora.getDay());citas=todasCitas.filter(function(c){return c.fecha&&new Date(c.fecha+'T00:00:00')>=ini;});}
+  else if(periodo==='mes'){var ini=new Date(ahora.getFullYear(),ahora.getMonth(),1);citas=todasCitas.filter(function(c){return c.fecha&&new Date(c.fecha+'T00:00:00')>=ini;});}
   renderProGrid('pro-total',citas);
-};
+}
 
-window.filtrarProRango=function(){
-  const desde=document.getElementById('pro-desde').value;
-  const hasta=document.getElementById('pro-hasta').value;
+function filtrarProRango(){
+  var desde=document.getElementById('pro-desde').value;
+  var hasta=document.getElementById('pro-hasta').value;
   if(!desde||!hasta){toast('Selecciona las dos fechas','err');return;}
-  const citas=todasCitas.filter(c=>c.fecha&&c.fecha>=desde&&c.fecha<=hasta);
-  document.querySelectorAll('#page-profesionales-stats .filtros .fb').forEach(b=>b.classList.remove('active'));
+  var citas=todasCitas.filter(function(c){return c.fecha&&c.fecha>=desde&&c.fecha<=hasta;});
+  document.querySelectorAll('#page-profesionales-stats .filtros .fb').forEach(function(b){b.classList.remove('active');});
   renderProGrid('pro-total',citas);
   toast('Mostrando '+citas.length+' citas');
-};
+}
 
-const storage = getStorage(app);
-let archivoFotoSeleccionado = null;
-
-// SELECCIONAR FOTO
-window.seleccionarFoto = function(input) {
-  const file = input.files[0];
-  if (!file) return;
-  if (file.size > 5 * 1024 * 1024) { toast('La foto debe pesar menos de 5MB', 'err'); return; }
-  archivoFotoSeleccionado = file;
-  // Preview local
-  const reader = new FileReader();
-  reader.onload = e => {
-    const prev = document.getElementById('avatar-preview');
-    const placeholder = document.getElementById('foto-placeholder');
-    prev.src = e.target.result;
-    prev.style.display = 'block';
-    placeholder.style.display = 'none';
-    document.getElementById('foto-nombre').style.display = 'block';
-    document.getElementById('foto-nombre').textContent = file.name;
+function seleccionarFoto(input){
+  var file=input.files[0];
+  if(!file)return;
+  if(file.size>5*1024*1024){toast('La foto debe pesar menos de 5MB','err');return;}
+  archivoFotoSeleccionado=file;
+  var reader=new FileReader();
+  reader.onload=function(e){
+    var prev=document.getElementById('avatar-preview');
+    document.getElementById('foto-placeholder').style.display='none';
+    prev.src=e.target.result;prev.style.display='block';
+    document.getElementById('foto-nombre').style.display='block';
+    document.getElementById('foto-nombre').textContent=file.name;
   };
   reader.readAsDataURL(file);
-};
-
-// SUBIR FOTO A STORAGE
-async function subirFoto(file, nombrePro) {
-  return new Promise((resolve, reject) => {
-    const ext = file.name.split('.').pop();
-    const path = 'spas/' + sucursalActual + '/profesionales/' + nombrePro.replace(/\s/g,'_') + '_' + Date.now() + '.' + ext;
-    const storageRef = ref(storage, path);
-    const uploadTask = uploadBytesResumable(storageRef, file);
-
-    document.getElementById('foto-progress').style.display = 'block';
-
-    uploadTask.on('state_changed',
-      snapshot => {
-        const pct = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
-        document.getElementById('foto-progress-bar').style.width = pct + '%';
-        document.getElementById('foto-progress-txt').textContent = 'Subiendo... ' + pct + '%';
-      },
-      err => reject(err),
-      async () => {
-        const url = await getDownloadURL(uploadTask.snapshot.ref);
-        document.getElementById('foto-progress-txt').textContent = 'Foto subida correctamente';
-        resolve(url);
-      }
-    );
-  });
 }
+
+function subirFoto(file,nombrePro,callback){
+  var ext=file.name.split('.').pop();
+  var path='spas/'+sucursalActual+'/profesionales/'+nombrePro.replace(/\s/g,'_')+'_'+Date.now()+'.'+ext;
+  var storageRef=storage.ref(path);
+  var uploadTask=storageRef.put(file);
+  document.getElementById('foto-progress').style.display='block';
+  uploadTask.on('state_changed',
+    function(snapshot){
+      var pct=Math.round((snapshot.bytesTransferred/snapshot.totalBytes)*100);
+      document.getElementById('foto-progress-bar').style.width=pct+'%';
+      document.getElementById('foto-progress-txt').textContent='Subiendo... '+pct+'%';
+    },
+    function(err){callback(err,null);},
+    function(){
+      uploadTask.snapshot.ref.getDownloadURL().then(function(url){
+        document.getElementById('foto-progress-txt').textContent='Foto subida correctamente';
+        callback(null,url);
+      });
+    }
+  );
+}
+
 function renderProsAdmin(){
-  const grid=document.getElementById('pros-admin-grid');
+  var grid=document.getElementById('pros-admin-grid');
   if(!grid)return;
   if(todasPros.length===0){
     grid.innerHTML='<div class="empty" style="grid-column:1/-1"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><div class="empty-txt">Aun no hay profesionales agregadas</div></div>';
     return;
   }
-  grid.innerHTML=todasPros.map(p=>{
-    const avatar=p.foto?'<img class="pro-admin-avatar" src="'+p.foto+'" onerror="this.src=\'\'">':'<div class="pro-admin-avatar-placeholder"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>';
-    return '<div class="pro-admin-card">'+avatar+'<div class="pro-admin-name">'+p.nombre+'</div><div class="pro-admin-spec">'+(p.especialidad||'')+'</div><div class="pro-admin-actions"><button class="btn-edit" onclick="editarPro(\''+p.id+'\')">Editar</button><button class="btn-del" onclick="eliminarPro(\''+p.id+'\')">Eliminar</button></div></div>';
-  }).join('');
+  var html='';
+  for(var i=0;i<todasPros.length;i++){
+    var p=todasPros[i];
+    var avatar=p.foto?'<img class="pro-admin-avatar" src="'+p.foto+'">':'<div class="pro-admin-avatar-placeholder"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>';
+    html+='<div class="pro-admin-card">'+avatar+'<div class="pro-admin-name">'+p.nombre+'</div><div class="pro-admin-spec">'+(p.especialidad||'')+'</div><div class="pro-admin-actions"><button class="btn-edit" onclick="editarPro(\''+p.id+'\')">Editar</button><button class="btn-del" onclick="eliminarPro(\''+p.id+'\')">Eliminar</button></div></div>';
+  }
+  grid.innerHTML=html;
 }
 
-// GESTIONAR PROFESIONALES
-window.abrirModalPro=function(){
-  archivoFotoSeleccionado = null;
+function abrirModalPro(){
+  archivoFotoSeleccionado=null;
   document.getElementById('pro-edit-id').value='';
   document.getElementById('pro-nombre').value='';
   document.getElementById('pro-especialidad').value='';
@@ -788,12 +775,15 @@ window.abrirModalPro=function(){
   document.getElementById('foto-progress-bar').style.width='0%';
   document.getElementById('modal-pro-title').textContent='Agregar profesional';
   document.getElementById('modal-pro').classList.add('open');
-};
+}
 
-window.cerrarModalPro=function(){document.getElementById('modal-pro').classList.remove('open');};=function(id){
-  const p=todasPros.find(x=>x.id===id);
+function cerrarModalPro(){document.getElementById('modal-pro').classList.remove('open');}
+
+function editarPro(id){
+  var p=null;
+  for(var i=0;i<todasPros.length;i++){if(todasPros[i].id===id){p=todasPros[i];break;}}
   if(!p)return;
-  archivoFotoSeleccionado = null;
+  archivoFotoSeleccionado=null;
   document.getElementById('pro-edit-id').value=id;
   document.getElementById('pro-nombre').value=p.nombre||'';
   document.getElementById('pro-especialidad').value=p.especialidad||'';
@@ -803,7 +793,7 @@ window.cerrarModalPro=function(){document.getElementById('modal-pro').classList.
   document.getElementById('foto-progress').style.display='none';
   document.getElementById('foto-nombre').style.display='none';
   if(p.foto){
-    const prev=document.getElementById('avatar-preview');
+    var prev=document.getElementById('avatar-preview');
     prev.src=p.foto;prev.style.display='block';
     document.getElementById('foto-placeholder').style.display='none';
   } else {
@@ -812,140 +802,131 @@ window.cerrarModalPro=function(){document.getElementById('modal-pro').classList.
   }
   document.getElementById('modal-pro-title').textContent='Editar profesional';
   document.getElementById('modal-pro').classList.add('open');
-};
+}
 
-window.previewFoto=function(url){
-  const prev=document.getElementById('avatar-preview');
-  if(url){prev.src=url;prev.style.display='block';}
-  else{prev.style.display='none';}
-};
-
-window.guardarPro=async function(){
-  const nombre=document.getElementById('pro-nombre').value.trim();
-  const especialidad=document.getElementById('pro-especialidad').value.trim();
-  const horario=document.getElementById('pro-horario').value.trim();
-  const editId=document.getElementById('pro-edit-id').value;
+function guardarPro(){
+  var nombre=document.getElementById('pro-nombre').value.trim();
+  var especialidad=document.getElementById('pro-especialidad').value.trim();
+  var horario=document.getElementById('pro-horario').value.trim();
+  var editId=document.getElementById('pro-edit-id').value;
   if(!nombre){toast('Ingresa el nombre','err');return;}
+  var btn=document.getElementById('btn-guardar-pro');
+  btn.disabled=true;btn.textContent='Guardando...';
 
-  const btn=document.getElementById('btn-guardar-pro');
-  btn.disabled=true;
-  btn.textContent='Guardando...';
-
-  try{
-    let fotoUrl = document.getElementById('pro-foto-url').value || '';
-
-    // Si hay archivo nuevo, subirlo primero
-    if(archivoFotoSeleccionado){
-      fotoUrl = await subirFoto(archivoFotoSeleccionado, nombre);
-    }
-
-    if(editId){
-      await updateDoc(doc(db,'spas',sucursalActual,'profesionales',editId),{nombre,especialidad,horario,foto:fotoUrl});
-      toast('Profesional actualizada','ok');
-    } else {
-      await addDoc(collection(db,'spas',sucursalActual,'profesionales'),{nombre,especialidad,horario,foto:fotoUrl,creadoEn:serverTimestamp()});
-      toast('Profesional agregada','ok');
-    }
-    cerrarModalPro();
-    await cargarDatos();
-  }catch(e){
-    console.error(e);
-    toast('Error guardando','err');
+  function guardarEnDB(fotoUrl){
+    var data={nombre:nombre,especialidad:especialidad,horario:horario,foto:fotoUrl};
+    var prom=editId?
+      db.collection('spas').doc(sucursalActual).collection('profesionales').doc(editId).update(data):
+      db.collection('spas').doc(sucursalActual).collection('profesionales').add(Object.assign(data,{creadoEn:firebase.firestore.FieldValue.serverTimestamp()}));
+    prom.then(function(){
+      toast(editId?'Profesional actualizada':'Profesional agregada','ok');
+      cerrarModalPro();cargarDatos();
+    }).catch(function(){toast('Error guardando','err');});
+    btn.disabled=false;btn.textContent='Guardar';
   }
 
-  btn.disabled=false;
-  btn.textContent='Guardar';
-};
+  if(archivoFotoSeleccionado){
+    subirFoto(archivoFotoSeleccionado,nombre,function(err,url){
+      if(err){toast('Error subiendo foto','err');btn.disabled=false;btn.textContent='Guardar';return;}
+      guardarEnDB(url);
+    });
+  } else {
+    guardarEnDB(document.getElementById('pro-foto-url').value||'');
+  }
+}
 
-window.eliminarPro=async function(id){
+function eliminarPro(id){
   if(!confirm('Eliminar esta profesional?'))return;
-  try{
-    await deleteDoc(doc(db,'spas',sucursalActual,'profesionales',id));
-    toast('Profesional eliminada','ok');
-    await cargarDatos();
-  }catch(e){toast('Error eliminando','err');}
-};
+  db.collection('spas').doc(sucursalActual).collection('profesionales').doc(id).delete().then(function(){
+    toast('Profesional eliminada','ok');cargarDatos();
+  }).catch(function(){toast('Error eliminando','err');});
+}
 
-// CRM
 function renderCRM(filtro){
-  const lista=document.getElementById('crm-lista');
-  const clientesEnriquecidos=todosClientes.map(c=>{
-    const citasC=todasCitas.filter(ct=>ct.uid===c.id&&ct.estado!=='cancelada');
-    const atendidas=todasCitas.filter(ct=>ct.uid===c.id&&ct.estado==='atendida');
-    const ordenadas=citasC.sort((a,b)=>(b.fecha||'').localeCompare(a.fecha||''));
-    const ultimaCita=ordenadas[0];
-    const diasSinVenir=ultimaCita?Math.floor((hoy-new Date(ultimaCita.fecha+'T00:00:00'))/86400000):999;
-    const totalGastado=atendidas.reduce((s,ct)=>s+getPrecio(ct.servicio),0);
-    const freq={};
-    citasC.forEach(ct=>{const s=ct.servicio?ct.servicio.split('—')[0].trim().split('–')[0].trim():'';if(s)freq[s]=(freq[s]||0)+1;});
-    const favorito=Object.keys(freq).sort((a,b)=>freq[b]-freq[a])[0]||null;
-    let estado='nueva';
+  var lista=document.getElementById('crm-lista');
+  var enriquecidos=[];
+  for(var i=0;i<todosClientes.length;i++){
+    var c=todosClientes[i];
+    var citasC=todasCitas.filter(function(ct){return ct.uid===c.id&&ct.estado!=='cancelada';});
+    var atendidas=todasCitas.filter(function(ct){return ct.uid===c.id&&ct.estado==='atendida';});
+    citasC.sort(function(a,b){return (b.fecha||'').localeCompare(a.fecha||'');});
+    var ultimaCita=citasC.length>0?citasC[0]:null;
+    var diasSinVenir=ultimaCita?Math.floor((hoy-new Date(ultimaCita.fecha+'T00:00:00'))/86400000):999;
+    var totalGastado=atendidas.reduce(function(s,ct){return s+getPrecio(ct.servicio);},0);
+    var freq={};
+    for(var j=0;j<citasC.length;j++){
+      var s=citasC[j].servicio?citasC[j].servicio.split('\u2014')[0].trim().split('\u2013')[0].trim():'';
+      if(s)freq[s]=(freq[s]||0)+1;
+    }
+    var favorito=null;
+    var maxF=0;
+    for(var k in freq){if(freq[k]>maxF){maxF=freq[k];favorito=k;}}
+    var estado='nueva';
     if(diasSinVenir<=30&&citasC.length>0)estado='activa';
     else if(diasSinVenir<=60&&citasC.length>0)estado='tibia';
     else if(diasSinVenir>60&&citasC.length>0)estado='perdida';
-    return{...c,visitas:atendidas.length,diasSinVenir,totalGastado,favorito,estado,ultimaFecha:ultimaCita?.fecha};
-  }).sort((a,b)=>b.visitas-a.visitas);
+    var ec=Object.assign({},c);
+    ec.visitas=atendidas.length;ec.diasSinVenir=diasSinVenir;ec.totalGastado=totalGastado;
+    ec.favorito=favorito;ec.estado=estado;ec.ultimaFecha=ultimaCita?ultimaCita.fecha:null;
+    enriquecidos.push(ec);
+  }
+  enriquecidos.sort(function(a,b){return b.visitas-a.visitas;});
 
-  document.getElementById('crm-total').textContent=clientesEnriquecidos.length;
-  document.getElementById('crm-activas').textContent=clientesEnriquecidos.filter(c=>c.estado==='activa').length;
-  document.getElementById('crm-perdidas').textContent=clientesEnriquecidos.filter(c=>c.estado==='perdida').length;
+  document.getElementById('crm-total').textContent=enriquecidos.length;
+  document.getElementById('crm-activas').textContent=enriquecidos.filter(function(c){return c.estado==='activa';}).length;
+  document.getElementById('crm-perdidas').textContent=enriquecidos.filter(function(c){return c.estado==='perdida';}).length;
 
-  const filtrados=filtro==='todas'?clientesEnriquecidos:clientesEnriquecidos.filter(c=>c.estado===filtro);
+  var filtrados=filtro==='todas'?enriquecidos:enriquecidos.filter(function(c){return c.estado===filtro;});
 
   if(filtrados.length===0){
     lista.innerHTML='<div class="empty"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg><div class="empty-txt">No hay clientas en esta categoria</div></div>';
     return;
   }
 
-  const etiquetas={activa:'Activa',tibia:'Tibia',perdida:'Perdida',nueva:'Nueva'};
-  const svgEstado={
-    activa:'<svg width="10" height="10" viewBox="0 0 10 10"><circle cx="5" cy="5" r="4" fill="#1a7a3d"/></svg>',
-    tibia:'<svg width="10" height="10" viewBox="0 0 10 10"><circle cx="5" cy="5" r="4" fill="#856404"/></svg>',
-    perdida:'<svg width="10" height="10" viewBox="0 0 10 10"><circle cx="5" cy="5" r="4" fill="#721c24"/></svg>',
-    nueva:'<svg width="10" height="10" viewBox="0 0 10 10"><circle cx="5" cy="5" r="4" fill="#0c5460"/></svg>'
-  };
-
-  lista.innerHTML=filtrados.map((c,i)=>{
-    const esMasRecurrente=i===0&&c.visitas>0;
-    return '<div class="crm-card">'+
+  var etiquetas={activa:'Activa',tibia:'Tibia',perdida:'Perdida',nueva:'Nueva'};
+  var svgColors={activa:'#1a7a3d',tibia:'#856404',perdida:'#721c24',nueva:'#0c5460'};
+  var html='';
+  for(var i=0;i<filtrados.length;i++){
+    var c=filtrados[i];
+    var esMasRecurrente=i===0&&c.visitas>0;
+    var svgDot='<svg width="10" height="10" viewBox="0 0 10 10"><circle cx="5" cy="5" r="4" fill="'+svgColors[c.estado]+'"/></svg>';
+    html+='<div class="crm-card">'+
       '<div class="crm-card-hdr">'+
-        '<div>'+
-          '<div class="crm-card-name">'+(c.nombre||'Sin nombre')+(esMasRecurrente?'<span class="best">Mas frecuente</span>':'')+'</div>'+
-          '<div class="crm-card-phone">'+(c.whatsapp||c.id)+'</div>'+
-        '</div>'+
-        '<span class="badge-e be-'+c.estado+'">'+svgEstado[c.estado]+' '+etiquetas[c.estado]+'</span>'+
+        '<div><div class="crm-card-name">'+(c.nombre||'Sin nombre')+(esMasRecurrente?'<span class="best">Mas frecuente</span>':'')+'</div>'+
+        '<div class="crm-card-phone">'+(c.whatsapp||c.id)+'</div></div>'+
+        '<span class="badge-e be-'+c.estado+'">'+svgDot+' '+etiquetas[c.estado]+'</span>'+
       '</div>'+
       '<div class="crm-card-stats">'+
         '<div class="crm-cs"><div class="crm-cs-val">'+c.visitas+'</div><div class="crm-cs-label">Visitas</div></div>'+
-        '<div class="crm-cs"><div class="crm-cs-val">'+( c.puntos||0)+'</div><div class="crm-cs-label">Puntos</div></div>'+
+        '<div class="crm-cs"><div class="crm-cs-val">'+(c.puntos||0)+'</div><div class="crm-cs-label">Puntos</div></div>'+
         '<div class="crm-cs"><div class="crm-cs-val">$'+c.totalGastado.toLocaleString('es-CO')+'</div><div class="crm-cs-label">Total gastado</div></div>'+
-        '<div class="crm-cs"><div class="crm-cs-val">'+(c.diasSinVenir===999?'—':c.diasSinVenir+'d')+'</div><div class="crm-cs-label">Sin visitar</div></div>'+
+        '<div class="crm-cs"><div class="crm-cs-val">'+(c.diasSinVenir===999?'--':c.diasSinVenir+'d')+'</div><div class="crm-cs-label">Sin visitar</div></div>'+
       '</div>'+
       (c.favorito?'<div class="crm-fav">Servicio favorito: '+c.favorito+'</div>':'')+
       (c.ultimaFecha?'<div style="font-size:0.72rem;color:#8a7a76;margin-top:8px">Ultima visita: '+c.ultimaFecha+'</div>':'')+
     '</div>';
-  }).join('');
+  }
+  lista.innerHTML=html;
 }
 
-window.filtrarCRM=function(filtro,btn){
-  document.querySelectorAll('#page-crm .filtros .fb').forEach(b=>b.classList.remove('active'));
+function filtrarCRM(filtro,btn){
+  document.querySelectorAll('#page-crm .filtros .fb').forEach(function(b){b.classList.remove('active');});
   btn.classList.add('active');
   renderCRM(filtro);
-};
+}
 
-// NAVEGACION
-window.showPage=function(pageName,btn){
-  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-  document.querySelectorAll('.slink').forEach(l=>l.classList.remove('active'));
+function showPage(pageName,btn){
+  document.querySelectorAll('.page').forEach(function(p){p.classList.remove('active');});
+  document.querySelectorAll('.slink').forEach(function(l){l.classList.remove('active');});
   document.getElementById('page-'+pageName).classList.add('active');
   btn.classList.add('active');
   if(window.innerWidth<=960)toggleSidebar();
-};
+}
 
-window.toggleSidebar=function(){
+function toggleSidebar(){
   document.getElementById('sidebar').classList.toggle('open');
   document.getElementById('overlay').classList.toggle('open');
-};
+}
 </script>
 
 </body>
