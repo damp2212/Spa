@@ -191,8 +191,44 @@ tbody td{padding:13px 14px;color:#1a1a1a;vertical-align:middle}
 .toast.err{background:#7a1a1a}
 
 /* RESPONSIVE */
-@media(max-width:960px){
-html,body{overflow-x:hidden}
+/* REPORTE */
+.reporte-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:20px}
+.rep-card{background:#fff;border-radius:16px;padding:20px;border:1px solid #eee}
+.rep-card-label{font-size:0.72rem;color:#8a7a76;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px}
+.rep-card-num{font-family:‘Playfair Display’,Georgia,serif;font-size:1.8rem;font-weight:700;color:#1a1a1a;line-height:1;margin-bottom:4px}
+.rep-card-sub{font-size:0.72rem;color:#8a7a76}
+.rep-card.green .rep-card-num{color:#1a7a3d}
+.rep-card.rose .rep-card-num{color:#7a3d35}
+.rep-card.red .rep-card-num{color:#7a1a1a}
+.ranking-item{display:flex;align-items:center;padding:12px 0;border-bottom:1px solid #f5f5f5}
+.ranking-item:last-child{border-bottom:none}
+.ranking-pos{width:24px;height:24px;border-radius:50%;background:#f5ede6;color:#7a3d35;font-size:0.72rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-right:12px}
+.ranking-name{font-size:0.88rem;font-weight:500;color:#1a1a1a;flex:1}
+.ranking-val{font-size:0.85rem;font-weight:700;color:#1a7a3d}
+.dia-bar-wrap{margin-bottom:12px}
+.dia-bar-label{display:flex;justify-content:space-between;font-size:0.78rem;margin-bottom:4px}
+.dia-bar{height:8px;background:#f5ede6;border-radius:50px;overflow:hidden}
+.dia-bar-fill{height:100%;background:linear-gradient(90deg,#e8c4b8,#c27b6e);border-radius:50px}
+/* HORARIO */
+.horario-pro-select{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:20px}
+.horario-pro-btn{padding:8px 16px;border-radius:50px;font-size:0.82rem;font-weight:500;cursor:pointer;font-family:‘DM Sans’,sans-serif;border:1.5px solid #e0e0e0;background:#fff;color:#8a7a76;transition:all 0.2s}
+.horario-pro-btn.active{background:#7a3d35;color:#fff;border-color:#7a3d35}
+.horario-grid{display:flex;flex-direction:column;gap:10px}
+.horario-dia{background:#f9f9f9;border-radius:14px;padding:16px 20px;border:1px solid #eee;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.horario-dia-nombre{font-weight:600;font-size:0.88rem;color:#1a1a1a;width:90px;flex-shrink:0}
+.horario-toggle{position:relative;width:44px;height:24px;flex-shrink:0}
+.horario-toggle input{opacity:0;width:0;height:0;position:absolute}
+.horario-toggle-slider{position:absolute;inset:0;background:#e0e0e0;border-radius:50px;cursor:pointer;transition:0.3s}
+.horario-toggle input:checked+.horario-toggle-slider{background:#7a3d35}
+.horario-toggle-slider:before{content:’’;position:absolute;width:18px;height:18px;left:3px;top:3px;background:#fff;border-radius:50%;transition:0.3s}
+.horario-toggle input:checked+.horario-toggle-slider:before{transform:translateX(20px)}
+.horario-horas{display:flex;align-items:center;gap:8px;flex:1;flex-wrap:wrap}
+.horario-horas label{font-size:0.75rem;color:#8a7a76}
+.horario-horas input[type=time]{padding:6px 10px;border:1.5px solid #e8c4b8;border-radius:8px;font-size:0.82rem;font-family:‘DM Sans’,sans-serif;color:#1a1a1a;background:#fff;outline:none}
+.horario-descanso{font-size:0.78rem;color:#8a7a76;font-style:italic}
+.btn-guardar-horario{background:#7a3d35;color:#fff;border:none;border-radius:50px;padding:12px 28px;font-size:0.88rem;font-weight:500;cursor:pointer;font-family:‘DM Sans’,sans-serif;margin-top:16px}
+@media(max-width:960px){.reporte-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:480px){.reporte-grid{grid-template-columns:1fr 1fr}.horario-dia{flex-direction:column;align-items:flex-start}}
 .sidebar{transform:translateX(-240px)}
 .sidebar.open{transform:translateX(0)}
 .main{margin-left:0;padding:76px 16px 24px}
@@ -323,6 +359,16 @@ html,body{overflow-x:hidden}
 <button class="slink" onclick="showPage('profesionales-mgmt',this)">
   <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>
   Gestionar equipo
+</button>
+<button class="slink" onclick="showPage('horarios',this)">
+  <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+  Horarios
+</button>
+
+<div class="ss">Reportes</div>
+<button class="slink" onclick="showPage('reporte',this)">
+  <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+  Reporte del spa
 </button>
 
 <div class="ss">Clientes</div>
@@ -456,6 +502,58 @@ html,body{overflow-x:hidden}
   </div>
   <div id="crm-lista"></div>
 </div>
+
+<!-- REPORTE DEL SPA -->
+<div class="page" id="page-reporte">
+  <div class="topbar">
+    <div><div class="topbar-title">Reporte del <em>spa</em></div></div>
+    <div class="topbar-badge" id="badge-reporte">Sede El Poblado</div>
+  </div>
+  <div class="filtros">
+    <button class="fb active" onclick="filtrarReporte('semana',this)">Esta semana</button>
+    <button class="fb" onclick="filtrarReporte('mes',this)">Este mes</button>
+    <button class="fb" onclick="filtrarReporte('ano',this)">Este ano</button>
+    <button class="fb" onclick="filtrarReporte('todo',this)">Todo</button>
+  </div>
+  <div class="filtro-fechas">
+    <label>Desde</label><input type="date" id="rep-desde">
+    <label>Hasta</label><input type="date" id="rep-hasta">
+    <button class="btn-filtrar" onclick="filtrarReporteRango()">Filtrar</button>
+  </div>
+  <div class="reporte-grid" id="rep-stats"></div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:20px">
+    <div class="card">
+      <div class="card-title">Servicios mas pedidos</div>
+      <div id="rep-servicios-ranking"></div>
+    </div>
+    <div class="card">
+      <div class="card-title">Dias con mas citas</div>
+      <div id="rep-dias-bars"></div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title">Resumen de clientas</div>
+    <div class="reporte-grid" id="rep-clientas"></div>
+  </div>
+</div>
+
+<!-- HORARIO PROFESIONALES -->
+<div class="page" id="page-horarios">
+  <div class="topbar">
+    <div><div class="topbar-title">Horario <em>profesionales</em></div></div>
+    <div class="topbar-badge" id="badge-horarios">Sede El Poblado</div>
+  </div>
+  <div class="card">
+    <div class="card-title">Selecciona una profesional</div>
+    <div class="horario-pro-select" id="horario-pro-select"></div>
+    <div id="horario-contenido">
+      <div class="empty">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        <div class="empty-txt">Selecciona una profesional para editar su horario</div>
+      </div>
+    </div>
+  </div>
+</div>
 ```
 
   </div>
@@ -534,7 +632,7 @@ function cambiarSucursal(val){
   sucursalActual=val;
   var nombres={'glamnails':'Sede El Poblado','glamnails-laureles':'Sede Laureles','glamnails-envigado':'Sede Envigado'};
   var n=nombres[val]||val;
-  ['badge-dash','badge-citas','badge-pro-stats','badge-mgmt','badge-crm'].forEach(function(id){
+  ['badge-dash','badge-citas','badge-pro-stats','badge-mgmt','badge-crm','badge-reporte','badge-horarios'].forEach(function(id){
     var el=document.getElementById(id);if(el)el.textContent=n;
   });
   cargarDatos();
@@ -915,11 +1013,160 @@ function filtrarCRM(filtro,btn){
   renderCRM(filtro);
 }
 
+// REPORTE
+var repCitasActuales = [];
+
+function filtrarReporte(periodo, btn) {
+  document.querySelectorAll('#page-reporte .filtros .fb').forEach(function(b){b.classList.remove('active');});
+  btn.classList.add('active');
+  var ahora = new Date();
+  var citas = todasCitas;
+  if(periodo==='semana'){var ini=new Date(ahora);ini.setDate(ahora.getDate()-ahora.getDay());citas=todasCitas.filter(function(c){return c.fecha&&new Date(c.fecha+'T00:00:00')>=ini;});}
+  else if(periodo==='mes'){var ini=new Date(ahora.getFullYear(),ahora.getMonth(),1);citas=todasCitas.filter(function(c){return c.fecha&&new Date(c.fecha+'T00:00:00')>=ini;});}
+  else if(periodo==='ano'){var ini=new Date(ahora.getFullYear(),0,1);citas=todasCitas.filter(function(c){return c.fecha&&new Date(c.fecha+'T00:00:00')>=ini;});}
+  repCitasActuales = citas;
+  renderReporte(citas);
+}
+
+function filtrarReporteRango(){
+  var desde=document.getElementById('rep-desde').value;
+  var hasta=document.getElementById('rep-hasta').value;
+  if(!desde||!hasta){toast('Selecciona las dos fechas','err');return;}
+  var citas=todasCitas.filter(function(c){return c.fecha&&c.fecha>=desde&&c.fecha<=hasta;});
+  document.querySelectorAll('#page-reporte .filtros .fb').forEach(function(b){b.classList.remove('active');});
+  repCitasActuales=citas;
+  renderReporte(citas);
+  toast('Mostrando '+citas.length+' citas');
+}
+
+function renderReporte(citas){
+  var atendidas=citas.filter(function(c){return c.estado==='atendida';});
+  var canceladas=citas.filter(function(c){return c.estado==='cancelada';});
+  var pendientes=citas.filter(function(c){return c.estado==='pendiente'||c.estado==='confirmada';});
+  var ingresos=atendidas.reduce(function(s,c){return s+getPrecio(c.servicio);},0);
+  var promedio=atendidas.length>0?Math.round(ingresos/atendidas.length):0;
+  var tasaCan=citas.length>0?Math.round((canceladas.length/citas.length)*100):0;
+
+  // Stats cards
+  document.getElementById('rep-stats').innerHTML=
+    '<div class="rep-card green"><div class="rep-card-label">Ingresos totales</div><div class="rep-card-num">$'+ingresos.toLocaleString('es-CO')+'</div><div class="rep-card-sub">de citas atendidas</div></div>'+
+    '<div class="rep-card rose"><div class="rep-card-label">Promedio por cita</div><div class="rep-card-num">$'+promedio.toLocaleString('es-CO')+'</div><div class="rep-card-sub">ingreso promedio</div></div>'+
+    '<div class="rep-card"><div class="rep-card-label">Citas agendadas</div><div class="rep-card-num">'+citas.length+'</div><div class="rep-card-sub">'+atendidas.length+' atendidas</div></div>'+
+    '<div class="rep-card red"><div class="rep-card-label">Tasa cancelacion</div><div class="rep-card-num">'+tasaCan+'%</div><div class="rep-card-sub">'+canceladas.length+' canceladas</div></div>'+
+    '<div class="rep-card"><div class="rep-card-label">Pendientes</div><div class="rep-card-num">'+pendientes.length+'</div><div class="rep-card-sub">por atender</div></div>';
+
+  // Servicios ranking
+  var freqSvc={};
+  var ingSvc={};
+  for(var i=0;i<atendidas.length;i++){
+    var s=atendidas[i].servicio?atendidas[i].servicio.split('\u2014')[0].trim().split('\u2013')[0].trim():'';
+    if(s){freqSvc[s]=(freqSvc[s]||0)+1;ingSvc[s]=(ingSvc[s]||0)+getPrecio(atendidas[i].servicio);}
+  }
+  var svcList=Object.keys(freqSvc).sort(function(a,b){return freqSvc[b]-freqSvc[a];});
+  var svcHtml='';
+  for(var i=0;i<Math.min(svcList.length,6);i++){
+    svcHtml+='<div class="ranking-item"><div class="ranking-pos">'+(i+1)+'</div><div class="ranking-name">'+svcList[i]+'</div><span class="ranking-val">'+freqSvc[svcList[i]]+' citas</span></div>';
+  }
+  document.getElementById('rep-servicios-ranking').innerHTML=svcHtml||'<div class="empty-txt" style="color:#aaa;font-size:0.82rem;padding:20px 0">Sin datos</div>';
+
+  // Dias de la semana
+  var dias=['Dom','Lun','Mar','Mie','Jue','Vie','Sab'];
+  var freqDia=[0,0,0,0,0,0,0];
+  for(var i=0;i<citas.length;i++){
+    if(citas[i].fecha){var d=new Date(citas[i].fecha+'T00:00:00');freqDia[d.getDay()]++;}
+  }
+  var maxDia=Math.max.apply(null,freqDia)||1;
+  var diasHtml='';
+  for(var i=0;i<7;i++){
+    var pct=Math.round((freqDia[i]/maxDia)*100);
+    diasHtml+='<div class="dia-bar-wrap"><div class="dia-bar-label"><span>'+dias[i]+'</span><span>'+freqDia[i]+' citas</span></div><div class="dia-bar"><div class="dia-bar-fill" style="width:'+pct+'%"></div></div></div>';
+  }
+  document.getElementById('rep-dias-bars').innerHTML=diasHtml;
+
+  // Clientas resumen
+  var uids=[];
+  for(var i=0;i<citas.length;i++){if(citas[i].uid&&uids.indexOf(citas[i].uid)===-1)uids.push(citas[i].uid);}
+  var iniMes=new Date(hoy.getFullYear(),hoy.getMonth(),1);
+  var nuevasMes=todosClientes.filter(function(c){return c.creadoEn&&c.creadoEn.toDate&&c.creadoEn.toDate()>=iniMes;}).length;
+  document.getElementById('rep-clientas').innerHTML=
+    '<div class="rep-card"><div class="rep-card-label">Clientas en periodo</div><div class="rep-card-num">'+uids.length+'</div><div class="rep-card-sub">visitaron el spa</div></div>'+
+    '<div class="rep-card green"><div class="rep-card-label">Nuevas este mes</div><div class="rep-card-num">'+nuevasMes+'</div><div class="rep-card-sub">primer registro</div></div>'+
+    '<div class="rep-card"><div class="rep-card-label">Total registradas</div><div class="rep-card-num">'+todosClientes.length+'</div><div class="rep-card-sub">en el sistema</div></div>';
+}
+
+// HORARIOS
+var proHorarioActual = null;
+var DIAS = ['Lunes','Martes','Miercoles','Jueves','Viernes','Sabado','Domingo'];
+
+function renderHorarioProSelect(){
+  var wrap=document.getElementById('horario-pro-select');
+  if(!wrap)return;
+  if(todasPros.length===0){wrap.innerHTML='<div style="font-size:0.85rem;color:#aaa">Primero agrega profesionales en Gestionar equipo</div>';return;}
+  var html='';
+  for(var i=0;i<todasPros.length;i++){
+    html+='<button class="horario-pro-btn" onclick="verHorarioPro(\''+todasPros[i].id+'\',this)">'+todasPros[i].nombre+'</button>';
+  }
+  wrap.innerHTML=html;
+}
+
+function verHorarioPro(id,btn){
+  document.querySelectorAll('.horario-pro-btn').forEach(function(b){b.classList.remove('active');});
+  btn.classList.add('active');
+  proHorarioActual=id;
+  var p=null;
+  for(var i=0;i<todasPros.length;i++){if(todasPros[i].id===id){p=todasPros[i];break;}}
+  if(!p)return;
+  var horario=p.horario_semanal||{};
+  var html='<div class="horario-grid">';
+  for(var i=0;i<DIAS.length;i++){
+    var dia=DIAS[i];
+    var diaKey='dia'+i;
+    var activo=horario[diaKey]?horario[diaKey].activo:i<5;
+    var inicio=horario[diaKey]?horario[diaKey].inicio:'08:00';
+    var fin=horario[diaKey]?horario[diaKey].fin:'18:00';
+    html+='<div class="horario-dia">'+
+      '<div class="horario-dia-nombre">'+dia+'</div>'+
+      '<label class="horario-toggle"><input type="checkbox" id="h-activo-'+i+'" '+(activo?'checked':'')+' onchange="toggleDia('+i+')"><span class="horario-toggle-slider"></span></label>'+
+      '<div class="horario-horas" id="h-horas-'+i+'" style="'+(activo?'':'display:none')+'">'+
+        '<label>Entrada</label><input type="time" id="h-inicio-'+i+'" value="'+inicio+'">'+
+        '<label>Salida</label><input type="time" id="h-fin-'+i+'" value="'+fin+'">'+
+      '</div>'+
+      '<div id="h-descanso-'+i+'" class="horario-descanso" style="'+(activo?'display:none':'')+'">Dia de descanso</div>'+
+    '</div>';
+  }
+  html+='</div>';
+  html+='<button class="btn-guardar-horario" onclick="guardarHorario()">Guardar horario</button>';
+  document.getElementById('horario-contenido').innerHTML=html;
+}
+
+function toggleDia(i){
+  var activo=document.getElementById('h-activo-'+i).checked;
+  document.getElementById('h-horas-'+i).style.display=activo?'flex':'none';
+  document.getElementById('h-descanso-'+i).style.display=activo?'none':'block';
+}
+
+function guardarHorario(){
+  if(!proHorarioActual){toast('Selecciona una profesional','err');return;}
+  var horario={};
+  for(var i=0;i<DIAS.length;i++){
+    var activo=document.getElementById('h-activo-'+i).checked;
+    var inicio=document.getElementById('h-inicio-'+i)?document.getElementById('h-inicio-'+i).value:'08:00';
+    var fin=document.getElementById('h-fin-'+i)?document.getElementById('h-fin-'+i).value:'18:00';
+    horario['dia'+i]={activo:activo,inicio:inicio,fin:fin};
+  }
+  db.collection('spas').doc(sucursalActual).collection('profesionales').doc(proHorarioActual).update({horario_semanal:horario}).then(function(){
+    toast('Horario guardado','ok');
+    cargarDatos();
+  }).catch(function(){toast('Error guardando','err');});
+}
+
 function showPage(pageName,btn){
   document.querySelectorAll('.page').forEach(function(p){p.classList.remove('active');});
   document.querySelectorAll('.slink').forEach(function(l){l.classList.remove('active');});
   document.getElementById('page-'+pageName).classList.add('active');
   btn.classList.add('active');
+  if(pageName==='reporte') filtrarReporte('semana',document.querySelector('#page-reporte .fb'));
+  if(pageName==='horarios') renderHorarioProSelect();
   if(window.innerWidth<=960)toggleSidebar();
 }
 
