@@ -146,8 +146,11 @@ footer { background-color: #1a1a1a; padding: 52px 24px 32px; }
 .ft-powered { font-size: 0.75rem; color: #666666; }
 .ft-powered strong { color: #aaaaaa; }
 
-.nav-login { background: transparent; color: #7a3d35; border: 1.5px solid #e8c4b8; padding: 9px 18px; border-radius: 50px; font-size: 0.82rem; font-weight: 500; cursor: pointer; font-family: ‘DM Sans’, sans-serif; }
-.nav-user-info { font-size: 0.78rem; color: #7a3d35; font-weight: 500; cursor: pointer; }
+.nav-login { background: #f5ede6; color: #7a3d35; border: 1.5px solid #e8c4b8; padding: 9px 18px; border-radius: 50px; font-size: 0.82rem; font-weight: 500; cursor: pointer; font-family: ‘DM Sans’, sans-serif; display: inline-flex; align-items: center; gap: 6px; transition: all 0.2s; }
+.nav-login:hover { background: #e8c4b8; }
+.nav-login svg { width: 14px; height: 14px; stroke: #7a3d35; flex-shrink: 0; }
+.nav-user-info { font-size: 0.78rem; color: #7a3d35; font-weight: 500; cursor: pointer; background: #f5ede6; border: 1.5px solid #e8c4b8; padding: 9px 16px; border-radius: 50px; display: inline-flex; align-items: center; gap: 6px; transition: all 0.2s; }
+.nav-user-info:hover { background: #f8d7da; border-color: #f0b8b8; color: #721c24; }
 
 /* BANNER PUNTOS */
 .banner-puntos { background: linear-gradient(135deg, #7a3d35, #c27b6e); border-radius: 20px; padding: 28px 24px; text-align: center; margin-top: 20px; }
@@ -169,7 +172,10 @@ footer { background-color: #1a1a1a; padding: 52px 24px 32px; }
   <div class="nav-logo">Glam<span>Nails</span></div>
   <div style="display:flex;gap:10px;align-items:center;">
     <div id="nav-user-wrap">
-      <button class="nav-login" onclick="abrirLogin()" id="btn-nav-login">Iniciar sesion</button>
+      <button class="nav-login" onclick="abrirLogin()">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        Iniciar sesion
+      </button>
     </div>
     <a href="#agendar" class="nav-cta">Agendar cita</a>
   </div>
@@ -253,8 +259,8 @@ footer { background-color: #1a1a1a; padding: 52px 24px 32px; }
   <div class="book-feat"><div class="book-feat-icon">⭐</div> Acumula puntos en cada visita</div>
   <div class="booking-form">
     <div class="form-title">Reservar cita</div>
-    <div class="form-group"><label class="form-label">Tu nombre</label><input class="form-control" id="f-nombre" type="text" placeholder="María Camila Pérez"></div>
-    <div class="form-group"><label class="form-label">WhatsApp</label><input class="form-control" id="f-whatsapp" type="tel" placeholder="300 000 0000"></div>
+    <div class="form-group" id="grupo-nombre"><label class="form-label">Tu nombre</label><input class="form-control" id="f-nombre" type="text" placeholder="María Camila Pérez"></div>
+    <div class="form-group" id="grupo-whatsapp"><label class="form-label">WhatsApp</label><input class="form-control" id="f-whatsapp" type="tel" placeholder="300 000 0000"></div>
     <div class="form-group">
       <label class="form-label">Servicio</label>
       <select class="form-control" id="f-servicio">
@@ -404,6 +410,20 @@ function cargarPerfilUsuario(tel) {
   });
 }
 
+function mostrarFormularioLogueado() {
+  var gNombre = document.getElementById('grupo-nombre');
+  var gWa = document.getElementById('grupo-whatsapp');
+  if(gNombre) gNombre.style.display = 'none';
+  if(gWa) gWa.style.display = 'none';
+}
+
+function mostrarFormularioDeslogueado() {
+  var gNombre = document.getElementById('grupo-nombre');
+  var gWa = document.getElementById('grupo-whatsapp');
+  if(gNombre) gNombre.style.display = 'block';
+  if(gWa) gWa.style.display = 'block';
+}
+
 function abrirLogin() {
   document.getElementById('login-overlay').style.display = 'flex';
   document.getElementById('paso-telefono').style.display = 'block';
@@ -413,8 +433,7 @@ function abrirLogin() {
 function actualizarNavUsuario(tel) {
   document.getElementById('login-overlay').style.display = 'none';
   var wrap = document.getElementById('nav-user-wrap');
-  if (wrap) wrap.innerHTML = '<span class="nav-user-info" onclick="cerrarSesion()">👤 ' + tel + ' · Salir</span>';
-  // Mostrar puntos reales
+  if (wrap) wrap.innerHTML = '<span class="nav-user-info" onclick="cerrarSesion()" title="Toca para cerrar sesion"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" style="width:14px;height:14px;stroke:#7a3d35"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>' + tel.replace('+57','') + ' · Salir</span>';
   document.getElementById('banner-sin-sesion').style.display = 'none';
   document.getElementById('card-con-sesion').style.display = 'block';
 }
@@ -493,8 +512,16 @@ function cerrarSesion() {
   localStorage.removeItem('glamnails_session');
   usuarioActual = null;
   telefonoActual = null;
-  var navUser = document.getElementById('nav-user');
-  if (navUser) navUser.textContent = '';
+  // Restaurar botón de login sin refrescar
+  var wrap = document.getElementById('nav-user-wrap');
+  if (wrap) wrap.innerHTML = '<button class="nav-login" onclick="abrirLogin()">Iniciar sesion</button>';
+  // Ocultar puntos reales y mostrar banner
+  document.getElementById('banner-sin-sesion').style.display = 'block';
+  document.getElementById('card-con-sesion').style.display = 'none';
+  // Limpiar formulario
+  var fn = document.getElementById('f-nombre'); if(fn) fn.value = '';
+  var fw = document.getElementById('f-whatsapp'); if(fw) fw.value = '';
+  mostrarFormularioDeslogueado();
   showToast('Sesion cerrada');
 }
 
@@ -587,6 +614,24 @@ function guardarCita() {
   </div>
   <button id="btn-verificar" onclick="verificarCodigo()" style="width:100%;background:#7a3d35;color:#ffffff;border:none;border-radius:50px;padding:15px;font-size:0.92rem;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif;margin-bottom:12px;">Verificar codigo</button>
   <button onclick="document.getElementById('paso-telefono').style.display='block';document.getElementById('paso-codigo').style.display='none';" style="width:100%;background:transparent;color:#8a7a76;border:1px solid #e8c4b8;border-radius:50px;padding:12px;font-size:0.85rem;cursor:pointer;font-family:'DM Sans',sans-serif;">Cambiar numero</button>
+</div>
+
+<!-- PASO 3: DATOS PERSONALES (solo primera vez) -->
+<div id="paso-datos" style="display:none;">
+  <div style="text-align:center;margin-bottom:24px;">
+    <div style="font-size:2.5rem;margin-bottom:12px;">✨</div>
+    <div style="font-family:'Playfair Display',Georgia,serif;font-size:1.5rem;color:#1a1a1a;margin-bottom:8px;">Un ultimo paso</div>
+    <div style="font-size:0.85rem;color:#8a7a76;line-height:1.6">Cuentanos un poco mas sobre ti para personalizar tu experiencia</div>
+  </div>
+  <div style="margin-bottom:16px;">
+    <label style="display:block;font-size:0.72rem;color:#8a7a76;text-transform:uppercase;letter-spacing:0.5px;font-weight:500;margin-bottom:7px;">Tu nombre</label>
+    <input id="reg-nombre" type="text" placeholder="Maria Camila Perez" style="width:100%;padding:13px 16px;border:1.5px solid #e8c4b8;border-radius:12px;font-size:0.9rem;color:#1a1a1a;background:#fdf8f5;font-family:'DM Sans',sans-serif;outline:none;-webkit-appearance:none;">
+  </div>
+  <div style="margin-bottom:20px;">
+    <label style="display:block;font-size:0.72rem;color:#8a7a76;text-transform:uppercase;letter-spacing:0.5px;font-weight:500;margin-bottom:7px;">Fecha de cumpleanos (opcional)</label>
+    <input id="reg-cumple" type="date" style="width:100%;padding:13px 16px;border:1.5px solid #e8c4b8;border-radius:12px;font-size:0.9rem;color:#1a1a1a;background:#fdf8f5;font-family:'DM Sans',sans-serif;outline:none;-webkit-appearance:none;">
+  </div>
+  <button id="btn-guardar-datos" onclick="guardarDatosRegistro()" style="width:100%;background:#7a3d35;color:#ffffff;border:none;border-radius:50px;padding:15px;font-size:0.92rem;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif;">Guardar y entrar</button>
 </div>
 ```
 
