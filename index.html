@@ -146,7 +146,16 @@ footer { background-color: #1a1a1a; padding: 52px 24px 32px; }
 .ft-powered { font-size: 0.75rem; color: #666666; }
 .ft-powered strong { color: #aaaaaa; }
 
-.wa-float { position: fixed; bottom: 24px; right: 24px; width: 52px; height: 52px; background: #25D366; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; text-decoration: none; box-shadow: 0 4px 16px rgba(37,211,102,0.4); z-index: 998; }
+.nav-login { background: transparent; color: #7a3d35; border: 1.5px solid #e8c4b8; padding: 9px 18px; border-radius: 50px; font-size: 0.82rem; font-weight: 500; cursor: pointer; font-family: ‘DM Sans’, sans-serif; }
+.nav-user-info { font-size: 0.78rem; color: #7a3d35; font-weight: 500; cursor: pointer; }
+
+/* BANNER PUNTOS */
+.banner-puntos { background: linear-gradient(135deg, #7a3d35, #c27b6e); border-radius: 20px; padding: 28px 24px; text-align: center; margin-top: 20px; }
+.banner-puntos-title { font-family: ‘Playfair Display’, Georgia, serif; font-size: 1.3rem; color: #ffffff; margin-bottom: 8px; }
+.banner-puntos-sub { font-size: 0.85rem; color: rgba(245,237,230,0.8); line-height: 1.6; margin-bottom: 20px; }
+.banner-puntos-badges { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; margin-bottom: 20px; }
+.banner-puntos-badge { font-size: 0.72rem; padding: 6px 12px; border-radius: 50px; background: rgba(255,255,255,0.15); color: #ffffff; font-weight: 500; }
+.banner-puntos-btn { background: #ffffff; color: #7a3d35; border: none; border-radius: 50px; padding: 12px 28px; font-size: 0.88rem; font-weight: 600; cursor: pointer; font-family: ‘DM Sans’, sans-serif; }
 </style>
 
 </head>
@@ -158,7 +167,12 @@ footer { background-color: #1a1a1a; padding: 52px 24px 32px; }
 
 <nav>
   <div class="nav-logo">Glam<span>Nails</span></div>
-  <a href="#agendar" class="nav-cta">Agendar cita</a>
+  <div style="display:flex;gap:10px;align-items:center;">
+    <div id="nav-user-wrap">
+      <button class="nav-login" onclick="abrirLogin()" id="btn-nav-login">Iniciar sesion</button>
+    </div>
+    <a href="#agendar" class="nav-cta">Agendar cita</a>
+  </div>
 </nav>
 
 <section class="hero">
@@ -276,7 +290,7 @@ footer { background-color: #1a1a1a; padding: 52px 24px 32px; }
   </div>
 </section>
 
-<section class="section-nude">
+<section class="section-nude" id="seccion-puntos">
   <div class="sec-label">Programa de fidelidad</div>
   <h2 class="sec-title">Acumula <em>puntos</em><br>y gana premios</h2>
   <p style="color:#8a7a76;font-size:0.9rem;line-height:1.7">Cada visita suma puntos. Canjéalos por servicios gratis y descuentos exclusivos para nuestras clientas más fieles.</p>
@@ -285,12 +299,34 @@ footer { background-color: #1a1a1a; padding: 52px 24px 32px; }
     <span class="badge bg-rose">💗 200 pts = 20% OFF</span>
     <span class="badge bg-green">🎁 100 pts = Nail art gratis</span>
   </div>
-  <div class="puntos-card">
+
+  <!-- SIN SESION: Banner invitacion -->
+
+  <div class="banner-puntos" id="banner-sin-sesion">
+    <div class="banner-puntos-title">Acumula GlamPoints en cada visita</div>
+    <div class="banner-puntos-sub">Crea tu cuenta gratis y empieza a ganar puntos desde tu primera cita. Canjealos por servicios, descuentos y sorpresas.</div>
+    <div class="banner-puntos-badges">
+      <span class="banner-puntos-badge">⭐ 500 pts = Manicure gratis</span>
+      <span class="banner-puntos-badge">💗 200 pts = 20% OFF</span>
+      <span class="banner-puntos-badge">🎁 100 pts = Nail art gratis</span>
+    </div>
+    <button class="banner-puntos-btn" onclick="abrirLogin()">Crear cuenta gratis</button>
+  </div>
+
+  <!-- CON SESION: Puntos reales -->
+
+  <div class="puntos-card" id="card-con-sesion" style="display:none;">
     <div class="puntos-hdr"><div class="puntos-icon">⭐</div><div><div class="puntos-title">Mis GlamPoints</div><div class="puntos-sub">Programa de recompensas</div></div></div>
-    <div class="puntos-big"><div class="puntos-num">340</div><div class="puntos-desc">puntos · Nivel <strong style="color:#c27b6e">Rose</strong></div></div>
-    <div class="prog-row"><span>Progreso al nivel Gold</span><span class="prog-val">340 / 500</span></div>
-    <div class="prog-bar"><div class="prog-fill" style="width:68%"></div></div>
-    <div class="prog-hint">Te faltan 160 puntos para una manicure gratis</div>
+    <div class="puntos-big"><div class="puntos-num" id="puntos-num">0</div><div class="puntos-desc">puntos acumulados</div></div>
+    <div class="prog-row"><span>Progreso al nivel Gold</span><span class="prog-val" id="puntos-prog">0 / 500</span></div>
+    <div class="prog-bar"><div class="prog-fill" id="puntos-fill" style="width:0%"></div></div>
+    <div class="prog-hint" id="puntos-hint">Agenda tu primera cita y empieza a acumular</div>
+    <div class="puntos-next" id="puntos-next" style="display:none;">
+      <div class="puntos-next-lbl">Proxima visita</div>
+      <div class="puntos-next-val" id="puntos-next-val"></div>
+    </div>
+  </div>
+</section>
     <div class="puntos-next"><div class="puntos-next-lbl">Próxima visita</div><div class="puntos-next-val">Viernes 18 Abr · 3:00 PM con Valentina</div></div>
   </div>
 </section>
@@ -362,10 +398,19 @@ function cargarPerfilUsuario(tel) {
   });
 }
 
+function abrirLogin() {
+  document.getElementById('login-overlay').style.display = 'flex';
+  document.getElementById('paso-telefono').style.display = 'block';
+  document.getElementById('paso-codigo').style.display = 'none';
+}
+
 function actualizarNavUsuario(tel) {
   document.getElementById('login-overlay').style.display = 'none';
-  var navUser = document.getElementById('nav-user');
-  if (navUser) navUser.textContent = '👤 ' + tel;
+  var wrap = document.getElementById('nav-user-wrap');
+  if (wrap) wrap.innerHTML = '<span class="nav-user-info" onclick="cerrarSesion()">👤 ' + tel + ' · Salir</span>';
+  // Mostrar puntos reales
+  document.getElementById('banner-sin-sesion').style.display = 'none';
+  document.getElementById('card-con-sesion').style.display = 'block';
 }
 
 function enviarCodigo() {
