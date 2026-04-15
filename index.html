@@ -390,6 +390,7 @@ if (sesionGuardada) {
     telefonoActual = usuarioActual.tel;
     cargarPerfilUsuario(usuarioActual.tel);
     actualizarNavUsuario(usuarioActual.tel);
+    mostrarFormularioLogueado();
   } catch(e) { localStorage.removeItem('glamnails_session'); }
 }
 
@@ -487,15 +488,20 @@ function verificarCodigo() {
       usuarioActual = { tel: data.tel };
       localStorage.setItem('glamnails_session', JSON.stringify(usuarioActual));
 
-      // Crear/actualizar perfil en Firestore
-      db.collection('spas').doc('glamnails').collection('clientes').doc(data.tel).set({
-        whatsapp: data.tel, puntos: 0, visitas: 0,
-        creadoEn: firebase.firestore.FieldValue.serverTimestamp()
-      }, { merge: true });
-
-      actualizarNavUsuario(data.tel);
-      cargarPerfilUsuario(data.tel);
-      showToast('Bienvenida! Ya podes agendar tu cita', 'success');
+      // Verificar si es primera vez
+      db.collection('spas').doc('glamnails').collection('clientes').doc(data.tel).get().then(function(doc) {
+        if (!doc.exists || !doc.data().nombre) {
+          // Primera vez — mostrar paso 3
+          document.getElementById('paso-codigo').style.display = 'none';
+          document.getElementById('paso-datos').style.display = 'block';
+        } else {
+          // Ya tiene datos — entrar directo
+          actualizarNavUsuario(data.tel);
+          cargarPerfilUsuario(data.tel);
+          mostrarFormularioLogueado();
+          showToast('Bienvenida de nuevo!', 'success');
+        }
+      });
     } else {
       showToast(data.error || 'Codigo incorrecto', 'error');
       btn.disabled = false;
@@ -505,6 +511,38 @@ function verificarCodigo() {
     showToast('Error de conexion', 'error');
     btn.disabled = false;
     btn.textContent = 'Verificar codigo';
+  });
+}
+
+function guardarDatosRegistro() {
+  var nombre = document.getElementById('reg-nombre').value.trim();
+  if (!nombre) { showToast('Ingresa tu nombre', 'error'); return; }
+  var cumple = document.getElementById('reg-cumple').value;
+
+  var btn = document.getElementById('btn-guardar-datos');
+  btn.disabled = true;
+  btn.textContent = 'Guardando...';
+
+  var datos = {
+    nombre: nombre,
+    whatsapp: usuarioActual.tel,
+    puntos: 0,
+    visitas: 0,
+    creadoEn: firebase.firestore.FieldValue.serverTimestamp()
+  };
+  if (cumple) datos.cumpleanos = cumple;
+
+  db.collection('spas').doc('glamnails').collection('clientes').doc(usuarioActual.tel).set(datos, { merge: true }).then(function() {
+    // Prellenar formulario
+    var fn = document.getElementById('f-nombre'); if(fn) fn.value = nombre;
+    var fw = document.getElementById('f-whatsapp'); if(fw) fw.value = usuarioActual.tel;
+    actualizarNavUsuario(usuarioActual.tel);
+    mostrarFormularioLogueado();
+    showToast('Bienvenida ' + nombre + '! Ya podes agendar', 'success');
+  }).catch(function() {
+    showToast('Error guardando datos', 'error');
+    btn.disabled = false;
+    btn.textContent = 'Guardar y entrar';
   });
 }
 
