@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light">
+<title>Confirmar cita — GlamNails</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'DM Sans',Georgia,sans-serif;background:#fdf8f5;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
+.card{background:#ffffff;border-radius:24px;padding:40px 32px;width:100%;max-width:400px;text-align:center;box-shadow:0 8px 32px rgba(122,61,53,0.1)}
+.icon{width:72px;height:72px;border-radius:50%;margin:0 auto 20px;display:flex;align-items:center;justify-content:center}
+.icon-ok{background:#d4edda}
+.icon-err{background:#f8d7da}
+.icon svg{width:36px;height:36px}
+.title{font-family:'Playfair Display',Georgia,serif;font-size:1.6rem;color:#1a1a1a;margin-bottom:10px}
+.subtitle{font-size:0.9rem;color:#8a7a76;line-height:1.6;margin-bottom:28px}
+.detail{background:#f5ede6;border-radius:14px;padding:16px;margin-bottom:24px;text-align:left}
+.detail-row{display:flex;justify-content:space-between;font-size:0.85rem;margin-bottom:8px}
+.detail-row:last-child{margin-bottom:0}
+.detail-key{color:#8a7a76}
+.detail-val{font-weight:600;color:#1a1a1a}
+.btn{display:block;background:#7a3d35;color:#ffffff;text-decoration:none;border-radius:50px;padding:14px 28px;font-size:0.9rem;font-weight:500;margin-top:16px}
+.powered{font-size:0.72rem;color:#cccccc;margin-top:24px}
+</style>
+</head>
+<body>
+<div class="card" id="card">
+  <div class="icon icon-ok">
+    <svg viewBox="0 0 24 24" fill="none" stroke="#155724" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+  </div>
+  <div class="title">Procesando...</div>
+  <div class="subtitle">Espera un momento</div>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+
+<script>
+firebase.initializeApp({
+  apiKey: "AIzaSyBBZInWQZVJyBTP5TG8MrTBOfe7UQFR5uU",
+  authDomain: "mapos-spas.firebaseapp.com",
+  projectId: "mapos-spas",
+  storageBucket: "mapos-spas.firebasestorage.app",
+  messagingSenderId: "704720438670",
+  appId: "1:704720438670:web:fd94574e51e97964cd10df"
+});
+
+var db = firebase.firestore();
+var params = new URLSearchParams(window.location.search);
+var citaId = params.get('id');
+var spaId = params.get('spa') || 'glamnails';
+
+function mostrarOk(cita) {
+  document.getElementById('card').innerHTML =
+    '<div class="icon icon-ok"><svg viewBox="0 0 24 24" fill="none" stroke="#155724" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></div>' +
+    '<div class="title">Cita confirmada</div>' +
+    '<div class="subtitle">Gracias ' + (cita.nombre || '') + '! Te esperamos con gusto.</div>' +
+    '<div class="detail">' +
+      '<div class="detail-row"><span class="detail-key">Servicio</span><span class="detail-val">' + (cita.servicio ? cita.servicio.split('--')[0].trim() : '') + '</span></div>' +
+      '<div class="detail-row"><span class="detail-key">Profesional</span><span class="detail-val">' + (cita.profesional || '') + '</span></div>' +
+      '<div class="detail-row"><span class="detail-key">Fecha</span><span class="detail-val">' + (cita.fecha || '') + '</span></div>' +
+      '<div class="detail-row"><span class="detail-key">Hora</span><span class="detail-val">' + (cita.hora || '') + '</span></div>' +
+    '</div>' +
+    '<a href="index.html" class="btn">Volver al inicio</a>' +
+    '<div class="powered">Powered by MApos</div>';
+}
+
+function mostrarError(msg) {
+  document.getElementById('card').innerHTML =
+    '<div class="icon icon-err"><svg viewBox="0 0 24 24" fill="none" stroke="#721c24" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div>' +
+    '<div class="title">Algo salio mal</div>' +
+    '<div class="subtitle">' + msg + '</div>' +
+    '<a href="index.html" class="btn">Volver al inicio</a>' +
+    '<div class="powered">Powered by MApos</div>';
+}
+
+if (!citaId) {
+  mostrarError('Link invalido.');
+} else {
+  var ref = db.collection('spas').doc(spaId).collection('citas').doc(citaId);
+  ref.get().then(function(doc) {
+    if (!doc.exists) { mostrarError('Cita no encontrada.'); return; }
+    var cita = doc.data();
+    if (cita.estado === 'cancelada') { mostrarError('Esta cita ya fue cancelada.'); return; }
+    return ref.update({ estado: 'confirmada' }).then(function() {
+      mostrarOk(cita);
+    });
+  }).catch(function() { mostrarError('Error al confirmar. Intenta de nuevo.'); });
+}
+</script>
+
+</body>
+</html>
