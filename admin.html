@@ -1094,14 +1094,15 @@ function renderCalificaciones(filtro) {
   // Agrupar por profesional
   var porPro = {};
   cal.forEach(function(c) {
-    if (!porPro[c.profesional]) porPro[c.profesional] = [];
-    porPro[c.profesional].push(c);
+    var pro = c.profesional || 'Sin asignar';
+    if (!porPro[pro]) porPro[pro] = [];
+    porPro[pro].push(c);
   });
 
   var html = '';
   Object.keys(porPro).forEach(function(pro) {
     var reviews = porPro[pro];
-    var avgPro = Math.round((reviews.reduce(function(s,r){return s+r.estrellas;},0)/reviews.length)*10)/10;
+    var avgPro = Math.round((reviews.reduce(function(s,r){return s+(r.estrellas||0);},0)/reviews.length)*10)/10;
     var starsHtml = '';
     for(var i=1;i<=5;i++) starsHtml += i<=Math.round(avgPro)?'★':'☆';
 
@@ -1113,17 +1114,17 @@ function renderCalificaciones(filtro) {
 
     reviews.forEach(function(r) {
       var rstars = '';
-      for(var i=1;i<=5;i++) rstars += i<=r.estrellas?'★':'☆';
+      for(var i=1;i<=5;i++) rstars += i<=(r.estrellas||0)?'★':'☆';
       html += '<div class="cal-review">';
       html += '<div class="cal-review-hdr"><span class="cal-review-name">' + (r.clientaNombre||'Clienta') + '</span><div style="display:flex;align-items:center;gap:8px"><span class="cal-review-stars">' + rstars + '</span><span class="cal-review-fecha">' + (r.fecha||'') + '</span></div></div>';
-      if (r.comentario) html += '<div class="cal-review-comentario">' + r.comentario + '</div>';
+      if (r.comentario && r.comentario.length > 0) html += '<div class="cal-review-comentario">' + r.comentario + '</div>';
       html += '</div>';
     });
 
     html += '</div>';
   });
 
-  lista.innerHTML = html;
+  lista.innerHTML = html || '<div class="empty-txt">Sin calificaciones</div>';
 }
 
 function filtrarCalificaciones(filtro, btn) {
