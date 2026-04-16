@@ -191,7 +191,22 @@ tbody td{padding:13px 14px;color:#1a1a1a;vertical-align:middle}
 .toast.err{background:#7a1a1a}
 
 /* RESPONSIVE */
-/* REPORTE */
+/* CALIFICACIONES */
+.cal-resumen{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:20px}
+.cal-pro-card{background:#f9f9f9;border-radius:14px;padding:20px;border:1px solid #eee;margin-bottom:12px}
+.cal-pro-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px}
+.cal-pro-name{font-weight:600;font-size:0.92rem;color:#1a1a1a}
+.cal-pro-rating{display:flex;align-items:center;gap:6px}
+.cal-stars{color:#f4c542;font-size:1rem;letter-spacing:2px}
+.cal-avg{font-weight:700;font-size:0.92rem;color:#7a3d35}
+.cal-total{font-size:0.75rem;color:#8a7a76}
+.cal-review{background:#fff;border-radius:10px;padding:14px;border:1px solid #eee;margin-bottom:8px}
+.cal-review-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;flex-wrap:wrap;gap:4px}
+.cal-review-name{font-weight:600;font-size:0.82rem;color:#1a1a1a}
+.cal-review-fecha{font-size:0.72rem;color:#8a7a76}
+.cal-review-stars{color:#f4c542;font-size:0.85rem}
+.cal-review-comentario{font-size:0.82rem;color:#8a7a76;line-height:1.5;margin-top:4px}
+.cal-filtros{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
 .reporte-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:20px}
 .rep-card{background:#fff;border-radius:16px;padding:20px;border:1px solid #eee}
 .rep-card-label{font-size:0.72rem;color:#8a7a76;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px}
@@ -372,6 +387,10 @@ tbody td{padding:13px 14px;color:#1a1a1a;vertical-align:middle}
   <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
   CRM Clientas
 </button>
+<button class="slink" onclick="showPage('calificaciones',this)">
+  <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+  Calificaciones
+</button>
 
 <div class="sb">
   <div class="sb-user" id="sb-user"></div>
@@ -496,6 +515,30 @@ tbody td{padding:13px 14px;color:#1a1a1a;vertical-align:middle}
     <button class="fb" onclick="filtrarCRM('perdida',this)">Perdidas</button>
     <button class="fb" onclick="filtrarCRM('nueva',this)">Nuevas</button>
   </div>
+<!-- CALIFICACIONES -->
+<div class="page" id="page-calificaciones">
+  <div class="topbar">
+    <div><div class="topbar-title"><em>Calificaciones</em></div></div>
+    <div class="topbar-badge" id="badge-cal">Sede El Poblado</div>
+  </div>
+
+  <!-- RESUMEN -->
+  <div class="cal-resumen">
+    <div class="stat-card accent"><div class="sc-label">Promedio general</div><div class="sc-num" id="cal-promedio">0.0</div><div class="sc-sub">estrellas</div></div>
+    <div class="stat-card"><div class="sc-label">Total resenas</div><div class="sc-num" id="cal-total">0</div><div class="sc-sub">calificaciones</div></div>
+    <div class="stat-card"><div class="sc-label">Esta semana</div><div class="sc-num" id="cal-semana">0</div><div class="sc-sub">nuevas resenas</div></div>
+  </div>
+
+  <!-- FILTRO POR PROFESIONAL -->
+  <div class="card">
+    <div class="card-title">Resenas por profesional</div>
+    <div class="cal-filtros" id="cal-filtros">
+      <button class="fb active" onclick="filtrarCalificaciones('todas',this)">Todas</button>
+    </div>
+    <div id="cal-lista"></div>
+  </div>
+</div>
+
   <div id="crm-lista"></div>
 </div>
 
@@ -628,26 +671,31 @@ function cambiarSucursal(val){
   sucursalActual=val;
   var nombres={'glamnails':'Sede El Poblado','glamnails-laureles':'Sede Laureles','glamnails-envigado':'Sede Envigado'};
   var n=nombres[val]||val;
-  ['badge-dash','badge-citas','badge-pro-stats','badge-mgmt','badge-crm','badge-reporte','badge-horarios'].forEach(function(id){
+  ['badge-dash','badge-citas','badge-pro-stats','badge-mgmt','badge-crm','badge-reporte','badge-horarios','badge-cal'].forEach(function(id){
     var el=document.getElementById(id);if(el)el.textContent=n;
   });
   cargarDatos();
 }
 
+var todasCalificaciones = [];
+
 function cargarDatos(){
   var citasRef=db.collection('spas').doc(sucursalActual).collection('citas').orderBy('creadoEn','desc');
   var clientesRef=db.collection('spas').doc(sucursalActual).collection('clientes');
   var prosRef=db.collection('spas').doc(sucursalActual).collection('profesionales');
+  var calRef=db.collection('spas').doc(sucursalActual).collection('calificaciones').orderBy('creadoEn','desc');
 
-  Promise.all([citasRef.get(),clientesRef.get(),prosRef.get()]).then(function(results){
+  Promise.all([citasRef.get(),clientesRef.get(),prosRef.get(),calRef.get()]).then(function(results){
     todasCitas=results[0].docs.map(function(d){var o=d.data();o.id=d.id;return o;});
     todosClientes=results[1].docs.map(function(d){var o=d.data();o.id=d.id;return o;});
     todasPros=results[2].docs.map(function(d){var o=d.data();o.id=d.id;return o;});
+    todasCalificaciones=results[3].docs.map(function(d){var o=d.data();o.id=d.id;return o;});
     actualizarDashboard();
     renderTablaTodas(todasCitas);
     renderProGrid('pro-total',todasCitas);
     renderProsAdmin();
     renderCRM('todas');
+    renderCalificaciones('todas');
   }).catch(function(e){console.error(e);toast('Error cargando datos','err');});
 }
 
@@ -1008,7 +1056,78 @@ function filtrarCRM(filtro,btn){
   renderCRM(filtro);
 }
 
-// REPORTE
+// CALIFICACIONES
+function renderCalificaciones(filtro) {
+  var lista = document.getElementById('cal-lista');
+  if (!lista) return;
+
+  var cal = filtro === 'todas' ? todasCalificaciones : todasCalificaciones.filter(function(c) { return c.profesional === filtro; });
+
+  // Stats
+  var total = todasCalificaciones.length;
+  var promedio = total > 0 ? Math.round((todasCalificaciones.reduce(function(s,c){return s+c.estrellas;},0)/total)*10)/10 : 0;
+  var iniSem = new Date(); iniSem.setDate(iniSem.getDate()-iniSem.getDay());
+  var semana = todasCalificaciones.filter(function(c){return c.fecha&&new Date(c.fecha+'T00:00:00')>=iniSem;}).length;
+
+  var elProm = document.getElementById('cal-promedio'); if(elProm) elProm.textContent = promedio.toFixed(1);
+  var elTot = document.getElementById('cal-total'); if(elTot) elTot.textContent = total;
+  var elSem = document.getElementById('cal-semana'); if(elSem) elSem.textContent = semana;
+
+  // Filtros por profesional
+  var filtrosEl = document.getElementById('cal-filtros');
+  if (filtrosEl && todasPros.length > 0) {
+    var btns = '<button class="fb ' + (filtro==='todas'?'active':'') + '" onclick="filtrarCalificaciones(\'todas\',this)">Todas</button>';
+    todasPros.forEach(function(p) {
+      btns += '<button class="fb ' + (filtro===p.nombre?'active':'') + '" onclick="filtrarCalificaciones(\'' + p.nombre + '\',this)">' + p.nombre + '</button>';
+    });
+    filtrosEl.innerHTML = btns;
+  }
+
+  if (cal.length === 0) {
+    lista.innerHTML = '<div class="empty"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><div class="empty-txt">Aun no hay calificaciones</div></div>';
+    return;
+  }
+
+  // Agrupar por profesional
+  var porPro = {};
+  cal.forEach(function(c) {
+    if (!porPro[c.profesional]) porPro[c.profesional] = [];
+    porPro[c.profesional].push(c);
+  });
+
+  var html = '';
+  Object.keys(porPro).forEach(function(pro) {
+    var reviews = porPro[pro];
+    var avgPro = Math.round((reviews.reduce(function(s,r){return s+r.estrellas;},0)/reviews.length)*10)/10;
+    var starsHtml = '';
+    for(var i=1;i<=5;i++) starsHtml += i<=Math.round(avgPro)?'★':'☆';
+
+    html += '<div class="cal-pro-card">';
+    html += '<div class="cal-pro-hdr">';
+    html += '<div class="cal-pro-name">' + pro + '</div>';
+    html += '<div class="cal-pro-rating"><span class="cal-stars">' + starsHtml + '</span><span class="cal-avg">' + avgPro.toFixed(1) + '</span><span class="cal-total">(' + reviews.length + ' resenas)</span></div>';
+    html += '</div>';
+
+    reviews.forEach(function(r) {
+      var rstars = '';
+      for(var i=1;i<=5;i++) rstars += i<=r.estrellas?'★':'☆';
+      html += '<div class="cal-review">';
+      html += '<div class="cal-review-hdr"><span class="cal-review-name">' + (r.clientaNombre||'Clienta') + '</span><div style="display:flex;align-items:center;gap:8px"><span class="cal-review-stars">' + rstars + '</span><span class="cal-review-fecha">' + (r.fecha||'') + '</span></div></div>';
+      if (r.comentario) html += '<div class="cal-review-comentario">' + r.comentario + '</div>';
+      html += '</div>';
+    });
+
+    html += '</div>';
+  });
+
+  lista.innerHTML = html;
+}
+
+function filtrarCalificaciones(filtro, btn) {
+  document.querySelectorAll('#cal-filtros .fb').forEach(function(b){b.classList.remove('active');});
+  if(btn) btn.classList.add('active');
+  renderCalificaciones(filtro);
+}
 var repCitasActuales = [];
 
 function filtrarReporte(periodo, btn) {
@@ -1162,6 +1281,7 @@ function showPage(pageName,btn){
   btn.classList.add('active');
   if(pageName==='reporte') filtrarReporte('semana',document.querySelector('#page-reporte .fb'));
   if(pageName==='horarios') renderHorarioProSelect();
+  if(pageName==='calificaciones') renderCalificaciones('todas');
   if(window.innerWidth<=960)toggleSidebar();
 }
 
