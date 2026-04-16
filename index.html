@@ -455,10 +455,12 @@ function actualizarNavUsuario(tel, nombre) {
 
 function enviarCodigo() {
   var tel = document.getElementById('login-telefono').value.trim();
+  var pais = document.getElementById('login-pais').value;
   if (!tel || tel.length < 7) { showToast('Ingresa tu numero de celular', 'error'); return; }
   var numero = tel.replace(/\s/g, '');
-  if (!numero.startsWith('+')) numero = '+57' + numero;
-  telefonoActual = numero;
+  if (numero.startsWith('0')) numero = numero.substring(1);
+  telefonoActual = pais + numero;
+  console.log('Enviando a:', telefonoActual);
 
   var btn = document.getElementById('btn-enviar-codigo');
   btn.disabled = true;
