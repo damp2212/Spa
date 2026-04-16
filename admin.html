@@ -1283,7 +1283,13 @@ function showPage(pageName,btn){
   btn.classList.add('active');
   if(pageName==='reporte') filtrarReporte('semana',document.querySelector('#page-reporte .fb'));
   if(pageName==='horarios') renderHorarioProSelect();
-  if(pageName==='calificaciones') renderCalificaciones('todas');
+  if(pageName==='calificaciones'){
+    db.collection('spas').doc(sucursalActual).collection('calificaciones').get().then(function(snap){
+      todasCalificaciones=snap.docs.map(function(d){var o=d.data();o.id=d.id;return o;});
+      console.log('Calificaciones recargadas:', todasCalificaciones.length);
+      renderCalificaciones('todas');
+    });
+  }
   if(window.innerWidth<=960)toggleSidebar();
 }
 
