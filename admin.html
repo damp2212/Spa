@@ -683,7 +683,7 @@ function cargarDatos(){
   var citasRef=db.collection('spas').doc(sucursalActual).collection('citas').orderBy('creadoEn','desc');
   var clientesRef=db.collection('spas').doc(sucursalActual).collection('clientes');
   var prosRef=db.collection('spas').doc(sucursalActual).collection('profesionales');
-  var calRef=db.collection('spas').doc(sucursalActual).collection('calificaciones').orderBy('creadoEn','desc');
+  var calRef=db.collection('spas').doc(sucursalActual).collection('calificaciones');
 
   Promise.all([citasRef.get(),clientesRef.get(),prosRef.get(),calRef.get()]).then(function(results){
     todasCitas=results[0].docs.map(function(d){var o=d.data();o.id=d.id;return o;});
