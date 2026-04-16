@@ -1061,6 +1061,7 @@ function filtrarCRM(filtro,btn){
 function renderCalificaciones(filtro) {
   var lista = document.getElementById('cal-lista');
   if (!lista) return;
+  console.log('Total calificaciones:', todasCalificaciones.length, todasCalificaciones);
 
   var cal = filtro === 'todas' ? todasCalificaciones : todasCalificaciones.filter(function(c) { return c.profesional === filtro; });
 
