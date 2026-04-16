@@ -800,8 +800,9 @@ function renderProGrid(idContenedor,citas){
   var stats=[];
   for(var i=0;i<pros.length;i++){
     var p=pros[i];
-    var cp=citas.filter(function(c){return c.profesional===p.nombre&&c.estado!=='cancelada';});
-    var atendidas=citas.filter(function(c){return c.profesional===p.nombre&&c.estado==='atendida';}).length;
+    var pNombre=p.nombre;
+    var cp=citas.filter(function(c){return c.profesional===pNombre&&c.estado!=='cancelada';});
+    var atendidas=citas.filter(function(c){return c.profesional===pNombre&&c.estado==='atendida';}).length;
     var ingresos=cp.reduce(function(s,c){return s+getPrecio(c.servicio);},0);
     stats.push({nombre:p.nombre,especialidad:p.especialidad,foto:p.foto,citas:cp.length,atendidas:atendidas,ingresos:ingresos});
   }
