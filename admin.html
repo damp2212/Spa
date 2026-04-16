@@ -1064,6 +1064,7 @@ function renderCalificaciones(filtro) {
   console.log('Total calificaciones:', todasCalificaciones.length, todasCalificaciones);
 
   var cal = filtro === 'todas' ? todasCalificaciones : todasCalificaciones.filter(function(c) { return c.profesional === filtro; });
+  console.log('Cal a mostrar:', cal, 'filtro:', filtro);
 
   // Stats
   var total = todasCalificaciones.length;
