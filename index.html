@@ -469,7 +469,7 @@ function enviarCodigo() {
   fetch(ENVIAR_URL, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ numero: numero })
+    body: JSON.stringify({ numero: telefonoActual })
   }).then(function(r) { return r.json(); }).then(function(data) {
     if (data.ok) {
       document.getElementById('paso-telefono').style.display = 'none';
