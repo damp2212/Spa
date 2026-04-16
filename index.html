@@ -648,7 +648,21 @@ function guardarCita() {
   </div>
   <div style="margin-bottom:16px;">
     <label style="display:block;font-size:0.72rem;color:#8a7a76;text-transform:uppercase;letter-spacing:0.5px;font-weight:500;margin-bottom:7px;">Numero de celular</label>
-    <input id="login-telefono" type="tel" placeholder="300 000 0000" style="width:100%;padding:13px 16px;border:1.5px solid #e8c4b8;border-radius:12px;font-size:0.9rem;color:#1a1a1a;background:#fdf8f5;font-family:'DM Sans',sans-serif;outline:none;-webkit-appearance:none;">
+    <div style="display:flex;gap:8px;">
+      <select id="login-pais" style="padding:13px 10px;border:1.5px solid #e8c4b8;border-radius:12px;font-size:0.85rem;color:#1a1a1a;background:#fdf8f5;font-family:'DM Sans',sans-serif;outline:none;-webkit-appearance:none;appearance:none;flex-shrink:0;width:110px;cursor:pointer;">
+        <option value="+57">🇨🇴 +57</option>
+        <option value="+1">🇺🇸 +1</option>
+        <option value="+52">🇲🇽 +52</option>
+        <option value="+34">🇪🇸 +34</option>
+        <option value="+58">🇻🇪 +58</option>
+        <option value="+507">🇵🇦 +507</option>
+        <option value="+593">🇪🇨 +593</option>
+        <option value="+51">🇵🇪 +51</option>
+        <option value="+56">🇨🇱 +56</option>
+        <option value="+54">🇦🇷 +54</option>
+      </select>
+      <input id="login-telefono" type="tel" placeholder="300 000 0000" style="flex:1;padding:13px 16px;border:1.5px solid #e8c4b8;border-radius:12px;font-size:0.9rem;color:#1a1a1a;background:#fdf8f5;font-family:'DM Sans',sans-serif;outline:none;-webkit-appearance:none;">
+    </div>
   </div>
   <button id="btn-enviar-codigo" onclick="enviarCodigo()" style="width:100%;background:#7a3d35;color:#ffffff;border:none;border-radius:50px;padding:15px;font-size:0.92rem;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif;margin-bottom:12px;">Enviar codigo por WhatsApp</button>
   <div style="text-align:center;font-size:0.78rem;color:#8a7a76;">Te enviaremos un codigo por WhatsApp</div>
