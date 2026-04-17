@@ -458,10 +458,10 @@ function actualizarNavUsuario(tel, nombre) {
 function enviarCodigo() {
   var tel = document.getElementById('login-telefono').value.trim();
   var pais = document.getElementById('login-pais').value;
-  if (!tel || tel.length < 7) { showToast('Ingresa tu numero de celular', 'error'); return; }
-  var numero = tel.replace(/\s/g, '');
-  if (numero.startsWith('0')) numero = numero.substring(1);
-  telefonoActual = pais + numero;
+  if (!tel || tel.length < 7) { showToast('Ingresa tu número de celular', 'error'); return; }
+  var número = tel.replace(/\s/g, '');
+  if (número.startsWith('0')) número = número.substring(1);
+  telefonoActual = pais + número;
   console.log('Enviando a:', telefonoActual);
 
   var btn = document.getElementById('btn-enviar-codigo');
@@ -471,7 +471,7 @@ function enviarCodigo() {
   fetch(ENVIAR_URL, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ numero: telefonoActual })
+    body: JSON.stringify({ número: telefonoActual })
   }).then(function(r) { return r.json(); }).then(function(data) {
     if (data.ok) {
       document.getElementById('paso-telefono').style.display = 'none';
@@ -500,7 +500,7 @@ function verificarCodigo() {
   fetch(VERIFICAR_URL, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ numero: telefonoActual, codigo: codigo })
+    body: JSON.stringify({ número: telefonoActual, codigo: codigo })
   }).then(function(r) { return r.json(); }).then(function(data) {
     if (data.ok) {
       usuarioActual = { tel: data.tel };
@@ -592,7 +592,7 @@ function guardarCita() {
     document.getElementById('login-overlay').style.display = 'flex';
     document.getElementById('paso-telefono').style.display = 'block';
     document.getElementById('paso-codigo').style.display = 'none';
-    showToast('Primero ingresa con tu numero', 'error');
+    showToast('Primero ingresa con tu número', 'error');
     return;
   }
 
@@ -648,10 +648,10 @@ function guardarCita() {
   <div style="text-align:center;margin-bottom:24px;">
     <div style="font-size:2.5rem;margin-bottom:12px;">💅</div>
     <div style="font-family:'Playfair Display',Georgia,serif;font-size:1.5rem;color:#1a1a1a;margin-bottom:8px;">Bienvenida</div>
-    <div style="font-size:0.85rem;color:#8a7a76;line-height:1.6">Ingresa tu numero de celular para agendar tu cita y acumular puntos</div>
+    <div style="font-size:0.85rem;color:#8a7a76;line-height:1.6">Ingresa tu número de celular para agendar tu cita y acumular puntos</div>
   </div>
   <div style="margin-bottom:16px;">
-    <label style="display:block;font-size:0.72rem;color:#8a7a76;text-transform:uppercase;letter-spacing:0.5px;font-weight:500;margin-bottom:7px;">Numero de celular</label>
+    <label style="display:block;font-size:0.72rem;color:#8a7a76;text-transform:uppercase;letter-spacing:0.5px;font-weight:500;margin-bottom:7px;">Número de celular</label>
     <div style="display:flex;gap:8px;">
       <select id="login-pais" style="padding:13px 10px;border:1.5px solid #e8c4b8;border-radius:12px;font-size:0.85rem;color:#1a1a1a;background:#fdf8f5;font-family:'DM Sans',sans-serif;outline:none;-webkit-appearance:none;appearance:none;flex-shrink:0;width:110px;cursor:pointer;">
         <option value="+57">🇨🇴 +57</option>
@@ -665,7 +665,7 @@ function guardarCita() {
         <option value="+56">🇨🇱 +56</option>
         <option value="+54">🇦🇷 +54</option>
       </select>
-      <input id="login-telefono" type="tel" placeholder="300 000 0000" style="flex:1;padding:13px 16px;border:1.5px solid #e8c4b8;border-radius:12px;font-size:0.9rem;color:#1a1a1a;background:#fdf8f5;font-family:'DM Sans',sans-serif;outline:none;-webkit-appearance:none;">
+      <input id="login-telefono" type="tel" placeholder="300 000 0000" autocomplete="tel" inputmode="numeric" style="flex:1;padding:13px 16px;border:1.5px solid #e8c4b8;border-radius:12px;font-size:0.9rem;color:#1a1a1a;background:#fdf8f5;font-family:'DM Sans',sans-serif;outline:none;-webkit-appearance:none;">
     </div>
   </div>
   <button id="btn-enviar-codigo" onclick="enviarCodigo()" style="width:100%;background:#7a3d35;color:#ffffff;border:none;border-radius:50px;padding:15px;font-size:0.92rem;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif;margin-bottom:12px;">Enviar codigo por WhatsApp</button>
@@ -675,7 +675,7 @@ function guardarCita() {
 <div id="paso-codigo" style="display:none;">
   <div style="text-align:center;margin-bottom:24px;">
     <div style="font-size:2.5rem;margin-bottom:12px;">💬</div>
-    <div style="font-family:'Playfair Display',Georgia,serif;font-size:1.5rem;color:#1a1a1a;margin-bottom:8px;">Verifica tu numero</div>
+    <div style="font-family:'Playfair Display',Georgia,serif;font-size:1.5rem;color:#1a1a1a;margin-bottom:8px;">Verifica tu número</div>
     <div style="font-size:0.85rem;color:#8a7a76;line-height:1.6">Ingresa el codigo de 6 digitos que te llego por WhatsApp</div>
   </div>
   <div style="margin-bottom:16px;">
@@ -683,7 +683,7 @@ function guardarCita() {
     <input id="login-codigo" type="number" placeholder="123456" style="width:100%;padding:13px 16px;border:1.5px solid #e8c4b8;border-radius:12px;font-size:1.2rem;color:#1a1a1a;background:#fdf8f5;font-family:'DM Sans',sans-serif;outline:none;-webkit-appearance:none;text-align:center;letter-spacing:8px;">
   </div>
   <button id="btn-verificar" onclick="verificarCodigo()" style="width:100%;background:#7a3d35;color:#ffffff;border:none;border-radius:50px;padding:15px;font-size:0.92rem;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif;margin-bottom:12px;">Verificar codigo</button>
-  <button onclick="document.getElementById('paso-telefono').style.display='block';document.getElementById('paso-codigo').style.display='none';var b=document.getElementById('btn-enviar-codigo');b.disabled=false;b.textContent='Enviar codigo por WhatsApp';" style="width:100%;background:transparent;color:#8a7a76;border:1px solid #e8c4b8;border-radius:50px;padding:12px;font-size:0.85rem;cursor:pointer;font-family:'DM Sans',sans-serif;">Cambiar numero</button>
+  <button onclick="document.getElementById('paso-telefono').style.display='block';document.getElementById('paso-codigo').style.display='none';var b=document.getElementById('btn-enviar-codigo');b.disabled=false;b.textContent='Enviar codigo por WhatsApp';" style="width:100%;background:transparent;color:#8a7a76;border:1px solid #e8c4b8;border-radius:50px;padding:12px;font-size:0.85rem;cursor:pointer;font-family:'DM Sans',sans-serif;">Cambiar número</button>
 </div>
 
 <!-- PASO 3: DATOS PERSONALES (solo primera vez) -->
