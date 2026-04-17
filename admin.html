@@ -539,6 +539,24 @@ tbody td{padding:13px 14px;color:#1a1a1a;vertical-align:middle}
   </div>
 </div>
 
+<!-- CRM -->
+<div class="page" id="page-crm">
+  <div class="topbar">
+    <div><div class="topbar-title">CRM <em>Clientas</em></div></div>
+    <div class="topbar-badge" id="badge-crm">Sede El Poblado</div>
+  </div>
+  <div class="crm-resumen">
+    <div class="crm-stat"><div class="crm-stat-num" id="crm-total">0</div><div class="crm-stat-label">Total clientas</div></div>
+    <div class="crm-stat"><div class="crm-stat-num" id="crm-activas" style="color:#1a7a3d">0</div><div class="crm-stat-label">Activas</div></div>
+    <div class="crm-stat"><div class="crm-stat-num" id="crm-perdidas" style="color:#7a1a1a">0</div><div class="crm-stat-label">Perdidas</div></div>
+  </div>
+  <div class="filtros">
+    <button class="fb active" onclick="filtrarCRM('todas',this)">Todas</button>
+    <button class="fb" onclick="filtrarCRM('activa',this)">Activas</button>
+    <button class="fb" onclick="filtrarCRM('tibia',this)">Tibias</button>
+    <button class="fb" onclick="filtrarCRM('perdida',this)">Perdidas</button>
+    <button class="fb" onclick="filtrarCRM('nueva',this)">Nuevas</button>
+  </div>
   <div id="crm-lista"></div>
 </div>
 
