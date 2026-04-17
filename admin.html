@@ -1114,67 +1114,6 @@ function renderCalificaciones(filtro) {
   var elSem = document.getElementById('cal-semana'); if(elSem) elSem.textContent = semana;
 }
 
-  // Stats
-  var total = todasCalificaciones.length;
-  var promedio = total > 0 ? Math.round((todasCalificaciones.reduce(function(s,c){return s+c.estrellas;},0)/total)*10)/10 : 0;
-  var iniSem = new Date(); iniSem.setDate(iniSem.getDate()-iniSem.getDay());
-  var semana = todasCalificaciones.filter(function(c){return c.fecha&&new Date(c.fecha+'T00:00:00')>=iniSem;}).length;
-
-  var elProm = document.getElementById('cal-promedio'); if(elProm) elProm.textContent = promedio.toFixed(1);
-  var elTot = document.getElementById('cal-total'); if(elTot) elTot.textContent = total;
-  var elSem = document.getElementById('cal-semana'); if(elSem) elSem.textContent = semana;
-
-  // Filtros por profesional
-  var filtrosEl = document.getElementById('cal-filtros');
-  if (filtrosEl && todasPros.length > 0) {
-    var btns = '<button class="fb ' + (filtro==='todas'?'active':'') + '" onclick="filtrarCalificaciones(\'todas\',this)">Todas</button>';
-    todasPros.forEach(function(p) {
-      btns += '<button class="fb ' + (filtro===p.nombre?'active':'') + '" onclick="filtrarCalificaciones(\'' + p.nombre + '\',this)">' + p.nombre + '</button>';
-    });
-    filtrosEl.innerHTML = btns;
-  }
-
-  if (cal.length === 0) {
-    lista.innerHTML = '<div class="empty"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><div class="empty-txt">Aun no hay calificaciones</div></div>';
-    return;
-  }
-
-  // Agrupar por profesional
-  var porPro = {};
-  cal.forEach(function(c) {
-    var pro = c.profesional || 'Sin asignar';
-    if (!porPro[pro]) porPro[pro] = [];
-    porPro[pro].push(c);
-  });
-
-  var html = '';
-  Object.keys(porPro).forEach(function(pro) {
-    var reviews = porPro[pro];
-    var avgPro = Math.round((reviews.reduce(function(s,r){return s+(r.estrellas||0);},0)/reviews.length)*10)/10;
-    var starsHtml = '';
-    for(var i=1;i<=5;i++) starsHtml += i<=Math.round(avgPro)?'★':'☆';
-
-    html += '<div class="cal-pro-card">';
-    html += '<div class="cal-pro-hdr">';
-    html += '<div class="cal-pro-name">' + pro + '</div>';
-    html += '<div class="cal-pro-rating"><span class="cal-stars">' + starsHtml + '</span><span class="cal-avg">' + avgPro.toFixed(1) + '</span><span class="cal-total">(' + reviews.length + ' resenas)</span></div>';
-    html += '</div>';
-
-    reviews.forEach(function(r) {
-      var rstars = '';
-      for(var i=1;i<=5;i++) rstars += i<=(r.estrellas||0)?'★':'☆';
-      html += '<div class="cal-review">';
-      html += '<div class="cal-review-hdr"><span class="cal-review-name">' + (r.clientaNombre||'Clienta') + '</span><div style="display:flex;align-items:center;gap:8px"><span class="cal-review-stars">' + rstars + '</span><span class="cal-review-fecha">' + (r.fecha||'') + '</span></div></div>';
-      if (r.comentario && r.comentario.length > 0) html += '<div class="cal-review-comentario">' + r.comentario + '</div>';
-      html += '</div>';
-    });
-
-    html += '</div>';
-  });
-
-  console.log('HTML generado:', html.length, 'chars', 'porPro keys:', Object.keys(porPro));
-  lista.innerHTML = html || '<div class="empty-txt">Sin calificaciones</div>';
-}
 
 function filtrarCalificaciones(filtro, btn) {
   document.querySelectorAll('#cal-filtros .fb').forEach(function(b){b.classList.remove('active');});
