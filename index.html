@@ -388,16 +388,18 @@ function showToast(msg, type) {
 }
 
 // Cargar sesion guardada
-var sesionGuardada = localStorage.getItem('glamnails_session');
-if (sesionGuardada) {
-  try {
-    usuarioActual = JSON.parse(sesionGuardada);
-    telefonoActual = usuarioActual.tel;
-    cargarPerfilUsuario(usuarioActual.tel);
-    actualizarNavUsuario(usuarioActual.tel);
-    mostrarFormularioLogueado();
-  } catch(e) { localStorage.removeItem('glamnails_session'); }
-}
+document.addEventListener('DOMContentLoaded', function() {
+  var sesionGuardada = localStorage.getItem('glamnails_session');
+  if (sesionGuardada) {
+    try {
+      usuarioActual = JSON.parse(sesionGuardada);
+      telefonoActual = usuarioActual.tel;
+      cargarPerfilUsuario(usuarioActual.tel);
+      actualizarNavUsuario(usuarioActual.tel);
+      mostrarFormularioLogueado();
+    } catch(e) { localStorage.removeItem('glamnails_session'); }
+  }
+});
 
 function cargarPerfilUsuario(tel) {
   db.collection('spas').doc('glamnails').collection('clientes').doc(tel).get().then(function(doc) {
