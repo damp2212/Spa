@@ -1078,11 +1078,41 @@ function filtrarCRM(filtro,btn){
 // CALIFICACIONES
 function renderCalificaciones(filtro) {
   var lista = document.getElementById('cal-lista');
-  if (!lista) return;
-  console.log('Total calificaciones:', todasCalificaciones.length, todasCalificaciones);
+  if (!lista) { console.log('NO ENCUENTRA cal-lista'); return; }
 
   var cal = filtro === 'todas' ? todasCalificaciones : todasCalificaciones.filter(function(c) { return c.profesional === filtro; });
-  console.log('Cal a mostrar:', cal, 'filtro:', filtro);
+
+  if (cal.length === 0) {
+    lista.innerHTML = '<p style="color:#aaa;padding:20px">Aun no hay calificaciones</p>';
+    return;
+  }
+
+  var html = '';
+  cal.forEach(function(c) {
+    var stars = '';
+    for(var i=1;i<=5;i++) stars += i<=(c.estrellas||0) ? '★' : '☆';
+    html += '<div style="background:#f9f9f9;border-radius:12px;padding:16px;margin-bottom:12px;border:1px solid #eee">';
+    html += '<div style="display:flex;justify-content:space-between;margin-bottom:6px">';
+    html += '<strong style="font-size:0.88rem">' + (c.clientaNombre||'Clienta') + '</strong>';
+    html += '<span style="font-size:0.78rem;color:#8a7a76">' + (c.fecha||'') + '</span>';
+    html += '</div>';
+    html += '<div style="color:#f4c542;font-size:1.1rem;margin-bottom:4px">' + stars + '</div>';
+    html += '<div style="font-size:0.82rem;color:#7a3d35;font-weight:500">' + (c.profesional||'') + '</div>';
+    if (c.comentario) html += '<div style="font-size:0.82rem;color:#8a7a76;margin-top:6px">' + c.comentario + '</div>';
+    html += '</div>';
+  });
+
+  lista.innerHTML = html;
+
+  // Stats
+  var total = todasCalificaciones.length;
+  var promedio = total > 0 ? Math.round((todasCalificaciones.reduce(function(s,c){return s+(c.estrellas||0);},0)/total)*10)/10 : 0;
+  var iniSem = new Date(); iniSem.setDate(iniSem.getDate()-iniSem.getDay());
+  var semana = todasCalificaciones.filter(function(c){return c.fecha&&new Date(c.fecha+'T00:00:00')>=iniSem;}).length;
+  var elProm = document.getElementById('cal-promedio'); if(elProm) elProm.textContent = promedio.toFixed(1);
+  var elTot = document.getElementById('cal-total'); if(elTot) elTot.textContent = total;
+  var elSem = document.getElementById('cal-semana'); if(elSem) elSem.textContent = semana;
+}
 
   // Stats
   var total = todasCalificaciones.length;
