@@ -268,6 +268,38 @@ tbody td{padding:13px 14px;color:#1a1a1a;vertical-align:middle}
 
 <div class="toast" id="toast"></div>
 
+<!-- MODAL REDENCIÓN -->
+
+<div id="modal-redencion" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:9999;align-items:center;justify-content:center;padding:20px;">
+  <div style="background:#fff;border-radius:20px;padding:28px 24px;width:100%;max-width:360px;">
+    <div style="font-family:'Playfair Display',Georgia,serif;font-size:1.2rem;color:#1a1a1a;margin-bottom:4px">Canjear puntos</div>
+    <div style="font-size:0.85rem;color:#8a7a76;margin-bottom:20px" id="red-cliente-nombre"></div>
+    <div style="background:#f5ede6;border-radius:12px;padding:12px 16px;text-align:center;margin-bottom:20px;">
+      <div style="font-size:1.4rem;font-weight:700;color:#7a3d35" id="red-cliente-puntos">0 puntos</div>
+    </div>
+    <input type="hidden" id="red-cliente-id">
+    <input type="hidden" id="red-puntos-actuales">
+    <div style="margin-bottom:14px;">
+      <label style="display:block;font-size:0.72rem;color:#8a7a76;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;">Puntos a descontar</label>
+      <input id="red-cantidad" type="number" placeholder="Ej: 100" style="width:100%;padding:12px 16px;border:1.5px solid #e8c4b8;border-radius:12px;font-size:0.9rem;font-family:'DM Sans',sans-serif;outline:none;">
+    </div>
+    <div style="margin-bottom:20px;">
+      <label style="display:block;font-size:0.72rem;color:#8a7a76;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;">Motivo del canje</label>
+      <select id="red-motivo" style="width:100%;padding:12px 16px;border:1.5px solid #e8c4b8;border-radius:12px;font-size:0.88rem;font-family:'DM Sans',sans-serif;outline:none;background:#fff;">
+        <option value="">Selecciona...</option>
+        <option value="Nail art gratis (100 pts)">Nail art gratis (100 pts)</option>
+        <option value="20% OFF (200 pts)">20% OFF (200 pts)</option>
+        <option value="Manicure gratis (500 pts)">Manicure gratis (500 pts)</option>
+        <option value="Otro">Otro</option>
+      </select>
+    </div>
+    <div style="display:flex;gap:10px;">
+      <button onclick="cerrarRedencion()" style="flex:1;background:#f5f5f5;color:#8a7a76;border:none;border-radius:50px;padding:12px;font-size:0.88rem;cursor:pointer;font-family:'DM Sans',sans-serif;">Cancelar</button>
+      <button onclick="confirmarRedencion()" style="flex:1;background:#7a3d35;color:#fff;border:none;border-radius:50px;padding:12px;font-size:0.88rem;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif;">Confirmar canje</button>
+    </div>
+  </div>
+</div>
+
 <!-- MODAL PROFESIONAL -->
 
 <div class="modal-overlay" id="modal-pro">
@@ -319,8 +351,8 @@ tbody td{padding:13px 14px;color:#1a1a1a;vertical-align:middle}
     <div class="login-sub">Panel de administracion</div>
     <label class="lbl">Correo electronico</label>
     <input class="linput" id="admin-email" type="email" placeholder="admin@glamnails.com">
-    <label class="lbl">Contrasena</label>
-    <input class="linput" id="admin-pass" type="password" placeholder="Contrasena">
+    <label class="lbl">Contraseña</label>
+    <input class="linput" id="admin-pass" type="password" placeholder="Contraseña">
     <button class="lbtn" onclick="loginAdmin()">Ingresar al panel</button>
     <div class="lerror" id="lerror">Correo o contrasena incorrectos</div>
   </div>
@@ -387,9 +419,9 @@ tbody td{padding:13px 14px;color:#1a1a1a;vertical-align:middle}
   <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
   CRM Clientas
 </button>
-<button class="slink" onclick="showPage('calificaciones',this)">
+<button class="slink" onclick="showPage('calificaciónes',this)">
   <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-  Calificaciones
+  Calificaciónes
 </button>
 
 <div class="sb">
@@ -419,16 +451,16 @@ tbody td{padding:13px 14px;color:#1a1a1a;vertical-align:middle}
     <div class="stat-card"><div class="sc-label">Clientas</div><div class="sc-num" id="stat-clientes">0</div><div class="sc-sub">registradas</div></div>
   </div>
   <div class="card">
-    <div class="card-title">Proximas citas <span class="ct-right" id="prox-count">0 citas</span></div>
+    <div class="card-title">Próximas citas <span class="ct-right" id="prox-count">0 citas</span></div>
     <div class="filtros">
-      <button class="fb active" onclick="filtrarProximas('hoy',this)">Hoy</button>
-      <button class="fb" onclick="filtrarProximas('manana',this)">Manana</button>
-      <button class="fb" onclick="filtrarProximas('semana',this)">Esta semana</button>
-      <button class="fb" onclick="filtrarProximas('todas',this)">Todas</button>
+      <button class="fb active" onclick="filtrarPróximas('hoy',this)">Hoy</button>
+      <button class="fb" onclick="filtrarPróximas('mañana',this)">Mañana</button>
+      <button class="fb" onclick="filtrarPróximas('semana',this)">Esta semana</button>
+      <button class="fb" onclick="filtrarPróximas('todas',this)">Todas</button>
     </div>
     <div class="tabla-wrap"><table>
       <thead><tr><th>Clienta</th><th>Servicio</th><th>Profesional</th><th>Fecha y Hora</th><th>Estado</th><th>Accion</th></tr></thead>
-      <tbody id="tabla-proximas"></tbody>
+      <tbody id="tabla-próximas"></tbody>
     </table></div>
   </div>
   <div class="card">
@@ -515,28 +547,32 @@ tbody td{padding:13px 14px;color:#1a1a1a;vertical-align:middle}
     <button class="fb" onclick="filtrarCRM('perdida',this)">Perdidas</button>
     <button class="fb" onclick="filtrarCRM('nueva',this)">Nuevas</button>
   </div>
+  <div style="margin-bottom:16px;position:relative;">
+    <input id="crm-buscar" type="text" placeholder="Buscar por nombre o número..." oninput="buscarCRM()" style="width:100%;padding:12px 16px 12px 40px;border:1.5px solid #e0e0e0;border-radius:50px;font-size:0.88rem;font-family:'DM Sans',sans-serif;outline:none;background:#fff;">
+    <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" style="position:absolute;left:14px;top:50%;transform:translateY(-50%);width:16px;height:16px;stroke:#aaa"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+  </div>
   <div id="crm-lista"></div>
 </div>
 
 <!-- CALIFICACIONES -->
-<div class="page" id="page-calificaciones">
+<div class="page" id="page-calificaciónes">
   <div class="topbar">
-    <div><div class="topbar-title"><em>Calificaciones</em></div></div>
+    <div><div class="topbar-title"><em>Calificaciónes</em></div></div>
     <div class="topbar-badge" id="badge-cal">Sede El Poblado</div>
   </div>
 
   <!-- RESUMEN -->
   <div class="cal-resumen">
     <div class="stat-card accent"><div class="sc-label">Promedio general</div><div class="sc-num" id="cal-promedio">0.0</div><div class="sc-sub">estrellas</div></div>
-    <div class="stat-card"><div class="sc-label">Total resenas</div><div class="sc-num" id="cal-total">0</div><div class="sc-sub">calificaciones</div></div>
-    <div class="stat-card"><div class="sc-label">Esta semana</div><div class="sc-num" id="cal-semana">0</div><div class="sc-sub">nuevas resenas</div></div>
+    <div class="stat-card"><div class="sc-label">Total reseñas</div><div class="sc-num" id="cal-total">0</div><div class="sc-sub">calificaciónes</div></div>
+    <div class="stat-card"><div class="sc-label">Esta semana</div><div class="sc-num" id="cal-semana">0</div><div class="sc-sub">nuevas reseñas</div></div>
   </div>
 
   <!-- FILTRO POR PROFESIONAL -->
   <div class="card">
-    <div class="card-title">Resenas por profesional</div>
+    <div class="card-title">Reseñas por profesional</div>
     <div class="cal-filtros" id="cal-filtros">
-      <button class="fb active" onclick="filtrarCalificaciones('todas',this)">Todas</button>
+      <button class="fb active" onclick="filtrarCalificaciónes('todas',this)">Todas</button>
     </div>
     <div id="cal-lista"></div>
   </div>
@@ -629,8 +665,8 @@ var archivoFotoSeleccionado = null;
 
 var hoy = new Date();
 var fechaHoyStr = hoy.toISOString().split('T')[0];
-var manana = new Date(hoy); manana.setDate(hoy.getDate()+1);
-var fechaMananaStr = manana.toISOString().split('T')[0];
+var mañana = new Date(hoy); mañana.setDate(hoy.getDate()+1);
+var fechaMañanaStr = mañana.toISOString().split('T')[0];
 
 var PRECIOS = {'Manicure Gel':45000,'Unas Acrilicas':80000,'Pedicure Spa':55000,'Nail Art':30000,'Semipermanente':38000,'Manicure + Pedicure':75000};
 function getPrecio(s){if(!s)return 0;var b=s.split('\u2014')[0].trim().split('\u2013')[0].trim();return PRECIOS[b]||0;}
@@ -677,25 +713,25 @@ function cambiarSucursal(val){
   cargarDatos();
 }
 
-var todasCalificaciones = [];
+var todasCalificaciónes = [];
 
 function cargarDatos(){
   var citasRef=db.collection('spas').doc(sucursalActual).collection('citas').orderBy('creadoEn','desc');
   var clientesRef=db.collection('spas').doc(sucursalActual).collection('clientes');
   var prosRef=db.collection('spas').doc(sucursalActual).collection('profesionales');
-  var calRef=db.collection('spas').doc(sucursalActual).collection('calificaciones');
+  var calRef=db.collection('spas').doc(sucursalActual).collection('calificaciónes');
 
   Promise.all([citasRef.get(),clientesRef.get(),prosRef.get(),calRef.get()]).then(function(results){
     todasCitas=results[0].docs.map(function(d){var o=d.data();o.id=d.id;return o;});
     todosClientes=results[1].docs.map(function(d){var o=d.data();o.id=d.id;return o;});
     todasPros=results[2].docs.map(function(d){var o=d.data();o.id=d.id;return o;});
-    todasCalificaciones=results[3].docs.map(function(d){var o=d.data();o.id=d.id;return o;});
+    todasCalificaciónes=results[3].docs.map(function(d){var o=d.data();o.id=d.id;return o;});
     actualizarDashboard();
     renderTablaTodas(todasCitas);
     renderProGrid('pro-total',todasCitas);
     renderProsAdmin();
     renderCRM('todas');
-    renderCalificaciones('todas');
+    renderCalificaciónes('todas');
   }).catch(function(e){console.error(e);toast('Error cargando datos','err');});
 }
 
@@ -708,18 +744,18 @@ function actualizarDashboard(){
   document.getElementById('stat-mes').textContent=mes.length;
   document.getElementById('stat-total').textContent=todasCitas.length;
   document.getElementById('stat-clientes').textContent=todosClientes.length;
-  filtrarProximas('hoy',document.querySelector('#page-dashboard .fb.active'));
+  filtrarPróximas('hoy',document.querySelector('#page-dashboard .fb.active'));
   renderProGrid('pro-semana',semana);
 }
 
-function filtrarProximas(periodo,btn){
+function filtrarPróximas(periodo,btn){
   if(btn){
     document.querySelectorAll('#page-dashboard .filtros .fb').forEach(function(b){b.classList.remove('active');});
     btn.classList.add('active');
   }
   var citas=[];
   if(periodo==='hoy') citas=todasCitas.filter(function(c){return c.fecha===fechaHoyStr&&c.estado!=='cancelada';});
-  else if(periodo==='manana') citas=todasCitas.filter(function(c){return c.fecha===fechaMananaStr&&c.estado!=='cancelada';});
+  else if(periodo==='mañana') citas=todasCitas.filter(function(c){return c.fecha===fechaMañanaStr&&c.estado!=='cancelada';});
   else if(periodo==='semana'){
     var ini=new Date(hoy);ini.setDate(hoy.getDate()-hoy.getDay());
     citas=todasCitas.filter(function(c){return c.fecha&&new Date(c.fecha+'T00:00:00')>=ini&&c.estado!=='cancelada';});
@@ -728,7 +764,7 @@ function filtrarProximas(periodo,btn){
   }
   citas.sort(function(a,b){return (a.fecha||'').localeCompare(b.fecha||'')||(a.hora||'').localeCompare(b.hora||'');});
   document.getElementById('prox-count').textContent=citas.length+' citas';
-  renderTabla('tabla-proximas',citas);
+  renderTabla('tabla-próximas',citas);
 }
 
 function renderTabla(idTabla,citas){
@@ -1045,10 +1081,87 @@ function renderCRM(filtro){
         '<div class="crm-cs"><div class="crm-cs-val">'+(c.diasSinVenir===999?'--':c.diasSinVenir+'d')+'</div><div class="crm-cs-label">Sin visitar</div></div>'+
       '</div>'+
       (c.favorito?'<div class="crm-fav">Servicio favorito: '+c.favorito+'</div>':'')+
-      (c.ultimaFecha?'<div style="font-size:0.72rem;color:#8a7a76;margin-top:8px">Ultima visita: '+c.ultimaFecha+'</div>':'')+
+      (c.ultimaFecha?'<div style="font-size:0.72rem;color:#8a7a76;margin-top:8px">Última visita: '+c.ultimaFecha+'</div>':'')+
+      '<div style="display:flex;gap:8px;margin-top:12px;">'+
+        '<button onclick="abrirRedencion(\''+c.id+'\',\''+(c.nombre||'Clienta')+'\','+(c.puntos||0)+')" style="flex:1;background:#f5ede6;color:#7a3d35;border:none;border-radius:50px;padding:8px;font-size:0.78rem;font-weight:500;cursor:pointer;font-family:\'DM Sans\',sans-serif;">⭐ Canjear puntos</button>'+
+      '</div>'+
     '</div>';
   }
   lista.innerHTML=html;
+}
+
+function buscarCRM() {
+  var query = document.getElementById('crm-buscar').value.toLowerCase().trim();
+  if (!query) { renderCRM('todas'); return; }
+  var lista = document.getElementById('crm-lista');
+  var filtrados = todosClientes.filter(function(c) {
+    return (c.nombre||'').toLowerCase().includes(query) || (c.whatsapp||'').includes(query) || (c.id||'').includes(query);
+  });
+  if (filtrados.length === 0) {
+    lista.innerHTML = '<div class="empty-txt" style="padding:20px;color:#aaa">No se encontraron clientas</div>';
+    return;
+  }
+  var html = '';
+  filtrados.forEach(function(c) {
+    var puntos = c.puntos || 0;
+    html += '<div class="crm-card">' +
+      '<div class="crm-card-hdr"><div>' +
+        '<div class="crm-card-name">' + (c.nombre||'Sin nombre') + '</div>' +
+        '<div class="crm-card-phone">' + (c.whatsapp||c.id) + '</div>' +
+      '</div></div>' +
+      '<div class="crm-card-stats">' +
+        '<div class="crm-cs"><div class="crm-cs-val">' + (c.visitas||0) + '</div><div class="crm-cs-label">Visitas</div></div>' +
+        '<div class="crm-cs"><div class="crm-cs-val">' + puntos + '</div><div class="crm-cs-label">Puntos</div></div>' +
+      '</div>' +
+      '<div style="display:flex;gap:8px;margin-top:12px;">' +
+        '<button onclick="abrirRedencion(\'' + c.id + '\',\'' + (c.nombre||'Clienta') + '\',' + puntos + ')" style="flex:1;background:#f5ede6;color:#7a3d35;border:none;border-radius:50px;padding:8px;font-size:0.78rem;font-weight:500;cursor:pointer;font-family:\'DM Sans\',sans-serif;">⭐ Canjear puntos</button>' +
+      '</div>' +
+    '</div>';
+  });
+  lista.innerHTML = html;
+}
+
+function abrirRedencion(clienteId, nombre, puntos) {
+  var modal = document.getElementById('modal-redencion');
+  document.getElementById('red-cliente-nombre').textContent = nombre;
+  document.getElementById('red-cliente-puntos').textContent = puntos + ' puntos disponibles';
+  document.getElementById('red-cantidad').value = '';
+  document.getElementById('red-cliente-id').value = clienteId;
+  document.getElementById('red-puntos-actuales').value = puntos;
+  modal.style.display = 'flex';
+}
+
+function cerrarRedencion() {
+  document.getElementById('modal-redencion').style.display = 'none';
+}
+
+function confirmarRedencion() {
+  var clienteId = document.getElementById('red-cliente-id').value;
+  var puntosActuales = parseInt(document.getElementById('red-puntos-actuales').value);
+  var cantidad = parseInt(document.getElementById('red-cantidad').value);
+  var motivo = document.getElementById('red-motivo').value.trim();
+
+  if (!cantidad || cantidad <= 0) { toast('Ingresa la cantidad de puntos', 'err'); return; }
+  if (cantidad > puntosActuales) { toast('No tiene suficientes puntos', 'err'); return; }
+  if (!motivo) { toast('Ingresa el motivo del canje', 'err'); return; }
+
+  var nuevoPuntos = puntosActuales - cantidad;
+
+  db.collection('spas').doc(sucursalActual).collection('clientes').doc(clienteId).update({
+    puntos: nuevoPuntos
+  }).then(function() {
+    // Guardar historial de canje
+    db.collection('spas').doc(sucursalActual).collection('clientes').doc(clienteId)
+      .collection('canjes').add({
+        puntos: cantidad,
+        motivo: motivo,
+        fecha: new Date().toISOString().split('T')[0],
+        creadoEn: firebase.firestore.FieldValue.serverTimestamp()
+      });
+    cerrarRedencion();
+    toast('Canje de ' + cantidad + ' puntos aplicado', 'ok');
+    cargarDatos();
+  }).catch(function() { toast('Error aplicando canje', 'err'); });
 }
 
 function filtrarCRM(filtro,btn){
@@ -1058,14 +1171,14 @@ function filtrarCRM(filtro,btn){
 }
 
 // CALIFICACIONES
-function renderCalificaciones(filtro) {
+function renderCalificaciónes(filtro) {
   var lista = document.getElementById('cal-lista');
   if (!lista) { console.log('NO ENCUENTRA cal-lista'); return; }
 
-  var cal = filtro === 'todas' ? todasCalificaciones : todasCalificaciones.filter(function(c) { return c.profesional === filtro; });
+  var cal = filtro === 'todas' ? todasCalificaciónes : todasCalificaciónes.filter(function(c) { return c.profesional === filtro; });
 
   if (cal.length === 0) {
-    lista.innerHTML = '<p style="color:#aaa;padding:20px">Aun no hay calificaciones</p>';
+    lista.innerHTML = '<p style="color:#aaa;padding:20px">Aun no hay calificaciónes</p>';
     return;
   }
 
@@ -1087,20 +1200,20 @@ function renderCalificaciones(filtro) {
   lista.innerHTML = html;
 
   // Stats
-  var total = todasCalificaciones.length;
-  var promedio = total > 0 ? Math.round((todasCalificaciones.reduce(function(s,c){return s+(c.estrellas||0);},0)/total)*10)/10 : 0;
+  var total = todasCalificaciónes.length;
+  var promedio = total > 0 ? Math.round((todasCalificaciónes.reduce(function(s,c){return s+(c.estrellas||0);},0)/total)*10)/10 : 0;
   var iniSem = new Date(); iniSem.setDate(iniSem.getDate()-iniSem.getDay());
-  var semana = todasCalificaciones.filter(function(c){return c.fecha&&new Date(c.fecha+'T00:00:00')>=iniSem;}).length;
+  var semana = todasCalificaciónes.filter(function(c){return c.fecha&&new Date(c.fecha+'T00:00:00')>=iniSem;}).length;
   var elProm = document.getElementById('cal-promedio'); if(elProm) elProm.textContent = promedio.toFixed(1);
   var elTot = document.getElementById('cal-total'); if(elTot) elTot.textContent = total;
   var elSem = document.getElementById('cal-semana'); if(elSem) elSem.textContent = semana;
 }
 
 
-function filtrarCalificaciones(filtro, btn) {
+function filtrarCalificaciónes(filtro, btn) {
   document.querySelectorAll('#cal-filtros .fb').forEach(function(b){b.classList.remove('active');});
   if(btn) btn.classList.add('active');
-  renderCalificaciones(filtro);
+  renderCalificaciónes(filtro);
 }
 var repCitasActuales = [];
 
@@ -1255,11 +1368,11 @@ function showPage(pageName,btn){
   btn.classList.add('active');
   if(pageName==='reporte') filtrarReporte('semana',document.querySelector('#page-reporte .fb'));
   if(pageName==='horarios') renderHorarioProSelect();
-  if(pageName==='calificaciones'){
-    db.collection('spas').doc(sucursalActual).collection('calificaciones').get().then(function(snap){
-      todasCalificaciones=snap.docs.map(function(d){var o=d.data();o.id=d.id;return o;});
-      console.log('Calificaciones recargadas:', todasCalificaciones.length);
-      renderCalificaciones('todas');
+  if(pageName==='calificaciónes'){
+    db.collection('spas').doc(sucursalActual).collection('calificaciónes').get().then(function(snap){
+      todasCalificaciónes=snap.docs.map(function(d){var o=d.data();o.id=d.id;return o;});
+      console.log('Calificaciónes recargadas:', todasCalificaciónes.length);
+      renderCalificaciónes('todas');
     });
   }
   if(window.innerWidth<=960)toggleSidebar();
