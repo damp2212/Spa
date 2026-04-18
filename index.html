@@ -482,7 +482,7 @@ function enviarCodigo() {
   fetch(ENVIAR_URL, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ número: telefonoActual })
+    body: JSON.stringify({ numero: telefonoActual })
   }).then(function(r) { return r.json(); }).then(function(data) {
     if (data.ok) {
       document.getElementById('paso-telefono').style.display = 'none';
@@ -511,7 +511,7 @@ function verificarCodigo() {
   fetch(VERIFICAR_URL, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ número: telefonoActual, codigo: codigo })
+    body: JSON.stringify({ numero: telefonoActual, codigo: codigo })
   }).then(function(r) { return r.json(); }).then(function(data) {
     if (data.ok) {
       usuarioActual = { tel: data.tel };
@@ -528,7 +528,7 @@ function verificarCodigo() {
           actualizarNavUsuario(data.tel);
           cargarPerfilUsuario(data.tel);
           mostrarFormularioLogueado();
-          showToast('Te damos la bienvenida de nuevo!', 'success');
+          showToast('Bienvenida de nuevo!', 'success');
         }
       });
     } else {
@@ -567,7 +567,7 @@ function guardarDatosRegistro() {
     var fw = document.getElementById('f-whatsapp'); if(fw) fw.value = usuarioActual.tel;
     actualizarNavUsuario(usuarioActual.tel, nombre);
     mostrarFormularioLogueado();
-    showToast('Te damos la bienvenida ' + nombre + '! Ya podes agendar', 'success');
+    showToast('Bienvenida ' + nombre + '! Ya podes agendar', 'success');
   }).catch(function() {
     showToast('Error guardando datos', 'error');
     btn.disabled = false;
@@ -654,11 +654,11 @@ function guardarCita() {
   <div style="background:#ffffff;border-radius:24px;padding:32px 24px;width:100%;max-width:380px;position:relative;">
     <button onclick="document.getElementById('login-overlay').style.display='none'" style="position:absolute;top:16px;right:16px;background:none;border:none;font-size:1.2rem;cursor:pointer;color:#8a7676;line-height:1;">✕</button>
 
-
+```
 <div id="paso-telefono">
   <div style="text-align:center;margin-bottom:24px;">
     <div style="font-size:2.5rem;margin-bottom:12px;">💅</div>
-    <div style="font-family:'Playfair Display',Georgia,serif;font-size:1.5rem;color:#1a1a1a;margin-bottom:8px;">Te damos la bienvenida</div>
+    <div style="font-family:'Playfair Display',Georgia,serif;font-size:1.5rem;color:#1a1a1a;margin-bottom:8px;">Bienvenida</div>
     <div style="font-size:0.85rem;color:#8a7676;line-height:1.6">Ingresa tu número de celular para agendar tu cita y acumular puntos</div>
   </div>
   <div style="margin-bottom:16px;">
@@ -675,7 +675,6 @@ function guardarCita() {
         <option value="+51">🇵🇪 +51</option>
         <option value="+56">🇨🇱 +56</option>
         <option value="+54">🇦🇷 +54</option>
-        <option value="+1">🇨🇦 +1</option>
       </select>
       <input id="login-telefono" type="tel" placeholder="300 000 0000" autocomplete="tel" inputmode="numeric" style="flex:1;padding:13px 16px;border:1.5px solid #f0bcbc;border-radius:12px;font-size:0.9rem;color:#1a1a1a;background:#fbf3f3;font-family:'DM Sans',sans-serif;outline:none;-webkit-appearance:none;">
     </div>
@@ -722,7 +721,7 @@ function guardarCita() {
     <img src="maposnegro.png" style="height:60px;vertical-align:middle;" alt="MApos">
   </a>
 </div>
-
+```
 
   </div>
 </div>
