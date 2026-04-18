@@ -9,44 +9,44 @@
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; -webkit-text-size-adjust: 100%; }
-html { scroll-behavior: smooth; background: #fdf5f5; }
-body { font-family: 'DM Sans', Georgia, sans-serif; background: #fdf5f5; color: #1a1a1a; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+html { scroll-behavior: smooth; background: #fbf3f3; }
+body { font-family: 'DM Sans', Georgia, sans-serif; background: #fbf3f3; color: #1a1a1a; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
 
-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 999; display: flex; align-items: center; justify-content: space-between; padding: 16px 24px; background: #e09a98; border-bottom: 1px solid #d4888680; }
-.nav-cta { background: #ffffff; color: #e09a98; padding: 10px 20px; border-radius: 50px; font-size: 0.82rem; font-weight: 500; text-decoration: none; }
+nav { position: fixed; top: 0; left: 0; right: 0; z-index: 999; display: flex; align-items: center; justify-content: space-between; padding: 16px 24px; background: #d99595; border-bottom: 1px solid #d4888680; }
+.nav-cta { background: #ffffff; color: #d99595; padding: 10px 20px; border-radius: 50px; font-size: 0.82rem; font-weight: 500; text-decoration: none; }
 
-.hero { padding: 160px 24px 60px; background: #fdf5f5; text-align: center; }
-.hero-badge { display: inline-flex; align-items: center; gap: 8px; background: #fdf0f0; border: 1px solid #f0c8c8; border-radius: 50px; padding: 7px 16px; font-size: 0.75rem; color: #e09a98; font-weight: 500; letter-spacing: 0.5px; text-transform: uppercase; margin-bottom: 24px; }
-.hero-dot { width: 6px; height: 6px; background: #e09a98; border-radius: 50%; display: inline-block; }
+.hero { padding: 160px 24px 60px; background: #fbf3f3; text-align: center; }
+.hero-badge { display: inline-flex; align-items: center; gap: 8px; background: #f7ecec; border: 1px solid #f0bcbc; border-radius: 50px; padding: 7px 16px; font-size: 0.75rem; color: #d99595; font-weight: 500; letter-spacing: 0.5px; text-transform: uppercase; margin-bottom: 24px; }
+.hero-dot { width: 6px; height: 6px; background: #d99595; border-radius: 50%; display: inline-block; }
 .hero-title { font-family: ‘Playfair Display’, Georgia, serif; font-size: 3rem; line-height: 1.1; color: #1a1a1a; margin-bottom: 20px; }
-.hero-title em { font-style: italic; color: #e09a98; }
+.hero-title em { font-style: italic; color: #d99595; }
 .hero-sub { font-size: 0.95rem; color: #8a7676; line-height: 1.7; margin-bottom: 32px; }
 .hero-actions { display: flex; gap: 16px; align-items: center; margin-bottom: 48px; justify-content: center; }
-.btn-primary { background: #c27b7b; color: #ffffff; padding: 14px 28px; border-radius: 50px; font-size: 0.9rem; font-weight: 500; text-decoration: none; display: inline-block; }
-.btn-ghost { color: #c27b7b; font-size: 0.9rem; font-weight: 500; text-decoration: none; }
-.hero-stats { display: flex; gap: 32px; padding-top: 32px; border-top: 1px solid #f0c8c8; justify-content: center; }
-.stat-num { font-family: ‘Playfair Display’, Georgia, serif; font-size: 1.8rem; font-weight: 700; color: #c27b7b; line-height: 1; }
+.btn-primary { background: #b87070; color: #ffffff; padding: 14px 28px; border-radius: 50px; font-size: 0.9rem; font-weight: 500; text-decoration: none; display: inline-block; }
+.btn-ghost { color: #b87070; font-size: 0.9rem; font-weight: 500; text-decoration: none; }
+.hero-stats { display: flex; gap: 32px; padding-top: 32px; border-top: 1px solid #f0bcbc; justify-content: center; }
+.stat-num { font-family: ‘Playfair Display’, Georgia, serif; font-size: 1.8rem; font-weight: 700; color: #b87070; line-height: 1; }
 .stat-label { font-size: 0.72rem; color: #8a7676; text-transform: uppercase; letter-spacing: 0.5px; margin-top: 4px; }
 
-.banner-wrap { background: #c27b7b; padding: 16px 0; overflow: hidden; }
+.banner-wrap { background: #b87070; padding: 16px 0; overflow: hidden; }
 .banner-track { display: flex; animation: marquee 22s linear infinite; white-space: nowrap; }
-.banner-item { display: inline-flex; align-items: center; gap: 12px; padding: 0 32px; color: #fdf0f0; font-size: 0.82rem; letter-spacing: 0.8px; text-transform: uppercase; flex-shrink: 0; }
-.banner-dot { color: #f0c8c8; }
+.banner-item { display: inline-flex; align-items: center; gap: 12px; padding: 0 32px; color: #f7ecec; font-size: 0.82rem; letter-spacing: 0.8px; text-transform: uppercase; flex-shrink: 0; }
+.banner-dot { color: #f0bcbc; }
 @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 
-.section { padding: 72px 24px; background: #fdf5f5; }
-.section-nude { padding: 72px 24px; background: #fdf0f0; }
+.section { padding: 72px 24px; background: #fbf3f3; }
+.section-nude { padding: 72px 24px; background: #f7ecec; }
 .section-dark { padding: 72px 24px; background: #1a1a1a; }
-.sec-label { font-size: 0.75rem; color: #e09a98; text-transform: uppercase; letter-spacing: 1.5px; font-weight: 500; margin-bottom: 10px; }
+.sec-label { font-size: 0.75rem; color: #d99595; text-transform: uppercase; letter-spacing: 1.5px; font-weight: 500; margin-bottom: 10px; }
 .sec-title { font-family: ‘Playfair Display’, Georgia, serif; font-size: 2.2rem; color: #1a1a1a; line-height: 1.2; margin-bottom: 40px; }
-.sec-title em { font-style: italic; color: #e09a98; }
+.sec-title em { font-style: italic; color: #d99595; }
 .sec-title-w { font-family: ‘Playfair Display’, Georgia, serif; font-size: 2.2rem; color: #ffffff; line-height: 1.2; margin-bottom: 16px; }
-.sec-title-w em { font-style: italic; color: #f0c8c8; }
+.sec-title-w em { font-style: italic; color: #f0bcbc; }
 
 .services-grid { display: flex; flex-direction: column; gap: 16px; }
 .service-card { background: #ffffff; border-radius: 20px; overflow: hidden; border: 1px solid #f5d5d5; }
 .svc-img { height: 160px; display: flex; align-items: center; justify-content: center; font-size: 3rem; }
-.si1 { background: linear-gradient(135deg, #f9e4dc, #f0c8c8); }
+.si1 { background: linear-gradient(135deg, #f9e4dc, #f0bcbc); }
 .si2 { background: linear-gradient(135deg, #e8d5f0, #c9a8e0); }
 .si3 { background: linear-gradient(135deg, #fce8d5, #f0c4a0); }
 .si4 { background: linear-gradient(135deg, #d5e8f0, #a8cce0); }
@@ -56,13 +56,13 @@ nav { position: fixed; top: 0; left: 0; right: 0; z-index: 999; display: flex; a
 .svc-name { font-family: ‘Playfair Display’, Georgia, serif; font-size: 1.1rem; color: #1a1a1a; margin-bottom: 6px; }
 .svc-desc { font-size: 0.82rem; color: #8a7676; line-height: 1.6; margin-bottom: 14px; }
 .svc-foot { display: flex; align-items: center; justify-content: space-between; }
-.svc-price { font-family: ‘Playfair Display’, Georgia, serif; font-size: 1.2rem; color: #c27b7b; font-weight: 700; }
-.svc-dur { font-size: 0.75rem; color: #8a7676; background: #fdf0f0; padding: 4px 12px; border-radius: 50px; }
+.svc-price { font-family: ‘Playfair Display’, Georgia, serif; font-size: 1.2rem; color: #b87070; font-weight: 700; }
+.svc-dur { font-size: 0.75rem; color: #8a7676; background: #f7ecec; padding: 4px 12px; border-radius: 50px; }
 
 .pros-grid { display: flex; flex-direction: column; gap: 16px; }
-.pro-card { background: #ffffff; border-radius: 20px; padding: 28px 20px; text-align: center; border: 1px solid #f0c8c8; }
-.pro-avatar { width: 80px; height: 80px; border-radius: 50%; margin: 0 auto 14px; display: flex; align-items: center; justify-content: center; font-size: 2rem; border: 3px solid #f0c8c8; }
-.pa1 { background: linear-gradient(135deg, #f9e4dc, #f0c8c8); }
+.pro-card { background: #ffffff; border-radius: 20px; padding: 28px 20px; text-align: center; border: 1px solid #f0bcbc; }
+.pro-avatar { width: 80px; height: 80px; border-radius: 50%; margin: 0 auto 14px; display: flex; align-items: center; justify-content: center; font-size: 2rem; border: 3px solid #f0bcbc; }
+.pa1 { background: linear-gradient(135deg, #f9e4dc, #f0bcbc); }
 .pa2 { background: linear-gradient(135deg, #e8d5f0, #c9a8e0); }
 .pa3 { background: linear-gradient(135deg, #fce8d5, #f0c4a0); }
 .pa4 { background: linear-gradient(135deg, #d5f0e8, #a8e0cc); }
@@ -70,12 +70,12 @@ nav { position: fixed; top: 0; left: 0; right: 0; z-index: 999; display: flex; a
 .pro-spec { font-size: 0.78rem; color: #8a7676; margin-bottom: 10px; }
 .pro-rating { display: flex; align-items: center; justify-content: center; gap: 6px; margin-bottom: 14px; }
 .stars { color: #f4c542; font-size: 0.85rem; }
-.rating-num { font-weight: 600; font-size: 0.85rem; color: #c27b7b; }
+.rating-num { font-weight: 600; font-size: 0.85rem; color: #b87070; }
 .rating-cnt { font-size: 0.72rem; color: #8a7676; }
 .pro-slots { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; margin-bottom: 16px; }
-.slot { font-size: 0.72rem; background: #fdf0f0; color: #c27b7b; padding: 5px 12px; border-radius: 50px; border: 1px solid #f0c8c8; }
-.slot-on { background: #c27b7b; color: #ffffff; border-color: #c27b7b; }
-.btn-ag { width: 100%; background: #c27b7b; color: #ffffff; border: none; border-radius: 50px; padding: 12px; font-size: 0.85rem; font-weight: 500; cursor: pointer; font-family: ‘DM Sans’, sans-serif; }
+.slot { font-size: 0.72rem; background: #f7ecec; color: #b87070; padding: 5px 12px; border-radius: 50px; border: 1px solid #f0bcbc; }
+.slot-on { background: #b87070; color: #ffffff; border-color: #b87070; }
+.btn-ag { width: 100%; background: #b87070; color: #ffffff; border: none; border-radius: 50px; padding: 12px; font-size: 0.85rem; font-weight: 500; cursor: pointer; font-family: ‘DM Sans’, sans-serif; }
 
 .inspo-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 .inspo-card { border-radius: 16px; overflow: hidden; position: relative; }
@@ -92,15 +92,15 @@ nav { position: fixed; top: 0; left: 0; right: 0; z-index: 999; display: flex; a
 .inspo-label { position: absolute; bottom: 0; left: 0; right: 0; background: rgba(122,61,53,0.78); color: #ffffff; font-size: 0.78rem; text-align: center; padding: 8px; font-family: ‘Playfair Display’, Georgia, serif; }
 
 .booking-intro { color: #cccccc; font-size: 0.88rem; line-height: 1.7; margin-bottom: 24px; }
-.book-feat { display: flex; align-items: center; gap: 10px; color: #fdf0f0; font-size: 0.85rem; margin-bottom: 10px; }
+.book-feat { display: flex; align-items: center; gap: 10px; color: #f7ecec; font-size: 0.85rem; margin-bottom: 10px; }
 .book-feat-icon { width: 28px; height: 28px; background: rgba(245,237,230,0.12); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; flex-shrink: 0; }
 .booking-form { background: #ffffff; border-radius: 24px; padding: 28px 20px; margin-top: 32px; }
 .form-title { font-family: ‘Playfair Display’, Georgia, serif; font-size: 1.4rem; color: #1a1a1a; margin-bottom: 24px; }
 .form-group { margin-bottom: 16px; }
 .form-label { display: block; font-size: 0.72rem; color: #8a7676; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 500; margin-bottom: 7px; }
-.form-control { width: 100%; padding: 13px 16px; border: 1.5px solid #f0c8c8; border-radius: 12px; font-size: 0.9rem; color: #1a1a1a; background: #fdf5f5; font-family: ‘DM Sans’, sans-serif; outline: none; -webkit-appearance: none; appearance: none; }
-.form-control:focus { border-color: #e09a98; }
-.btn-book { width: 100%; background: #c27b7b; color: #ffffff; border: none; border-radius: 50px; padding: 15px; font-size: 0.92rem; font-weight: 500; cursor: pointer; font-family: ‘DM Sans’, sans-serif; margin-top: 8px; transition: background 0.2s; }
+.form-control { width: 100%; padding: 13px 16px; border: 1.5px solid #f0bcbc; border-radius: 12px; font-size: 0.9rem; color: #1a1a1a; background: #fbf3f3; font-family: ‘DM Sans’, sans-serif; outline: none; -webkit-appearance: none; appearance: none; }
+.form-control:focus { border-color: #d99595; }
+.btn-book { width: 100%; background: #b87070; color: #ffffff; border: none; border-radius: 50px; padding: 15px; font-size: 0.92rem; font-weight: 500; cursor: pointer; font-family: ‘DM Sans’, sans-serif; margin-top: 8px; transition: background 0.2s; }
 .btn-book:disabled { background: #aaaaaa; cursor: not-allowed; }
 .wa-note { text-align: center; margin-top: 14px; font-size: 0.78rem; color: #8a7676; }
 
@@ -110,31 +110,31 @@ nav { position: fixed; top: 0; left: 0; right: 0; z-index: 999; display: flex; a
 .toast.success { background: #1a7a3d; }
 .toast.error { background: #7a1a1a; }
 
-.puntos-card { background: #ffffff; border-radius: 24px; padding: 28px 20px; border: 1px solid #f0c8c8; margin-top: 32px; }
+.puntos-card { background: #ffffff; border-radius: 24px; padding: 28px 20px; border: 1px solid #f0bcbc; margin-top: 32px; }
 .puntos-hdr { display: flex; align-items: center; gap: 14px; margin-bottom: 24px; }
-.puntos-icon { width: 50px; height: 50px; background: linear-gradient(135deg, #f0c8c8, #e09a98); border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; flex-shrink: 0; }
+.puntos-icon { width: 50px; height: 50px; background: linear-gradient(135deg, #f0bcbc, #d99595); border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; flex-shrink: 0; }
 .puntos-title { font-family: ‘Playfair Display’, Georgia, serif; font-size: 1.1rem; color: #1a1a1a; }
 .puntos-sub { font-size: 0.78rem; color: #8a7676; }
 .puntos-big { text-align: center; margin-bottom: 20px; }
-.puntos-num { font-family: ‘Playfair Display’, Georgia, serif; font-size: 3rem; color: #c27b7b; font-weight: 700; line-height: 1; }
+.puntos-num { font-family: ‘Playfair Display’, Georgia, serif; font-size: 3rem; color: #b87070; font-weight: 700; line-height: 1; }
 .puntos-desc { font-size: 0.8rem; color: #8a7676; margin-top: 4px; }
 .prog-row { display: flex; justify-content: space-between; font-size: 0.78rem; margin-bottom: 6px; color: #1a1a1a; }
-.prog-val { color: #e09a98; font-weight: 600; }
-.prog-bar { height: 6px; background: #fdf0f0; border-radius: 50px; overflow: hidden; margin-bottom: 8px; }
-.prog-fill { height: 100%; background: linear-gradient(90deg, #f0c8c8, #e09a98); border-radius: 50px; }
+.prog-val { color: #d99595; font-weight: 600; }
+.prog-bar { height: 6px; background: #f7ecec; border-radius: 50px; overflow: hidden; margin-bottom: 8px; }
+.prog-fill { height: 100%; background: linear-gradient(90deg, #f0bcbc, #d99595); border-radius: 50px; }
 .prog-hint { font-size: 0.75rem; color: #8a7676; margin-bottom: 20px; }
-.puntos-next { background: #fdf0f0; border-radius: 12px; padding: 14px; text-align: center; }
+.puntos-next { background: #f7ecec; border-radius: 12px; padding: 14px; text-align: center; }
 .puntos-next-lbl { font-size: 0.72rem; color: #8a7676; margin-bottom: 4px; }
-.puntos-next-val { font-family: ‘Playfair Display’, Georgia, serif; font-size: 0.95rem; color: #c27b7b; }
+.puntos-next-val { font-family: ‘Playfair Display’, Georgia, serif; font-size: 0.95rem; color: #b87070; }
 .badges { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 20px; }
 .badge { font-size: 0.72rem; padding: 6px 12px; border-radius: 50px; font-weight: 500; }
 .bg-gold { background: #fff3cd; color: #856404; }
-.bg-rose { background: #fce4e4; color: #c27b7b; }
+.bg-rose { background: #fce4e4; color: #b87070; }
 .bg-green { background: #d4edda; color: #155724; }
 
 footer { background-color: #1a1a1a; padding: 52px 24px 32px; }
 .ft-logo { font-family: ‘Playfair Display’, Georgia, serif; font-size: 1.4rem; color: #ffffff; margin-bottom: 12px; }
-.ft-logo span { color: #e09a98; font-style: italic; }
+.ft-logo span { color: #d99595; font-style: italic; }
 .ft-desc { font-size: 0.82rem; color: #999999; line-height: 1.7; margin-bottom: 32px; }
 .ft-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 36px; }
 .ft-col-title { font-size: 0.72rem; color: #777777; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 14px; }
@@ -144,19 +144,19 @@ footer { background-color: #1a1a1a; padding: 52px 24px 32px; }
 .ft-powered { font-size: 0.75rem; color: #666666; }
 .ft-powered strong { color: #aaaaaa; }
 
-.nav-login { background: #fdf0f0; color: #c27b7b; border: 1.5px solid #f0c8c8; padding: 9px 18px; border-radius: 50px; font-size: 0.82rem; font-weight: 500; cursor: pointer; font-family: ‘DM Sans’, sans-serif; display: inline-flex; align-items: center; gap: 6px; transition: all 0.2s; }
-.nav-login:hover { background: #f0c8c8; }
-.nav-login svg { width: 14px; height: 14px; stroke: #c27b7b; flex-shrink: 0; }
-.nav-user-info { font-size: 0.78rem; color: #c27b7b; font-weight: 500; cursor: pointer; background: #fdf0f0; border: 1.5px solid #f0c8c8; padding: 9px 16px; border-radius: 50px; display: inline-flex; align-items: center; gap: 6px; transition: all 0.2s; }
+.nav-login { background: #f7ecec; color: #b87070; border: 1.5px solid #f0bcbc; padding: 9px 18px; border-radius: 50px; font-size: 0.82rem; font-weight: 500; cursor: pointer; font-family: ‘DM Sans’, sans-serif; display: inline-flex; align-items: center; gap: 6px; transition: all 0.2s; }
+.nav-login:hover { background: #f0bcbc; }
+.nav-login svg { width: 14px; height: 14px; stroke: #b87070; flex-shrink: 0; }
+.nav-user-info { font-size: 0.78rem; color: #b87070; font-weight: 500; cursor: pointer; background: #f7ecec; border: 1.5px solid #f0bcbc; padding: 9px 16px; border-radius: 50px; display: inline-flex; align-items: center; gap: 6px; transition: all 0.2s; }
 .nav-user-info:hover { background: #f8d7da; border-color: #f0b8b8; color: #721c24; }
 
 /* BANNER PUNTOS */
-.banner-puntos { background: linear-gradient(135deg, #c27b7b, #e09a98); border-radius: 20px; padding: 28px 24px; text-align: center; margin-top: 20px; }
+.banner-puntos { background: linear-gradient(135deg, #b87070, #d99595); border-radius: 20px; padding: 28px 24px; text-align: center; margin-top: 20px; }
 .banner-puntos-title { font-family: ‘Playfair Display’, Georgia, serif; font-size: 1.3rem; color: #ffffff; margin-bottom: 8px; }
 .banner-puntos-sub { font-size: 0.85rem; color: rgba(245,237,230,0.8); line-height: 1.6; margin-bottom: 20px; }
 .banner-puntos-badges { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; margin-bottom: 20px; }
 .banner-puntos-badge { font-size: 0.72rem; padding: 6px 12px; border-radius: 50px; background: rgba(255,255,255,0.15); color: #ffffff; font-weight: 500; }
-.banner-puntos-btn { background: #ffffff; color: #c27b7b; border: none; border-radius: 50px; padding: 12px 28px; font-size: 0.88rem; font-weight: 600; cursor: pointer; font-family: ‘DM Sans’, sans-serif; }
+.banner-puntos-btn { background: #ffffff; color: #b87070; border: none; border-radius: 50px; padding: 12px 28px; font-size: 0.88rem; font-weight: 600; cursor: pointer; font-family: ‘DM Sans’, sans-serif; }
 </style>
 
 </head>
@@ -248,7 +248,7 @@ footer { background-color: #1a1a1a; padding: 52px 24px 32px; }
 </section>
 
 <section class="section-dark" id="agendar">
-  <div class="sec-label" style="color:#f0c8c8">Reserva tu cita</div>
+  <div class="sec-label" style="color:#f0bcbc">Reserva tu cita</div>
   <h2 class="sec-title-w">Agenda en<br><em>segundos</em></h2>
   <p class="booking-intro">Sin llamadas, sin esperas. Elige tu servicio, profesional y horario. Te confirmamos por WhatsApp al instante.</p>
   <div class="book-feat"><div class="book-feat-icon">✅</div> Confirmación inmediata por WhatsApp</div>
@@ -409,7 +409,7 @@ function cargarPerfilUsuario(tel) {
         var wrap = document.getElementById('nav-user-wrap');
         if (wrap && wrap.querySelector('.nav-user-info')) {
           var display = data.nombre.split(' ')[0];
-          wrap.innerHTML = '<span class="nav-user-info" onclick="cerrarSesion()" title="Toca para cerrar sesion"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" style="width:14px;height:14px;stroke:#c27b7b"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>' + display + ' · Salir</span>';
+          wrap.innerHTML = '<span class="nav-user-info" onclick="cerrarSesion()" title="Toca para cerrar sesion"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" style="width:14px;height:14px;stroke:#b87070"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>' + display + ' · Salir</span>';
         }
       }
       if (data.whatsapp) { var fw = document.getElementById('f-whatsapp'); if(fw) fw.value = data.whatsapp; }
@@ -448,7 +448,7 @@ function actualizarNavUsuario(tel, nombre) {
   document.getElementById('login-overlay').style.display = 'none';
   var wrap = document.getElementById('nav-user-wrap');
   var display = nombre ? nombre.split(' ')[0] : tel.replace('+57','');
-  if (wrap) wrap.innerHTML = '<span class="nav-user-info" onclick="cerrarSesion()" title="Toca para cerrar sesion"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" style="width:14px;height:14px;stroke:#c27b7b"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>' + display + ' · Salir</span>';
+  if (wrap) wrap.innerHTML = '<span class="nav-user-info" onclick="cerrarSesion()" title="Toca para cerrar sesion"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" style="width:14px;height:14px;stroke:#b87070"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>' + display + ' · Salir</span>';
   document.getElementById('banner-sin-sesion').style.display = 'none';
   document.getElementById('card-con-sesion').style.display = 'block';
 }
@@ -651,7 +651,7 @@ function guardarCita() {
   <div style="margin-bottom:16px;">
     <label style="display:block;font-size:0.72rem;color:#8a7676;text-transform:uppercase;letter-spacing:0.5px;font-weight:500;margin-bottom:7px;">Número de celular</label>
     <div style="display:flex;gap:8px;">
-      <select id="login-pais" style="padding:13px 10px;border:1.5px solid #f0c8c8;border-radius:12px;font-size:0.85rem;color:#1a1a1a;background:#fdf5f5;font-family:'DM Sans',sans-serif;outline:none;-webkit-appearance:none;appearance:none;flex-shrink:0;width:110px;cursor:pointer;">
+      <select id="login-pais" style="padding:13px 10px;border:1.5px solid #f0bcbc;border-radius:12px;font-size:0.85rem;color:#1a1a1a;background:#fbf3f3;font-family:'DM Sans',sans-serif;outline:none;-webkit-appearance:none;appearance:none;flex-shrink:0;width:110px;cursor:pointer;">
         <option value="+57">🇨🇴 +57</option>
         <option value="+1">🇺🇸 +1</option>
         <option value="+52">🇲🇽 +52</option>
@@ -663,10 +663,10 @@ function guardarCita() {
         <option value="+56">🇨🇱 +56</option>
         <option value="+54">🇦🇷 +54</option>
       </select>
-      <input id="login-telefono" type="tel" placeholder="300 000 0000" autocomplete="tel" inputmode="numeric" style="flex:1;padding:13px 16px;border:1.5px solid #f0c8c8;border-radius:12px;font-size:0.9rem;color:#1a1a1a;background:#fdf5f5;font-family:'DM Sans',sans-serif;outline:none;-webkit-appearance:none;">
+      <input id="login-telefono" type="tel" placeholder="300 000 0000" autocomplete="tel" inputmode="numeric" style="flex:1;padding:13px 16px;border:1.5px solid #f0bcbc;border-radius:12px;font-size:0.9rem;color:#1a1a1a;background:#fbf3f3;font-family:'DM Sans',sans-serif;outline:none;-webkit-appearance:none;">
     </div>
   </div>
-  <button id="btn-enviar-codigo" onclick="enviarCodigo()" style="width:100%;background:#c27b7b;color:#ffffff;border:none;border-radius:50px;padding:15px;font-size:0.92rem;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif;margin-bottom:12px;">Enviar codigo por WhatsApp</button>
+  <button id="btn-enviar-codigo" onclick="enviarCodigo()" style="width:100%;background:#b87070;color:#ffffff;border:none;border-radius:50px;padding:15px;font-size:0.92rem;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif;margin-bottom:12px;">Enviar codigo por WhatsApp</button>
   <div style="text-align:center;font-size:0.78rem;color:#8a7676;">Te enviaremos un codigo por WhatsApp</div>
 </div>
 
@@ -678,10 +678,10 @@ function guardarCita() {
   </div>
   <div style="margin-bottom:16px;">
     <label style="display:block;font-size:0.72rem;color:#8a7676;text-transform:uppercase;letter-spacing:0.5px;font-weight:500;margin-bottom:7px;">Codigo de verificacion</label>
-    <input id="login-codigo" type="number" placeholder="123456" style="width:100%;padding:13px 16px;border:1.5px solid #f0c8c8;border-radius:12px;font-size:1.2rem;color:#1a1a1a;background:#fdf5f5;font-family:'DM Sans',sans-serif;outline:none;-webkit-appearance:none;text-align:center;letter-spacing:8px;">
+    <input id="login-codigo" type="number" placeholder="123456" style="width:100%;padding:13px 16px;border:1.5px solid #f0bcbc;border-radius:12px;font-size:1.2rem;color:#1a1a1a;background:#fbf3f3;font-family:'DM Sans',sans-serif;outline:none;-webkit-appearance:none;text-align:center;letter-spacing:8px;">
   </div>
-  <button id="btn-verificar" onclick="verificarCodigo()" style="width:100%;background:#c27b7b;color:#ffffff;border:none;border-radius:50px;padding:15px;font-size:0.92rem;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif;margin-bottom:12px;">Verificar codigo</button>
-  <button onclick="document.getElementById('paso-telefono').style.display='block';document.getElementById('paso-codigo').style.display='none';var b=document.getElementById('btn-enviar-codigo');b.disabled=false;b.textContent='Enviar codigo por WhatsApp';" style="width:100%;background:transparent;color:#8a7676;border:1px solid #f0c8c8;border-radius:50px;padding:12px;font-size:0.85rem;cursor:pointer;font-family:'DM Sans',sans-serif;">Cambiar número</button>
+  <button id="btn-verificar" onclick="verificarCodigo()" style="width:100%;background:#b87070;color:#ffffff;border:none;border-radius:50px;padding:15px;font-size:0.92rem;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif;margin-bottom:12px;">Verificar codigo</button>
+  <button onclick="document.getElementById('paso-telefono').style.display='block';document.getElementById('paso-codigo').style.display='none';var b=document.getElementById('btn-enviar-codigo');b.disabled=false;b.textContent='Enviar codigo por WhatsApp';" style="width:100%;background:transparent;color:#8a7676;border:1px solid #f0bcbc;border-radius:50px;padding:12px;font-size:0.85rem;cursor:pointer;font-family:'DM Sans',sans-serif;">Cambiar número</button>
 </div>
 
 <!-- PASO 3: DATOS PERSONALES (solo primera vez) -->
@@ -693,13 +693,13 @@ function guardarCita() {
   </div>
   <div style="margin-bottom:16px;">
     <label style="display:block;font-size:0.72rem;color:#8a7676;text-transform:uppercase;letter-spacing:0.5px;font-weight:500;margin-bottom:7px;">Tu nombre</label>
-    <input id="reg-nombre" type="text" placeholder="Maria Camila Perez" style="width:100%;padding:13px 16px;border:1.5px solid #f0c8c8;border-radius:12px;font-size:0.9rem;color:#1a1a1a;background:#fdf5f5;font-family:'DM Sans',sans-serif;outline:none;-webkit-appearance:none;">
+    <input id="reg-nombre" type="text" placeholder="Maria Camila Perez" style="width:100%;padding:13px 16px;border:1.5px solid #f0bcbc;border-radius:12px;font-size:0.9rem;color:#1a1a1a;background:#fbf3f3;font-family:'DM Sans',sans-serif;outline:none;-webkit-appearance:none;">
   </div>
   <div style="margin-bottom:20px;">
     <label style="display:block;font-size:0.72rem;color:#8a7676;text-transform:uppercase;letter-spacing:0.5px;font-weight:500;margin-bottom:7px;">Fecha de cumpleanos (opcional)</label>
-    <input id="reg-cumple" type="date" style="width:100%;padding:13px 16px;border:1.5px solid #f0c8c8;border-radius:12px;font-size:0.9rem;color:#1a1a1a;background:#fdf5f5;font-family:'DM Sans',sans-serif;outline:none;-webkit-appearance:none;">
+    <input id="reg-cumple" type="date" style="width:100%;padding:13px 16px;border:1.5px solid #f0bcbc;border-radius:12px;font-size:0.9rem;color:#1a1a1a;background:#fbf3f3;font-family:'DM Sans',sans-serif;outline:none;-webkit-appearance:none;">
   </div>
-  <button id="btn-guardar-datos" onclick="guardarDatosRegistro()" style="width:100%;background:#c27b7b;color:#ffffff;border:none;border-radius:50px;padding:15px;font-size:0.92rem;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif;">Guardar y entrar</button>
+  <button id="btn-guardar-datos" onclick="guardarDatosRegistro()" style="width:100%;background:#b87070;color:#ffffff;border:none;border-radius:50px;padding:15px;font-size:0.92rem;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif;">Guardar y entrar</button>
 </div>
 ```
 
