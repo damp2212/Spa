@@ -402,6 +402,11 @@ function showToast(msg, type) {
 // Cargar sesion guardada
 document.addEventListener('DOMContentLoaded', function() {
   cargarSucursales();
+  // Poner fecha de hoy y bloquear fechas pasadas
+  var hoy = new Date().toISOString().split('T')[0];
+  var inputFecha = document.getElementById('f-fecha');
+  inputFecha.value = hoy;
+  inputFecha.min = hoy;
   var sesionGuardada = localStorage.getItem('rose_session');
   if (sesionGuardada) {
     try {
