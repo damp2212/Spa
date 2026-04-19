@@ -51,7 +51,7 @@ firebase.initializeApp({
 var db = firebase.firestore();
 var params = new URLSearchParams(window.location.search);
 var citaId = params.get('id');
-var spaId = params.get('spa') || 'glamnails';
+var spaId = params.get('spa') || 'rose';
 
 function mostrarOk(cita) {
   document.getElementById('card').innerHTML =
