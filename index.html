@@ -262,6 +262,12 @@ footer { background-color: #1a1a1a; padding: 52px 24px 32px; }
     <div class="form-group" id="grupo-nombre"><label class="form-label">Tu nombre</label><input class="form-control" id="f-nombre" type="text" placeholder="María Camila Pérez"></div>
     <div class="form-group" id="grupo-whatsapp"><label class="form-label">WhatsApp</label><input class="form-control" id="f-whatsapp" type="tel" placeholder="300 000 0000"></div>
     <div class="form-group">
+      <label class="form-label">Sucursal</label>
+      <select class="form-control" id="f-sucursal" onchange="cargarProfesionales()">
+        <option value="">Selecciona una sucursal...</option>
+      </select>
+    </div>
+    <div class="form-group">
       <label class="form-label">Servicio</label>
       <select class="form-control" id="f-servicio">
         <option>Manicure Gel — $45.000</option>
@@ -275,20 +281,14 @@ footer { background-color: #1a1a1a; padding: 52px 24px 32px; }
     <div class="form-group">
       <label class="form-label">Profesional</label>
       <select class="form-control" id="f-profesional">
-        <option>Cualquiera disponible</option>
-        <option>Valentina G.</option>
-        <option>Daniela R.</option>
-        <option>Juliana M.</option>
-        <option>Camila S.</option>
+        <option value="">Selecciona una sucursal primero...</option>
       </select>
     </div>
-    <div class="form-group"><label class="form-label">Fecha</label><input class="form-control" id="f-fecha" type="date"></div>
+    <div class="form-group"><label class="form-label">Fecha</label><input class="form-control" id="f-fecha" type="date" onchange="cargarHorarios()"></div>
     <div class="form-group">
       <label class="form-label">Hora</label>
       <select class="form-control" id="f-hora">
-        <option>9:00 AM</option><option>10:00 AM</option><option>11:00 AM</option>
-        <option>12:00 PM</option><option>2:00 PM</option><option>3:00 PM</option>
-        <option>4:00 PM</option><option>5:00 PM</option>
+        <option>Selecciona fecha primero...</option>
       </select>
     </div>
     <button class="btn-book" id="btn-confirmar" onclick="guardarCita()">Confirmar cita 💅</button>
@@ -575,6 +575,82 @@ function guardarDatosRegistro() {
   });
 }
 
+// Cargar sucursales desde Firestore
+function cargarSucursales() {
+  db.collection('spas').doc('rose').collection('sucursales').where('activa', '==', true).get().then(function(snapshot) {
+    var select = document.getElementById('f-sucursal');
+    select.innerHTML = '<option value="">Selecciona una sucursal...</option>';
+    snapshot.forEach(function(doc) {
+      var data = doc.data();
+      var option = document.createElement('option');
+      option.value = doc.id;
+      option.textContent = data.nombre || doc.id;
+      select.appendChild(option);
+    });
+    // Si solo hay una sucursal, seleccionarla automáticamente
+    if (snapshot.size === 1) {
+      select.selectedIndex = 1;
+      cargarProfesionales();
+    }
+  });
+}
+
+// Cargar profesionales según sucursal
+function cargarProfesionales() {
+  var sucursalId = document.getElementById('f-sucursal').value;
+  var select = document.getElementById('f-profesional');
+  if (!sucursalId) {
+    select.innerHTML = '<option value="">Selecciona una sucursal primero...</option>';
+    return;
+  }
+  db.collection('spas').doc('rose').collection('sucursales').doc(sucursalId).collection('profesionales').where('activa', '==', true).get().then(function(snapshot) {
+    select.innerHTML = '<option value="cualquiera">Cualquiera disponible</option>';
+    snapshot.forEach(function(doc) {
+      var data = doc.data();
+      var option = document.createElement('option');
+      option.value = doc.id;
+      option.textContent = data.nombre || doc.id;
+      select.appendChild(option);
+    });
+  });
+  cargarHorarios();
+}
+
+// Cargar horarios según sucursal y fecha
+function cargarHorarios() {
+  var sucursalId = document.getElementById('f-sucursal').value;
+  var fecha = document.getElementById('f-fecha').value;
+  var select = document.getElementById('f-hora');
+  if (!sucursalId || !fecha) {
+    select.innerHTML = '<option>Selecciona fecha primero...</option>';
+    return;
+  }
+  var dias = ['domingo','lunes','martes','miercoles','jueves','viernes','sabado'];
+  var diaSemana = dias[new Date(fecha + 'T12:00:00').getDay()];
+  db.collection('spas').doc('rose').collection('sucursales').doc(sucursalId).collection('horarios').doc(diaSemana).get().then(function(doc) {
+    if (!doc.exists || !doc.data().activo) {
+      select.innerHTML = '<option>No hay servicio este día</option>';
+      return;
+    }
+    var data = doc.data();
+    var abre = parseInt(data.abre.split(':')[0]);
+    var cierra = parseInt(data.cierra.split(':')[0]);
+    select.innerHTML = '';
+    for (var h = abre; h < cierra; h++) {
+      var ampm = h < 12 ? 'AM' : 'PM';
+      var h12 = h <= 12 ? h : h - 12;
+      var option = document.createElement('option');
+      option.textContent = h12 + ':00 ' + ampm;
+      select.appendChild(option);
+    }
+  });
+}
+
+// Cargar sucursales al iniciar
+document.addEventListener('DOMContentLoaded', function() {
+  cargarSucursales();
+});
+
 function cerrarSesion() {
   localStorage.removeItem('rose_session');
   usuarioActual = null;
@@ -611,11 +687,13 @@ function guardarCita() {
   var whatsapp = document.getElementById('f-whatsapp').value.trim();
   var servicio = document.getElementById('f-servicio').value;
   var profesional = document.getElementById('f-profesional').value;
+  var sucursal = document.getElementById('f-sucursal').value;
   var fecha = document.getElementById('f-fecha').value;
   var hora = document.getElementById('f-hora').value;
 
   if (!nombre) { showToast('Ingresa tu nombre', 'error'); return; }
   if (!whatsapp) { showToast('Ingresa tu WhatsApp', 'error'); return; }
+  if (!sucursal) { showToast('Selecciona una sucursal', 'error'); return; }
   if (!fecha) { showToast('Selecciona una fecha', 'error'); return; }
 
   var btn = document.getElementById('btn-confirmar');
@@ -628,6 +706,7 @@ function guardarCita() {
     whatsapp: whatsapp,
     servicio: servicio,
     profesional: profesional,
+    sucursal: sucursal,
     fecha: fecha,
     hora: hora,
     estado: 'pendiente',
