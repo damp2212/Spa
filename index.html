@@ -735,8 +735,22 @@ function cerrarSesion() {
   showToast('Sesion cerrada');
 }
 
+function seleccionarServicio(servicio) {
+  var select = document.getElementById('f-servicio');
+  for (var i = 0; i < select.options.length; i++) {
+    if (select.options[i].value === servicio || select.options[i].text === servicio) {
+      select.selectedIndex = i;
+      break;
+    }
+  }
+  cargarHorarios();
+  document.getElementById('profesionales').scrollIntoView({ behavior: 'smooth' });
+  showToast('Servicio seleccionado: ' + servicio.split('—')[0].trim());
+}
+
 function agendarCon(nombre) {
   document.getElementById('f-profesional').value = nombre;
+  cargarHorarios();
   document.getElementById('agendar').scrollIntoView({ behavior: 'smooth' });
   showToast('Seleccionaste a ' + nombre);
 }
