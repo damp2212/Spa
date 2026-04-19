@@ -269,7 +269,7 @@ footer { background-color: #1a1a1a; padding: 52px 24px 32px; }
     </div>
     <div class="form-group">
       <label class="form-label">Servicio</label>
-      <select class="form-control" id="f-servicio">
+      <select class="form-control" id="f-servicio" onchange="cargarHorarios()">
         <option>Manicure Gel — $45.000</option>
         <option>Uñas Acrílicas — $80.000</option>
         <option>Pedicure Spa — $55.000</option>
@@ -618,16 +618,34 @@ function cargarProfesionales() {
 }
 
 // Cargar horarios según sucursal y fecha
+var DURACIONES = {
+  'Manicure Gel': 45,
+  'Uñas Acrílicas': 90,
+  'Pedicure Spa': 60,
+  'Nail Art': 30,
+  'Semipermanente': 50,
+  'Manicure + Pedicure': 100
+};
+
+function getDuracion() {
+  var servicio = document.getElementById('f-servicio').value;
+  var nombre = servicio.split('—')[0].trim();
+  return DURACIONES[nombre] || 60;
+}
+
 function cargarHorarios() {
   var sucursalId = document.getElementById('f-sucursal').value;
   var fecha = document.getElementById('f-fecha').value;
+  var profesionalId = document.getElementById('f-profesional').value;
   var select = document.getElementById('f-hora');
   if (!sucursalId || !fecha) {
     select.innerHTML = '<option>Selecciona fecha primero...</option>';
     return;
   }
+  select.innerHTML = '<option>Cargando...</option>';
   var dias = ['domingo','lunes','martes','miercoles','jueves','viernes','sabado'];
   var diaSemana = dias[new Date(fecha + 'T12:00:00').getDay()];
+
   db.collection('spas').doc('rose').collection('sucursales').doc(sucursalId).collection('horarios').doc(diaSemana).get().then(function(doc) {
     if (!doc.exists || !doc.data().activo) {
       select.innerHTML = '<option>No hay servicio este día</option>';
@@ -636,14 +654,66 @@ function cargarHorarios() {
     var data = doc.data();
     var abre = parseInt(data.abre.split(':')[0]);
     var cierra = parseInt(data.cierra.split(':')[0]);
-    select.innerHTML = '';
-    for (var h = abre; h < cierra; h++) {
-      var ampm = h < 12 ? 'AM' : 'PM';
-      var h12 = h <= 12 ? h : h - 12;
-      var option = document.createElement('option');
-      option.textContent = h12 + ':00 ' + ampm;
-      select.appendChild(option);
+    var duracion = getDuracion();
+
+    // Consultar citas existentes ese día
+    var query = db.collection('spas').doc('rose').collection('citas')
+      .where('fecha', '==', fecha)
+      .where('sucursal', '==', sucursalId)
+      .where('estado', 'in', ['pendiente', 'confirmada']);
+
+    if (profesionalId && profesionalId !== 'cualquiera') {
+      query = query.where('profesional', '==', profesionalId);
     }
+
+    query.get().then(function(citasSnap) {
+      // Construir mapa de slots ocupados
+      var ocupados = {};
+      citasSnap.forEach(function(citaDoc) {
+        var cita = citaDoc.data();
+        var horaStr = cita.hora;
+        // Parsear hora tipo "9:00 AM" o "10:00 AM"
+        var match = horaStr.match(/(\d+):(\d+)\s*(AM|PM)/i);
+        if (!match) return;
+        var h = parseInt(match[1]);
+        var ampm = match[3].toUpperCase();
+        if (ampm === 'PM' && h !== 12) h += 12;
+        if (ampm === 'AM' && h === 12) h = 0;
+        var durCita = DURACIONES[cita.servicio ? cita.servicio.split('—')[0].trim() : ''] || 60;
+        var slots = Math.ceil(durCita / 60);
+        for (var i = 0; i < slots; i++) {
+          ocupados[h + i] = true;
+        }
+      });
+
+      // Generar slots disponibles
+      select.innerHTML = '';
+      var slotsNecesarios = Math.ceil(duracion / 60);
+      var hayDisponibles = false;
+
+      for (var h = abre; h <= cierra - slotsNecesarios; h++) {
+        var disponible = true;
+        for (var s = 0; s < slotsNecesarios; s++) {
+          if (ocupados[h + s]) { disponible = false; break; }
+        }
+        var ampm = h < 12 ? 'AM' : 'PM';
+        var h12 = h === 0 ? 12 : (h <= 12 ? h : h - 12);
+        var option = document.createElement('option');
+        option.value = h12 + ':00 ' + ampm;
+        option.textContent = h12 + ':00 ' + ampm;
+        if (!disponible) {
+          option.disabled = true;
+          option.textContent += ' (ocupado)';
+        } else {
+          hayDisponibles = true;
+        }
+        select.appendChild(option);
+      }
+
+      if (!hayDisponibles) {
+        select.innerHTML = '<option>No hay horarios disponibles este día</option>';
+      }
+    });
   });
 }
 
