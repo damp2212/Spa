@@ -403,7 +403,8 @@ function showToast(msg, type) {
 document.addEventListener('DOMContentLoaded', function() {
   cargarSucursales();
   // Poner fecha de hoy y bloquear fechas pasadas
-  var hoy = new Date().toISOString().split('T')[0];
+  var ahora = new Date();
+  var hoy = ahora.getFullYear() + '-' + String(ahora.getMonth()+1).padStart(2,'0') + '-' + String(ahora.getDate()).padStart(2,'0');
   var inputFecha = document.getElementById('f-fecha');
   inputFecha.value = hoy;
   inputFecha.min = hoy;
@@ -798,6 +799,12 @@ function guardarCita() {
   if (!whatsapp) { showToast('Ingresa tu WhatsApp', 'error'); return; }
   if (!sucursal) { showToast('Selecciona una sucursal', 'error'); return; }
   if (!fecha) { showToast('Selecciona una fecha', 'error'); return; }
+  var horaSelect = document.getElementById('f-hora');
+  var horaVal = horaSelect.options[horaSelect.selectedIndex] ? horaSelect.options[horaSelect.selectedIndex].text : '';
+  if (horaVal.indexOf('No hay') !== -1 || horaVal.indexOf('Selecciona') !== -1 || horaVal.indexOf('Cargando') !== -1 || horaSelect.options[horaSelect.selectedIndex].disabled) {
+    showToast('No hay horarios disponibles para esta fecha', 'error');
+    return;
+  }
 
   var btn = document.getElementById('btn-confirmar');
   btn.disabled = true;
