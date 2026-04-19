@@ -400,6 +400,7 @@ function showToast(msg, type) {
 
 // Cargar sesion guardada
 document.addEventListener('DOMContentLoaded', function() {
+  cargarSucursales();
   var sesionGuardada = localStorage.getItem('rose_session');
   if (sesionGuardada) {
     try {
@@ -577,7 +578,7 @@ function guardarDatosRegistro() {
 
 // Cargar sucursales desde Firestore
 function cargarSucursales() {
-  db.collection('spas').doc('rose').collection('sucursales').where('activa', '==', true).get().then(function(snapshot) {
+  db.collection('spas').doc('rose').collection('sucursales').get().then(function(snapshot) {
     var select = document.getElementById('f-sucursal');
     select.innerHTML = '<option value="">Selecciona una sucursal...</option>';
     snapshot.forEach(function(doc) {
@@ -603,7 +604,7 @@ function cargarProfesionales() {
     select.innerHTML = '<option value="">Selecciona una sucursal primero...</option>';
     return;
   }
-  db.collection('spas').doc('rose').collection('sucursales').doc(sucursalId).collection('profesionales').where('activa', '==', true).get().then(function(snapshot) {
+  db.collection('spas').doc('rose').collection('sucursales').doc(sucursalId).collection('profesionales').get().then(function(snapshot) {
     select.innerHTML = '<option value="cualquiera">Cualquiera disponible</option>';
     snapshot.forEach(function(doc) {
       var data = doc.data();
@@ -647,10 +648,6 @@ function cargarHorarios() {
 }
 
 // Cargar sucursales al iniciar
-document.addEventListener('DOMContentLoaded', function() {
-  cargarSucursales();
-});
-
 function cerrarSesion() {
   localStorage.removeItem('rose_session');
   usuarioActual = null;
