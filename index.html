@@ -387,6 +387,7 @@ firebase.initializeApp({
 var db = firebase.firestore();
 var usuarioActual = null;
 var telefonoActual = null;
+var profesionalSeleccionado = null;
 
 var ENVIAR_URL = "https://us-central1-mapos-spas.cloudfunctions.net/enviarCodigo";
 var VERIFICAR_URL = "https://us-central1-mapos-spas.cloudfunctions.net/verificarCodigo";
@@ -613,6 +614,15 @@ function cargarProfesionales() {
       option.textContent = data.nombre || doc.id;
       select.appendChild(option);
     });
+    // Aplicar profesional seleccionado si hay uno guardado
+    if (profesionalSeleccionado) {
+      for (var i = 0; i < select.options.length; i++) {
+        if (select.options[i].text === profesionalSeleccionado) {
+          select.selectedIndex = i;
+          break;
+        }
+      }
+    }
   });
   cargarHorarios();
 }
@@ -738,7 +748,7 @@ function cerrarSesion() {
 function seleccionarServicio(servicio) {
   var select = document.getElementById('f-servicio');
   for (var i = 0; i < select.options.length; i++) {
-    if (select.options[i].value === servicio || select.options[i].text === servicio) {
+    if (select.options[i].text.indexOf(servicio.split('—')[0].trim()) !== -1) {
       select.selectedIndex = i;
       break;
     }
@@ -749,7 +759,14 @@ function seleccionarServicio(servicio) {
 }
 
 function agendarCon(nombre) {
-  document.getElementById('f-profesional').value = nombre;
+  profesionalSeleccionado = nombre;
+  var select = document.getElementById('f-profesional');
+  for (var i = 0; i < select.options.length; i++) {
+    if (select.options[i].text === nombre) {
+      select.selectedIndex = i;
+      break;
+    }
+  }
   cargarHorarios();
   document.getElementById('agendar').scrollIntoView({ behavior: 'smooth' });
   showToast('Seleccionaste a ' + nombre);
