@@ -400,7 +400,7 @@ function showToast(msg, type) {
 
 // Cargar sesion guardada
 document.addEventListener('DOMContentLoaded', function() {
-  var sesionGuardada = localStorage.getItem('glamnails_session');
+  var sesionGuardada = localStorage.getItem('rose_session');
   if (sesionGuardada) {
     try {
       usuarioActual = JSON.parse(sesionGuardada);
@@ -408,12 +408,12 @@ document.addEventListener('DOMContentLoaded', function() {
       cargarPerfilUsuario(usuarioActual.tel);
       actualizarNavUsuario(usuarioActual.tel);
       mostrarFormularioLogueado();
-    } catch(e) { localStorage.removeItem('glamnails_session'); }
+    } catch(e) { localStorage.removeItem('rose_session'); }
   }
 });
 
 function cargarPerfilUsuario(tel) {
-  db.collection('spas').doc('glamnails').collection('clientes').doc(tel).get().then(function(doc) {
+  db.collection('spas').doc('rose').collection('clientes').doc(tel).get().then(function(doc) {
     if (doc.exists) {
       var data = doc.data();
       if (data.nombre) {
@@ -515,10 +515,10 @@ function verificarCodigo() {
   }).then(function(r) { return r.json(); }).then(function(data) {
     if (data.ok) {
       usuarioActual = { tel: data.tel };
-      localStorage.setItem('glamnails_session', JSON.stringify(usuarioActual));
+      localStorage.setItem('rose_session', JSON.stringify(usuarioActual));
 
       // Verificar si es primera vez
-      db.collection('spas').doc('glamnails').collection('clientes').doc(data.tel).get().then(function(doc) {
+      db.collection('spas').doc('rose').collection('clientes').doc(data.tel).get().then(function(doc) {
         if (!doc.exists || !doc.data().nombre) {
           // Primera vez — mostrar paso 3
           document.getElementById('paso-codigo').style.display = 'none';
@@ -561,7 +561,7 @@ function guardarDatosRegistro() {
   };
   if (cumple) datos.cumpleanos = cumple;
 
-  db.collection('spas').doc('glamnails').collection('clientes').doc(usuarioActual.tel).set(datos, { merge: true }).then(function() {
+  db.collection('spas').doc('rose').collection('clientes').doc(usuarioActual.tel).set(datos, { merge: true }).then(function() {
     // Prellenar formulario
     var fn = document.getElementById('f-nombre'); if(fn) fn.value = nombre;
     var fw = document.getElementById('f-whatsapp'); if(fw) fw.value = usuarioActual.tel;
@@ -576,7 +576,7 @@ function guardarDatosRegistro() {
 }
 
 function cerrarSesion() {
-  localStorage.removeItem('glamnails_session');
+  localStorage.removeItem('rose_session');
   usuarioActual = null;
   telefonoActual = null;
   // Restaurar botón de login sin refrescar
@@ -622,7 +622,7 @@ function guardarCita() {
   btn.disabled = true;
   btn.textContent = 'Guardando...';
 
-  db.collection('spas').doc('glamnails').collection('citas').add({
+  db.collection('spas').doc('rose').collection('citas').add({
     uid: usuarioActual.tel,
     nombre: nombre,
     whatsapp: whatsapp,
@@ -634,7 +634,7 @@ function guardarCita() {
     puntos: 10,
     creadoEn: firebase.firestore.FieldValue.serverTimestamp()
   }).then(function() {
-    db.collection('spas').doc('glamnails').collection('clientes').doc(usuarioActual.tel).set({
+    db.collection('spas').doc('rose').collection('clientes').doc(usuarioActual.tel).set({
       nombre: nombre, whatsapp: whatsapp
     }, { merge: true });
     showToast('Cita agendada! Te confirmamos pronto', 'success');
