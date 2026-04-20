@@ -777,18 +777,21 @@ function cargarDatos(){
   var prosRef=db.collection('spas').doc(sucursalActual).collection('profesionales');
   var calRef=db.collection('spas').doc(sucursalActual).collection('calificaciones');
 
-  Promise.all([citasRef.get(),clientesRef.get(),prosRef.get(),calRef.get()]).then(function(results){
-    todasCitas=results[0].docs.map(function(d){var o=d.data();o.id=d.id;return o;});
-    todosClientes=results[1].docs.map(function(d){var o=d.data();o.id=d.id;return o;});
-    todasPros=results[2].docs.map(function(d){var o=d.data();o.id=d.id;return o;});
-    todasCalificaciones=results[3].docs.map(function(d){var o=d.data();o.id=d.id;return o;});
-    actualizarDashboard();
-    renderTablaTodas(todasCitas);
-    renderProGrid('pro-total',todasCitas);
-    renderProsAdmin();
-    renderCRM('todas');
-    renderCalificaciones('todas');
-  }).catch(function(e){console.error(e);toast('Error cargando datos','err');});
+  // Citas en tiempo real con onSnapshot
+  citasRef.onSnapshot(function(citasSnap) {
+    todasCitas = citasSnap.docs.map(function(d){var o=d.data();o.id=d.id;return o;});
+    Promise.all([clientesRef.get(), prosRef.get(), calRef.get()]).then(function(results){
+      todosClientes=results[0].docs.map(function(d){var o=d.data();o.id=d.id;return o;});
+      todasPros=results[1].docs.map(function(d){var o=d.data();o.id=d.id;return o;});
+      todasCalificaciones=results[2].docs.map(function(d){var o=d.data();o.id=d.id;return o;});
+      actualizarDashboard();
+      renderTablaTodas(todasCitas);
+      renderProGrid('pro-total',todasCitas);
+      renderProsAdmin();
+      renderCRM('todas');
+      renderCalificaciones('todas');
+    });
+  }, function(e){console.error(e);toast('Error cargando datos','err');});
 }
 
 function actualizarDashboard(){
