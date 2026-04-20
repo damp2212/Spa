@@ -774,7 +774,7 @@ var todasCalificaciones = [];
 function cargarDatos(){
   var citasRef=db.collection('spas').doc(sucursalActual).collection('citas').orderBy('creadoEn','desc');
   var clientesRef=db.collection('spas').doc(sucursalActual).collection('clientes');
-  var prosRef=db.collection('spas').doc(sucursalActual).collection('profesionales');
+  var prosRef=db.collection('spas').doc(sucursalActual).collection('sucursales').doc('ciudad-jardin').collection('profesionales');
   var calRef=db.collection('spas').doc(sucursalActual).collection('calificaciones');
 
   // Citas en tiempo real con onSnapshot
@@ -1053,8 +1053,8 @@ function guardarPro(){
   function guardarEnDB(fotoUrl){
     var data={nombre:nombre,especialidad:especialidad,horario:horario,foto:fotoUrl};
     var prom=editId?
-      db.collection('spas').doc(sucursalActual).collection('profesionales').doc(editId).update(data):
-      db.collection('spas').doc(sucursalActual).collection('profesionales').add(Object.assign(data,{creadoEn:firebase.firestore.FieldValue.serverTimestamp()}));
+      db.collection('spas').doc(sucursalActual).collection('sucursales').doc('ciudad-jardin').collection('profesionales').doc(editId).update(data):
+      db.collection('spas').doc(sucursalActual).collection('sucursales').doc('ciudad-jardin').collection('profesionales').add(Object.assign(data,{creadoEn:firebase.firestore.FieldValue.serverTimestamp()}));
     prom.then(function(){
       toast(editId?'Profesional actualizada':'Profesional agregada','ok');
       cerrarModalPro();cargarDatos();
@@ -1074,7 +1074,7 @@ function guardarPro(){
 
 function eliminarPro(id){
   if(!confirm('Eliminar esta profesional?'))return;
-  db.collection('spas').doc(sucursalActual).collection('profesionales').doc(id).delete().then(function(){
+  db.collection('spas').doc(sucursalActual).collection('sucursales').doc('ciudad-jardin').collection('profesionales').doc(id).delete().then(function(){
     toast('Profesional eliminada','ok');cargarDatos();
   }).catch(function(){toast('Error eliminando','err');});
 }
@@ -1496,7 +1496,7 @@ function guardarHorario(){
     var fin=document.getElementById('h-fin-'+i)?document.getElementById('h-fin-'+i).value:'18:00';
     horario['dia'+i]={activo:activo,inicio:inicio,fin:fin};
   }
-  db.collection('spas').doc(sucursalActual).collection('profesionales').doc(proHorarioActual).update({horario_semanal:horario}).then(function(){
+  db.collection('spas').doc(sucursalActual).collection('sucursales').doc('ciudad-jardin').collection('profesionales').doc(proHorarioActual).update({horario_semanal:horario}).then(function(){
     toast('Horario guardado','ok');
     cargarDatos();
   }).catch(function(){toast('Error guardando','err');});
