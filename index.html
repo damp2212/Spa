@@ -330,7 +330,6 @@ footer { background-color: #1a1a1a; padding: 52px 24px 32px; }
     </div>
   </div>
 </section>
-    <div class="puntos-next"><div class="puntos-next-lbl">Próxima visita</div><div class="puntos-next-val">Viernes 18 Abr · 3:00 PM con Valentina</div></div>
   </div>
 </section>
 
@@ -441,7 +440,27 @@ function cargarPerfilUsuario(tel) {
       if(eh) eh.textContent = puntos >= 500 ? 'Tienes una manicure gratis disponible!' : 'Te faltan ' + (500-puntos) + ' puntos para una manicure gratis';
     }
   });
-}
+  // Cargar próxima cita
+  var hoy = new Date().toISOString().split('T')[0];
+  db.collection('spas').doc('rose').collection('citas')
+    .where('uid', '==', tel)
+    .where('estado', 'in', ['pendiente', 'confirmada'])
+    .get().then(function(snap) {
+      var futuras = snap.docs.map(function(d){return d.data();}).filter(function(c){ return c.fecha >= hoy; });
+      futuras.sort(function(a,b){ return (a.fecha+a.hora).localeCompare(b.fecha+b.hora); });
+      var elNext = document.getElementById('puntos-next');
+      var elVal = document.getElementById('puntos-next-val');
+      if (futuras.length > 0 && elNext && elVal) {
+        var c = futuras[0];
+        var fecha = new Date(c.fecha + 'T12:00:00');
+        var opcFecha = { weekday: 'long', day: 'numeric', month: 'short' };
+        var fechaStr = fecha.toLocaleDateString('es-CO', opcFecha);
+        elVal.textContent = fechaStr + ' · ' + c.hora + (c.profesional ? ' con ' + c.profesional.split(' ')[0] : '');
+        elNext.style.display = 'block';
+      } else if (elNext) {
+        elNext.style.display = 'none';
+      }
+    });
 
 function mostrarFormularioLogueado() {
   var gNombre = document.getElementById('grupo-nombre');
