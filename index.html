@@ -747,9 +747,17 @@ function cargarProfesionalesPublico() {
         var data = doc.data();
         var nombre = data.nombre || doc.id;
         var especialidad = data.especialidad || '';
-        var avatar = avatares[i % avatares.length];
-        var clase = clases[i % clases.length];
-        grid.innerHTML += '<div class="pro-card"><div class="pro-avatar ' + clase + '">' + avatar + '</div><div class="pro-name">' + nombre + '</div><div class="pro-spec">' + especialidad + '</div><div class="pro-rating"><span class="stars">★★★★★</span><span class="rating-num">5.0</span><span class="rating-cnt">(0)</span></div><button class="btn-ag" onclick="agendarCon(\'' + nombre + '\')">Agendar con ella</button></div>';
+        var calificacion = data.calificacion || 5.0;
+        var totalCal = data.totalCalificaciones || 0;
+        var estrellas = '';
+        for (var s = 1; s <= 5; s++) { estrellas += s <= Math.round(calificacion) ? '★' : '☆'; }
+        var avatarHtml = '';
+        if (data.foto) {
+          avatarHtml = '<div class="pro-avatar ' + clases[i % clases.length] + '" style="overflow:hidden;padding:0;"><img src="' + data.foto + '" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"></div>';
+        } else {
+          avatarHtml = '<div class="pro-avatar ' + clases[i % clases.length] + '">' + avatares[i % avatares.length] + '</div>';
+        }
+        grid.innerHTML += '<div class="pro-card">' + avatarHtml + '<div class="pro-name">' + nombre + '</div><div class="pro-spec">' + especialidad + '</div><div class="pro-rating"><span class="stars">' + estrellas + '</span><span class="rating-num">' + calificacion + '</span><span class="rating-cnt">(' + totalCal + ')</span></div><button class="btn-ag" onclick="agendarCon(\'' + nombre + '\')">Agendar con ella</button></div>';
         i++;
       });
     });
