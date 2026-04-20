@@ -227,11 +227,8 @@ footer { background-color: #1a1a1a; padding: 52px 24px 32px; }
 <section class="section-nude" id="profesionales">
   <div class="sec-label">Nuestro equipo</div>
   <h2 class="sec-title">Las <em>profesionales</em></h2>
-  <div class="pros-grid">
-    <div class="pro-card"><div class="pro-avatar pa1">👩🏽</div><div class="pro-name">Valentina G.</div><div class="pro-spec">Nail Art · Acrílicas</div><div class="pro-rating"><span class="stars">★★★★★</span><span class="rating-num">4.9</span><span class="rating-cnt">(128)</span></div><div class="pro-slots"><span class="slot slot-on">9:00 AM</span><span class="slot">11:00 AM</span><span class="slot">2:00 PM</span><span class="slot">4:00 PM</span></div><button class="btn-ag" onclick="agendarCon('Valentina G.')">Agendar con ella</button></div>
-    <div class="pro-card"><div class="pro-avatar pa2">👩🏻</div><div class="pro-name">Daniela R.</div><div class="pro-spec">Gel · Semipermanente</div><div class="pro-rating"><span class="stars">★★★★★</span><span class="rating-num">4.8</span><span class="rating-cnt">(95)</span></div><div class="pro-slots"><span class="slot">10:00 AM</span><span class="slot slot-on">1:00 PM</span><span class="slot">3:00 PM</span><span class="slot">5:00 PM</span></div><button class="btn-ag" onclick="agendarCon('Daniela R.')">Agendar con ella</button></div>
-    <div class="pro-card"><div class="pro-avatar pa3">👩🏾</div><div class="pro-name">Juliana M.</div><div class="pro-spec">Pedicure · Spa</div><div class="pro-rating"><span class="stars">★★★★★</span><span class="rating-num">5.0</span><span class="rating-cnt">(74)</span></div><div class="pro-slots"><span class="slot">9:30 AM</span><span class="slot">12:00 PM</span><span class="slot slot-on">3:30 PM</span><span class="slot">5:30 PM</span></div><button class="btn-ag" onclick="agendarCon('Juliana M.')">Agendar con ella</button></div>
-    <div class="pro-card"><div class="pro-avatar pa4">👩🏼</div><div class="pro-name">Camila S.</div><div class="pro-spec">Acrílicas · Nail Art</div><div class="pro-rating"><span class="stars">★★★★☆</span><span class="rating-num">4.7</span><span class="rating-cnt">(61)</span></div><div class="pro-slots"><span class="slot">10:30 AM</span><span class="slot">2:30 PM</span><span class="slot slot-on">4:30 PM</span><span class="slot">6:00 PM</span></div><button class="btn-ag" onclick="agendarCon('Camila S.')">Agendar con ella</button></div>
+  <div class="pros-grid" id="pros-grid">
+    <div style="text-align:center;padding:40px;color:#8a7676;">Cargando profesionales...</div>
   </div>
 </section>
 
@@ -402,6 +399,7 @@ function showToast(msg, type) {
 // Cargar sesion guardada
 document.addEventListener('DOMContentLoaded', function() {
   cargarSucursales();
+  cargarProfesionalesPublico();
   // Poner fecha de hoy y bloquear fechas pasadas
   var ahora = new Date();
   var hoy = ahora.getFullYear() + '-' + String(ahora.getMonth()+1).padStart(2,'0') + '-' + String(ahora.getDate()).padStart(2,'0');
@@ -612,11 +610,11 @@ function cargarProfesionales() {
     return;
   }
   db.collection('spas').doc('rose').collection('sucursales').doc(sucursalId).collection('profesionales').get().then(function(snapshot) {
-    select.innerHTML = '<option value="cualquiera">Cualquiera disponible</option>';
+    select.innerHTML = '<option value="Cualquiera disponible">Cualquiera disponible</option>';
     snapshot.forEach(function(doc) {
       var data = doc.data();
       var option = document.createElement('option');
-      option.value = doc.id;
+      option.value = data.nombre || doc.id;
       option.textContent = data.nombre || doc.id;
       select.appendChild(option);
     });
@@ -734,6 +732,30 @@ function cargarHorarios() {
 }
 
 // Cargar sucursales al iniciar
+function cargarProfesionalesPublico() {
+  var avatares = ['👩🏽','👩🏻','👩🏾','👩🏼','👩','👩🏿'];
+  var clases = ['pa1','pa2','pa3','pa4','pa1','pa2'];
+  db.collection('spas').doc('rose').collection('sucursales').get().then(function(sucSnap) {
+    if (sucSnap.empty) return;
+    var sucursalId = sucSnap.docs[0].id;
+    db.collection('spas').doc('rose').collection('sucursales').doc(sucursalId).collection('profesionales').get().then(function(snapshot) {
+      var grid = document.getElementById('pros-grid');
+      if (snapshot.empty) { grid.innerHTML = '<div style="text-align:center;padding:40px;color:#8a7676;">Próximamente...</div>'; return; }
+      grid.innerHTML = '';
+      var i = 0;
+      snapshot.forEach(function(doc) {
+        var data = doc.data();
+        var nombre = data.nombre || doc.id;
+        var especialidad = data.especialidad || '';
+        var avatar = avatares[i % avatares.length];
+        var clase = clases[i % clases.length];
+        grid.innerHTML += '<div class="pro-card"><div class="pro-avatar ' + clase + '">' + avatar + '</div><div class="pro-name">' + nombre + '</div><div class="pro-spec">' + especialidad + '</div><div class="pro-rating"><span class="stars">★★★★★</span><span class="rating-num">5.0</span><span class="rating-cnt">(0)</span></div><button class="btn-ag" onclick="agendarCon(\'' + nombre + '\')">Agendar con ella</button></div>';
+        i++;
+      });
+    });
+  });
+}
+
 function cerrarSesion() {
   localStorage.removeItem('rose_session');
   usuarioActual = null;
