@@ -239,7 +239,7 @@ footer { background-color: #1a1a1a; padding: 52px 24px 32px; }
 <section class="section" id="inspiracion">
   <div class="sec-label">¿Sin ideas?</div>
   <h2 class="sec-title">Inspírate <em>aquí</em></h2>
-  <div class="inspo-grid">
+  <div class="inspo-grid" id="inspo-grid">
     <div class="inspo-card"><div class="inspo-img ib1">💅</div><div class="inspo-label">Francesa clásica</div></div>
     <div class="inspo-card"><div class="inspo-img ib2">🌸</div><div class="inspo-label">Floral primavera</div></div>
     <div class="inspo-card"><div class="inspo-img ib3">✨</div><div class="inspo-label">Glitter sunset</div></div>
@@ -399,6 +399,7 @@ document.addEventListener('DOMContentLoaded', function() {
   cargarSucursales();
   cargarProfesionalesPublico();
   cargarServicios();
+  cargarInspiracion();
   // Poner fecha de hoy y bloquear fechas pasadas
   var ahora = new Date();
   var hoy = ahora.getFullYear() + '-' + String(ahora.getMonth()+1).padStart(2,'0') + '-' + String(ahora.getDate()).padStart(2,'0');
@@ -780,6 +781,25 @@ function cargarProfesionalesPublico() {
         grid.innerHTML += '<div class="pro-card">' + avatarHtml + '<div class="pro-name">' + nombre + '</div><div class="pro-spec">' + especialidad + '</div><div class="pro-rating"><span class="stars">' + estrellas + '</span><span class="rating-num">' + calificacion + '</span><span class="rating-cnt">(' + totalCal + ')</span></div><button class="btn-ag" onclick="agendarCon(\'' + nombre + '\')">Agendar con ella</button></div>';
         i++;
       });
+    });
+  });
+}
+
+function cargarInspiracion() {
+  db.collection('spas').doc('rose').collection('inspiracion').orderBy('orden').get().then(function(snap) {
+    if (snap.empty) return; // Deja las hardcodeadas si no hay en Firestore
+    var grid = document.getElementById('inspo-grid');
+    grid.innerHTML = '';
+    snap.forEach(function(doc) {
+      var d = doc.data();
+      var card = '<div class="inspo-card">';
+      if (d.foto) {
+        card += '<div class="inspo-img" style="background-image:url(' + d.foto + ');background-size:cover;background-position:center;"></div>';
+      } else {
+        card += '<div class="inspo-img">💅</div>';
+      }
+      card += '<div class="inspo-label">' + (d.nombre || '') + '</div></div>';
+      grid.innerHTML += card;
     });
   });
 }
