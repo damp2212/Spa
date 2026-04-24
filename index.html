@@ -1013,10 +1013,11 @@ function seleccionarServicio(nombre, precio, duracion) {
   carritoServicios.push({ nombre: nombre, precio: precio || 0, duracion: duracion || 60 });
   renderCarrito();
   cargarHorarios();
-  // Solo bajar a profesionales si aún no hay una seleccionada
   var profSelect = document.getElementById('f-profesional');
   var profSeleccionada = profSelect && profSelect.value && profSelect.value !== 'Cualquiera disponible';
-  if (!profSeleccionada) {
+  if (profSeleccionada) {
+    document.getElementById('f-fecha').scrollIntoView({ behavior: 'smooth' });
+  } else {
     document.getElementById('profesionales').scrollIntoView({ behavior: 'smooth' });
   }
   showToast('✓ ' + nombre + ' agregado');
