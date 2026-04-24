@@ -11,6 +11,11 @@
 * { margin: 0; padding: 0; box-sizing: border-box; -webkit-text-size-adjust: 100%; }
 html { scroll-behavior: smooth; background: #fbf3f3; }
 body { font-family: 'DM Sans', Georgia, sans-serif; background: #fbf3f3; color: #1a1a1a; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+#page-loader{position:fixed;inset:0;background:#FBF3F3;z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity 0.5s;}
+#page-loader .loader-logo{font-family:'Playfair Display',Georgia,serif;font-size:2rem;color:#D99595;margin-bottom:20px;letter-spacing:2px;}
+#page-loader .loader-spinner{width:36px;height:36px;border:3px solid #f7ecec;border-top:3px solid #D99595;border-radius:50%;animation:spin 0.8s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg);}}
+#page-loader.oculto{opacity:0;pointer-events:none;}
 
 nav { position: fixed; top: 0; left: 0; right: 0; z-index: 999; display: flex; align-items: center; justify-content: space-between; padding: 16px 24px; background: #d99595; border-bottom: 1px solid #d4888680; }
 .nav-cta { background: #ffffff; color: #d99595; padding: 10px 20px; border-radius: 50px; font-size: 0.82rem; font-weight: 500; text-decoration: none; }
@@ -165,6 +170,10 @@ footer { background-color: #1a1a1a; padding: 52px 24px 32px; }
 
 </head>
 <body>
+<div id="page-loader">
+  <img src="rose-logo-color.png" alt="Rosē" style="height:80px;margin-bottom:20px;">
+  <div class="loader-spinner"></div>
+</div>
 
 <!-- TOAST -->
 
@@ -396,9 +405,19 @@ function showToast(msg, type) {
 
 // Cargar sesion guardada
 document.addEventListener('DOMContentLoaded', function() {
-  cargarSucursales();
-  cargarProfesionalesPublico();
-  cargarServicios();
+  var pendientes = 3; // sucursales + profesionales + servicios
+  function checkListo() {
+    pendientes--;
+    if (pendientes <= 0) {
+      setTimeout(function() {
+        var loader = document.getElementById('page-loader');
+        if (loader) { loader.classList.add('oculto'); setTimeout(function(){ loader.style.display='none'; }, 500); }
+      }, 300);
+    }
+  }
+  cargarSucursales(checkListo);
+  cargarProfesionalesPublico(checkListo);
+  cargarServicios(checkListo);
   cargarInspiracion();
   // Poner fecha de hoy y bloquear fechas pasadas
   var ahora = new Date();
@@ -603,7 +622,7 @@ function guardarDatosRegistro() {
 }
 
 // Cargar sucursales desde Firestore
-function cargarSucursales() {
+function cargarSucursales(callback) {
   db.collection('spas').doc('rose').collection('sucursales').get().then(function(snapshot) {
     var select = document.getElementById('f-sucursal');
     select.innerHTML = '<option value="">Selecciona una sucursal...</option>';
@@ -619,7 +638,8 @@ function cargarSucursales() {
       select.selectedIndex = 1;
       cargarProfesionales();
     }
-  });
+    if(callback) callback();
+  }).catch(function(){if(callback)callback();});
 }
 
 // Cargar profesionales según sucursal
@@ -753,7 +773,7 @@ function cargarHorarios() {
 }
 
 // Cargar sucursales al iniciar
-function cargarProfesionalesPublico() {
+function cargarProfesionalesPublico(callback) {
   var avatares = ['👩🏽','👩🏻','👩🏾','👩🏼','👩','👩🏿'];
   var clases = ['pa1','pa2','pa3','pa4','pa1','pa2'];
   db.collection('spas').doc('rose').collection('sucursales').get().then(function(sucSnap) {
@@ -761,7 +781,7 @@ function cargarProfesionalesPublico() {
     var sucursalId = sucSnap.docs[0].id;
     db.collection('spas').doc('rose').collection('sucursales').doc(sucursalId).collection('profesionales').get().then(function(snapshot) {
       var grid = document.getElementById('pros-grid');
-      if (snapshot.empty) { grid.innerHTML = '<div style="text-align:center;padding:40px;color:#8a7676;">Próximamente...</div>'; return; }
+      if (snapshot.empty) { grid.innerHTML = '<div style="text-align:center;padding:40px;color:#8a7676;">Próximamente...</div>'; if(callback)callback(); return; }
       grid.innerHTML = '';
       var i = 0;
       snapshot.forEach(function(doc) {
@@ -781,6 +801,7 @@ function cargarProfesionalesPublico() {
         grid.innerHTML += '<div class="pro-card">' + avatarHtml + '<div class="pro-name">' + nombre + '</div><div class="pro-spec">' + especialidad + '</div><div class="pro-rating"><span class="stars">' + estrellas + '</span><span class="rating-num">' + calificacion + '</span><span class="rating-cnt">(' + totalCal + ')</span></div><button class="btn-ag" onclick="agendarCon(\'' + nombre + '\')">Agendar con ella</button></div>';
         i++;
       });
+      if(callback) callback();
     });
   });
 }
@@ -821,7 +842,7 @@ function cerrarSesion() {
   showToast('Sesion cerrada');
 }
 
-function cargarServicios() {
+function cargarServicios(callback) {
   var emojis = { manos: ['💅','🌿','💎','✨','🎨','🌸'], pies: ['🦶','💎','🌿','✨'], otros: ['🌸','💅','🦶','✨','💎','🎨'] };
   var categorias = ['manos', 'pies', 'otros'];
   var nombresCat = { manos: 'Manos', pies: 'Pies', otros: 'Otros' };
@@ -863,7 +884,8 @@ function cargarServicios() {
         grid.innerHTML += '<div class="service-card">' + imgHtml + '<div class="svc-body"><div class="svc-name">' + s.nombre + '</div><div class="svc-desc">' + (s.descripcion || '') + '</div><div class="svc-foot"><div class="svc-price">' + precio + '</div><div class="svc-dur">' + duracion + '</div></div><button class="btn-ag" style="margin-top:12px;" onclick="seleccionarServicio(\'' + nombreFormato.replace(/'/g, "\\'") + '\')">Agendar</button></div></div>';
       });
     });
-  });
+    if(callback) callback();
+  }).catch(function(){ if(callback) callback(); });
 }
 
 function cambiarTab(tab, btn) {
