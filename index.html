@@ -1042,7 +1042,7 @@ function renderCarrito() {
   contenedor.innerHTML = html;
   // Mostrar botón flotante
   var btnFlotante = document.getElementById('btn-agregar-mas');
-  if (btnFlotante) { btnFlotante.style.display = 'flex'; btnFlotante.onclick = function(){ toggleDropdownServicios(); document.getElementById('agendar').scrollIntoView({behavior:'smooth'}); }; }
+  if (btnFlotante) { btnFlotante.style.display = 'flex'; }
   totalDiv.style.display = 'flex';
   document.getElementById('carrito-total-tiempo').textContent = '⏱ ' + totalTiempo + ' min';
   document.getElementById('carrito-total-precio').textContent = '$' + totalPrecio.toLocaleString('es-CO');
