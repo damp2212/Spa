@@ -223,8 +223,10 @@ footer { background-color: #1a1a1a; padding: 52px 24px 32px; }
     <button class="svc-tab" onclick="cambiarTab('pies', this)">🦶 Pies</button>
     <button class="svc-tab" onclick="cambiarTab('otros', this)">✨ Otros</button>
   </div>
-
-  <div class="services-grid" id="tab-manos">
+  <div class="services-grid" id="tab-manos"><div style="text-align:center;padding:40px;color:#8a7676;">Cargando...</div></div>
+  <div class="services-grid" id="tab-pies" style="display:none;"><div style="text-align:center;padding:40px;color:#8a7676;">Cargando...</div></div>
+  <div class="services-grid" id="tab-otros" style="display:none;"><div style="text-align:center;padding:40px;color:#8a7676;">Cargando...</div></div>
+</section>
     <div class="service-card"><div class="svc-img si1">💅</div><div class="svc-body"><div class="svc-name">Manos tradicional</div><div class="svc-desc">Limpieza, forma y esmaltado tradicional para unas manos perfectas.</div><div class="svc-foot"><div class="svc-price">$35.000</div><div class="svc-dur">⏱ 45 min</div></div><button class="btn-ag" style="margin-top:12px;" onclick="seleccionarServicio('Manos tradicional — $35.000')">Agendar</button></div></div>
     <div class="service-card"><div class="svc-img si2">🌿</div><div class="svc-body"><div class="svc-name">Spa de manos + tradicional</div><div class="svc-desc">Exfoliación, hidratación y esmaltado tradicional. Un lujo para tus manos.</div><div class="svc-foot"><div class="svc-price">$60.000</div><div class="svc-dur">⏱ 60 min</div></div><button class="btn-ag" style="margin-top:12px;" onclick="seleccionarServicio('Spa de manos + tradicional — $60.000')">Agendar</button></div></div>
     <div class="service-card"><div class="svc-img si3">💎</div><div class="svc-body"><div class="svc-name">Spa de manos + semipermanente</div><div class="svc-desc">Spa completo más esmaltado semipermanente de larga duración.</div><div class="svc-foot"><div class="svc-price">$95.000</div><div class="svc-dur">⏱ 75 min</div></div><button class="btn-ag" style="margin-top:12px;" onclick="seleccionarServicio('Spa de manos + semipermanente — $95.000')">Agendar</button></div></div>
@@ -298,33 +300,7 @@ footer { background-color: #1a1a1a; padding: 52px 24px 32px; }
     <div class="form-group">
       <label class="form-label">Servicio</label>
       <select class="form-control" id="f-servicio" onchange="cargarHorarios()">
-        <optgroup label="Manos">
-          <option>Manos tradicional — $35.000</option>
-          <option>Spa de manos + tradicional — $60.000</option>
-          <option>Spa de manos + semipermanente — $95.000</option>
-          <option>Manos y pies tradicional — $60.000</option>
-          <option>Rubber — $75.000</option>
-          <option>Semipermanente manos — $70.000</option>
-          <option>Dip sobre largo natural — $95.000</option>
-          <option>Sistema press on — $120.000</option>
-          <option>Sistema acrílico — $145.000</option>
-          <option>Retoque acrílico — $120.000</option>
-          <option>Polygel o builder gel — $145.000</option>
-        </optgroup>
-        <optgroup label="Pies">
-          <option>Pies tradicional — $40.000</option>
-          <option>Pies semipermanente — $60.000</option>
-          <option>Pedispa + tradicional — $80.000</option>
-          <option>Pedispa + semipermanente — $100.000</option>
-        </optgroup>
-        <optgroup label="Otros">
-          <option>Retiro semipermanente sencillo — $15.000</option>
-          <option>Retiro semipermanente manos completo — $30.000</option>
-          <option>Retiro semipermanente pies completo — $35.000</option>
-          <option>Retiro acrílico, dipping o press on — $30.000</option>
-          <option>Uña acrílico o dipping manos — $15.000</option>
-          <option>Uña acrílico o dipping pies — $10.000</option>
-        </optgroup>
+        <option>Cargando servicios...</option>
       </select>
     </div>
     <div class="form-group">
@@ -451,6 +427,7 @@ function showToast(msg, type) {
 document.addEventListener('DOMContentLoaded', function() {
   cargarSucursales();
   cargarProfesionalesPublico();
+  cargarServicios();
   // Poner fecha de hoy y bloquear fechas pasadas
   var ahora = new Date();
   var hoy = ahora.getFullYear() + '-' + String(ahora.getMonth()+1).padStart(2,'0') + '-' + String(ahora.getDate()).padStart(2,'0');
@@ -851,6 +828,51 @@ function cerrarSesion() {
   var fw = document.getElementById('f-whatsapp'); if(fw) fw.value = '';
   mostrarFormularioDeslogueado();
   showToast('Sesion cerrada');
+}
+
+function cargarServicios() {
+  var emojis = { manos: ['💅','🌿','💎','✨','🎨','🌸'], pies: ['🦶','💎','🌿','✨'], otros: ['🌸','💅','🦶','✨','💎','🎨'] };
+  var categorias = ['manos', 'pies', 'otros'];
+  var nombresCat = { manos: 'Manos', pies: 'Pies', otros: 'Otros' };
+  db.collection('spas').doc('rose').collection('servicios').where('activo', '==', true).get().then(function(snapshot) {
+    var porCategoria = { manos: [], pies: [], otros: [] };
+    snapshot.forEach(function(doc) {
+      var d = doc.data();
+      if (porCategoria[d.categoria]) porCategoria[d.categoria].push(d);
+    });
+
+    // Actualizar select del formulario
+    var select = document.getElementById('f-servicio');
+    select.innerHTML = '';
+    categorias.forEach(function(cat) {
+      var lista = porCategoria[cat];
+      if (!lista || lista.length === 0) return;
+      var group = document.createElement('optgroup');
+      group.label = nombresCat[cat];
+      lista.forEach(function(s) {
+        var opt = document.createElement('option');
+        opt.textContent = s.nombre + ' — $' + s.precio.toLocaleString('es-CO');
+        group.appendChild(opt);
+      });
+      select.appendChild(group);
+    });
+
+    // Actualizar grids de servicios
+    categorias.forEach(function(cat) {
+      var grid = document.getElementById('tab-' + cat);
+      var lista = porCategoria[cat];
+      if (!lista || lista.length === 0) { grid.innerHTML = '<div style="text-align:center;padding:40px;color:#8a7676;">Sin servicios disponibles</div>'; return; }
+      grid.innerHTML = '';
+      lista.forEach(function(s, i) {
+        var emoji = emojis[cat][i % emojis[cat].length];
+        var precio = s.precio ? '$' + s.precio.toLocaleString('es-CO') : 'Consultar';
+        var duracion = s.duracion ? '⏱ ' + s.duracion + ' min' : '';
+        var imgHtml = s.foto ? '<div class="svc-img" style="background-image:url(' + s.foto + ');background-size:cover;background-position:center;"></div>' : '<div class="svc-img si' + ((i%6)+1) + '">' + emoji + '</div>';
+        var nombreFormato = s.nombre + ' — $' + s.precio.toLocaleString('es-CO');
+        grid.innerHTML += '<div class="service-card">' + imgHtml + '<div class="svc-body"><div class="svc-name">' + s.nombre + '</div><div class="svc-desc">' + (s.descripcion || '') + '</div><div class="svc-foot"><div class="svc-price">' + precio + '</div><div class="svc-dur">' + duracion + '</div></div><button class="btn-ag" style="margin-top:12px;" onclick="seleccionarServicio(\'' + nombreFormato.replace(/'/g, "\\'") + '\')">Agendar</button></div></div>';
+      });
+    });
+  });
 }
 
 function cambiarTab(tab, btn) {
