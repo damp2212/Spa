@@ -157,6 +157,10 @@ footer { background-color: #1a1a1a; padding: 52px 24px 32px; }
 .banner-puntos-badges { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; margin-bottom: 20px; }
 .banner-puntos-badge { font-size: 0.72rem; padding: 6px 12px; border-radius: 50px; background: rgba(255,255,255,0.15); color: #ffffff; font-weight: 500; }
 .banner-puntos-btn { background: #ffffff; color: #b87070; border: none; border-radius: 50px; padding: 12px 28px; font-size: 0.88rem; font-weight: 600; cursor: pointer; font-family: ‘DM Sans’, sans-serif; }
+.svc-tabs{display:flex;gap:10px;justify-content:center;margin-bottom:28px;flex-wrap:wrap;}
+.svc-tab{background:#f7ecec;color:#b87070;border:none;border-radius:50px;padding:10px 22px;font-size:0.88rem;font-family:‘DM Sans’,sans-serif;cursor:pointer;font-weight:500;transition:all 0.2s;}
+.svc-tab.active{background:#D99595;color:#fff;}
+.svc-tab:hover{background:#D99595;color:#fff;}
 </style>
 
 </head>
@@ -214,13 +218,40 @@ footer { background-color: #1a1a1a; padding: 52px 24px 32px; }
 <section class="section" id="servicios">
   <div class="sec-label">Lo que hacemos</div>
   <h2 class="sec-title">Nuestros <em>servicios</em></h2>
-  <div class="services-grid">
-    <div class="service-card"><div class="svc-img si1">💅</div><div class="svc-body"><div class="svc-name">Manicure Gel</div><div class="svc-desc">Acabado perfecto con gel de larga duración. Incluye limpieza, forma y color.</div><div class="svc-foot"><div class="svc-price">$45.000</div><div class="svc-dur">⏱ 45 min</div></div><button class="btn-ag" style="margin-top:12px;" onclick="seleccionarServicio('Manicure Gel — $45.000')">Agendar este servicio</button></div></div>
-    <div class="service-card"><div class="svc-img si2">✨</div><div class="svc-body"><div class="svc-name">Uñas Acrílicas</div><div class="svc-desc">Extensiones de acrílico con el diseño que sueñas. Personalizado 100%.</div><div class="svc-foot"><div class="svc-price">$80.000</div><div class="svc-dur">⏱ 90 min</div></div><button class="btn-ag" style="margin-top:12px;" onclick="seleccionarServicio('Uñas Acrílicas — $80.000')">Agendar este servicio</button></div></div>
-    <div class="service-card"><div class="svc-img si3">🦶</div><div class="svc-body"><div class="svc-name">Pedicure Spa</div><div class="svc-desc">Relajación total con exfoliación, masaje y esmaltado duradero.</div><div class="svc-foot"><div class="svc-price">$55.000</div><div class="svc-dur">⏱ 60 min</div></div><button class="btn-ag" style="margin-top:12px;" onclick="seleccionarServicio('Pedicure Spa — $55.000')">Agendar este servicio</button></div></div>
-    <div class="service-card"><div class="svc-img si4">🎨</div><div class="svc-body"><div class="svc-name">Nail Art</div><div class="svc-desc">Diseños artísticos únicos: flores, degradados, piedras y mucho más.</div><div class="svc-foot"><div class="svc-price">$30.000</div><div class="svc-dur">⏱ 30 min</div></div><button class="btn-ag" style="margin-top:12px;" onclick="seleccionarServicio('Nail Art — $30.000')">Agendar este servicio</button></div></div>
-    <div class="service-card"><div class="svc-img si5">💎</div><div class="svc-body"><div class="svc-name">Semipermanente</div><div class="svc-desc">Color que dura hasta 3 semanas sin astillarse. Secado en lámpara UV.</div><div class="svc-foot"><div class="svc-price">$38.000</div><div class="svc-dur">⏱ 50 min</div></div><button class="btn-ag" style="margin-top:12px;" onclick="seleccionarServicio('Semipermanente — $38.000')">Agendar este servicio</button></div></div>
-    <div class="service-card"><div class="svc-img si6">🌿</div><div class="svc-body"><div class="svc-name">Manicure + Pedicure</div><div class="svc-desc">El combo perfecto. Manos y pies impecables en una sola visita.</div><div class="svc-foot"><div class="svc-price">$75.000</div><div class="svc-dur">⏱ 100 min</div></div><button class="btn-ag" style="margin-top:12px;" onclick="seleccionarServicio('Manicure + Pedicure — $75.000')">Agendar este servicio</button></div></div>
+  <div class="svc-tabs">
+    <button class="svc-tab active" onclick="cambiarTab('manos', this)">💅 Manos</button>
+    <button class="svc-tab" onclick="cambiarTab('pies', this)">🦶 Pies</button>
+    <button class="svc-tab" onclick="cambiarTab('otros', this)">✨ Otros</button>
+  </div>
+
+  <div class="services-grid" id="tab-manos">
+    <div class="service-card"><div class="svc-img si1">💅</div><div class="svc-body"><div class="svc-name">Manos tradicional</div><div class="svc-desc">Limpieza, forma y esmaltado tradicional para unas manos perfectas.</div><div class="svc-foot"><div class="svc-price">$35.000</div><div class="svc-dur">⏱ 45 min</div></div><button class="btn-ag" style="margin-top:12px;" onclick="seleccionarServicio('Manos tradicional — $35.000')">Agendar</button></div></div>
+    <div class="service-card"><div class="svc-img si2">🌿</div><div class="svc-body"><div class="svc-name">Spa de manos + tradicional</div><div class="svc-desc">Exfoliación, hidratación y esmaltado tradicional. Un lujo para tus manos.</div><div class="svc-foot"><div class="svc-price">$60.000</div><div class="svc-dur">⏱ 60 min</div></div><button class="btn-ag" style="margin-top:12px;" onclick="seleccionarServicio('Spa de manos + tradicional — $60.000')">Agendar</button></div></div>
+    <div class="service-card"><div class="svc-img si3">💎</div><div class="svc-body"><div class="svc-name">Spa de manos + semipermanente</div><div class="svc-desc">Spa completo más esmaltado semipermanente de larga duración.</div><div class="svc-foot"><div class="svc-price">$95.000</div><div class="svc-dur">⏱ 75 min</div></div><button class="btn-ag" style="margin-top:12px;" onclick="seleccionarServicio('Spa de manos + semipermanente — $95.000')">Agendar</button></div></div>
+    <div class="service-card"><div class="svc-img si4">✨</div><div class="svc-body"><div class="svc-name">Manos y pies tradicional</div><div class="svc-desc">El combo clásico. Manos y pies con esmaltado tradicional.</div><div class="svc-foot"><div class="svc-price">$60.000</div><div class="svc-dur">⏱ 80 min</div></div><button class="btn-ag" style="margin-top:12px;" onclick="seleccionarServicio('Manos y pies tradicional — $60.000')">Agendar</button></div></div>
+    <div class="service-card"><div class="svc-img si5">🎨</div><div class="svc-body"><div class="svc-name">Rubber</div><div class="svc-desc">Base rubber de larga duración para un resultado profesional.</div><div class="svc-foot"><div class="svc-price">Desde $75.000</div><div class="svc-dur">⏱ 60 min</div></div><button class="btn-ag" style="margin-top:12px;" onclick="seleccionarServicio('Rubber — $75.000')">Agendar</button></div></div>
+    <div class="service-card"><div class="svc-img si6">💅</div><div class="svc-body"><div class="svc-name">Semipermanente manos</div><div class="svc-desc">Color que dura hasta 3 semanas sin astillarse. Secado en lámpara UV.</div><div class="svc-foot"><div class="svc-price">Desde $70.000</div><div class="svc-dur">⏱ 50 min</div></div><button class="btn-ag" style="margin-top:12px;" onclick="seleccionarServicio('Semipermanente manos — $70.000')">Agendar</button></div></div>
+    <div class="service-card"><div class="svc-img si1">🌸</div><div class="svc-body"><div class="svc-name">Dip sobre largo natural</div><div class="svc-desc">Sistema dipping sobre el largo natural de tu uña. Resultado impecable.</div><div class="svc-foot"><div class="svc-price">$95.000</div><div class="svc-dur">⏱ 75 min</div></div><button class="btn-ag" style="margin-top:12px;" onclick="seleccionarServicio('Dip sobre largo natural — $95.000')">Agendar</button></div></div>
+    <div class="service-card"><div class="svc-img si2">💎</div><div class="svc-body"><div class="svc-name">Sistema press on</div><div class="svc-desc">Uñas press on personalizadas con diseño único y acabado perfecto.</div><div class="svc-foot"><div class="svc-price">Desde $120.000</div><div class="svc-dur">⏱ 90 min</div></div><button class="btn-ag" style="margin-top:12px;" onclick="seleccionarServicio('Sistema press on — $120.000')">Agendar</button></div></div>
+    <div class="service-card"><div class="svc-img si3">✨</div><div class="svc-body"><div class="svc-name">Sistema acrílico</div><div class="svc-desc">Extensiones de acrílico con el diseño que sueñas. Personalizado 100%.</div><div class="svc-foot"><div class="svc-price">Desde $145.000</div><div class="svc-dur">⏱ 120 min</div></div><button class="btn-ag" style="margin-top:12px;" onclick="seleccionarServicio('Sistema acrílico — $145.000')">Agendar</button></div></div>
+    <div class="service-card"><div class="svc-img si4">🎨</div><div class="svc-body"><div class="svc-name">Retoque acrílico</div><div class="svc-desc">Mantenimiento de tu sistema acrílico para que siempre luzcan perfectas.</div><div class="svc-foot"><div class="svc-price">Desde $120.000</div><div class="svc-dur">⏱ 90 min</div></div><button class="btn-ag" style="margin-top:12px;" onclick="seleccionarServicio('Retoque acrílico — $120.000')">Agendar</button></div></div>
+    <div class="service-card"><div class="svc-img si5">🌿</div><div class="svc-body"><div class="svc-name">Polygel o builder gel</div><div class="svc-desc">Sistema polygel o builder gel para uñas fuertes y naturales.</div><div class="svc-foot"><div class="svc-price">Desde $145.000</div><div class="svc-dur">⏱ 120 min</div></div><button class="btn-ag" style="margin-top:12px;" onclick="seleccionarServicio('Polygel o builder gel — $145.000')">Agendar</button></div></div>
+  </div>
+
+  <div class="services-grid" id="tab-pies" style="display:none;">
+    <div class="service-card"><div class="svc-img si3">🦶</div><div class="svc-body"><div class="svc-name">Pies tradicional</div><div class="svc-desc">Limpieza, forma y esmaltado tradicional para unos pies perfectos.</div><div class="svc-foot"><div class="svc-price">$40.000</div><div class="svc-dur">⏱ 45 min</div></div><button class="btn-ag" style="margin-top:12px;" onclick="seleccionarServicio('Pies tradicional — $40.000')">Agendar</button></div></div>
+    <div class="service-card"><div class="svc-img si4">💎</div><div class="svc-body"><div class="svc-name">Pies semipermanente</div><div class="svc-desc">Esmaltado semipermanente para pies. Dura semanas sin astillarse.</div><div class="svc-foot"><div class="svc-price">$60.000</div><div class="svc-dur">⏱ 60 min</div></div><button class="btn-ag" style="margin-top:12px;" onclick="seleccionarServicio('Pies semipermanente — $60.000')">Agendar</button></div></div>
+    <div class="service-card"><div class="svc-img si5">🌿</div><div class="svc-body"><div class="svc-name">Pedispa + tradicional</div><div class="svc-desc">Exfoliación, masaje relajante y esmaltado tradicional. Puro placer.</div><div class="svc-foot"><div class="svc-price">$80.000</div><div class="svc-dur">⏱ 75 min</div></div><button class="btn-ag" style="margin-top:12px;" onclick="seleccionarServicio('Pedispa + tradicional — $80.000')">Agendar</button></div></div>
+    <div class="service-card"><div class="svc-img si6">✨</div><div class="svc-body"><div class="svc-name">Pedispa + semipermanente</div><div class="svc-desc">Spa completo de pies más esmaltado semipermanente de larga duración.</div><div class="svc-foot"><div class="svc-price">$100.000</div><div class="svc-dur">⏱ 90 min</div></div><button class="btn-ag" style="margin-top:12px;" onclick="seleccionarServicio('Pedispa + semipermanente — $100.000')">Agendar</button></div></div>
+  </div>
+
+  <div class="services-grid" id="tab-otros" style="display:none;">
+    <div class="service-card"><div class="svc-img si1">🌸</div><div class="svc-body"><div class="svc-name">Retiro semipermanente sencillo</div><div class="svc-desc">Retiro rápido y seguro de esmaltado semipermanente.</div><div class="svc-foot"><div class="svc-price">$15.000</div><div class="svc-dur">⏱ 20 min</div></div><button class="btn-ag" style="margin-top:12px;" onclick="seleccionarServicio('Retiro semipermanente sencillo — $15.000')">Agendar</button></div></div>
+    <div class="service-card"><div class="svc-img si2">💅</div><div class="svc-body"><div class="svc-name">Retiro semipermanente manos completo</div><div class="svc-desc">Retiro completo de semipermanente en ambas manos.</div><div class="svc-foot"><div class="svc-price">$30.000</div><div class="svc-dur">⏱ 30 min</div></div><button class="btn-ag" style="margin-top:12px;" onclick="seleccionarServicio('Retiro semipermanente manos completo — $30.000')">Agendar</button></div></div>
+    <div class="service-card"><div class="svc-img si3">🦶</div><div class="svc-body"><div class="svc-name">Retiro semipermanente pies completo</div><div class="svc-desc">Retiro completo de semipermanente en ambos pies.</div><div class="svc-foot"><div class="svc-price">$35.000</div><div class="svc-dur">⏱ 30 min</div></div><button class="btn-ag" style="margin-top:12px;" onclick="seleccionarServicio('Retiro semipermanente pies completo — $35.000')">Agendar</button></div></div>
+    <div class="service-card"><div class="svc-img si4">✨</div><div class="svc-body"><div class="svc-name">Retiro acrílico, dipping o press on</div><div class="svc-desc">Retiro seguro de sistemas acrílico, dipping o press on.</div><div class="svc-foot"><div class="svc-price">$30.000</div><div class="svc-dur">⏱ 30 min</div></div><button class="btn-ag" style="margin-top:12px;" onclick="seleccionarServicio('Retiro acrílico, dipping o press on — $30.000')">Agendar</button></div></div>
+    <div class="service-card"><div class="svc-img si5">💎</div><div class="svc-body"><div class="svc-name">Uña acrílico o dipping manos</div><div class="svc-desc">Reparación o adición de una uña en acrílico o dipping para manos.</div><div class="svc-foot"><div class="svc-price">$15.000</div><div class="svc-dur">⏱ 20 min</div></div><button class="btn-ag" style="margin-top:12px;" onclick="seleccionarServicio('Uña acrílico o dipping manos — $15.000')">Agendar</button></div></div>
+    <div class="service-card"><div class="svc-img si6">🎨</div><div class="svc-body"><div class="svc-name">Uña acrílico o dipping pies</div><div class="svc-desc">Reparación o adición de una uña en acrílico o dipping para pies.</div><div class="svc-foot"><div class="svc-price">$10.000</div><div class="svc-dur">⏱ 20 min</div></div><button class="btn-ag" style="margin-top:12px;" onclick="seleccionarServicio('Uña acrílico o dipping pies — $10.000')">Agendar</button></div></div>
   </div>
 </section>
 
@@ -267,12 +298,33 @@ footer { background-color: #1a1a1a; padding: 52px 24px 32px; }
     <div class="form-group">
       <label class="form-label">Servicio</label>
       <select class="form-control" id="f-servicio" onchange="cargarHorarios()">
-        <option>Manicure Gel — $45.000</option>
-        <option>Uñas Acrílicas — $80.000</option>
-        <option>Pedicure Spa — $55.000</option>
-        <option>Nail Art — $30.000</option>
-        <option>Semipermanente — $38.000</option>
-        <option>Manicure + Pedicure — $75.000</option>
+        <optgroup label="Manos">
+          <option>Manos tradicional — $35.000</option>
+          <option>Spa de manos + tradicional — $60.000</option>
+          <option>Spa de manos + semipermanente — $95.000</option>
+          <option>Manos y pies tradicional — $60.000</option>
+          <option>Rubber — $75.000</option>
+          <option>Semipermanente manos — $70.000</option>
+          <option>Dip sobre largo natural — $95.000</option>
+          <option>Sistema press on — $120.000</option>
+          <option>Sistema acrílico — $145.000</option>
+          <option>Retoque acrílico — $120.000</option>
+          <option>Polygel o builder gel — $145.000</option>
+        </optgroup>
+        <optgroup label="Pies">
+          <option>Pies tradicional — $40.000</option>
+          <option>Pies semipermanente — $60.000</option>
+          <option>Pedispa + tradicional — $80.000</option>
+          <option>Pedispa + semipermanente — $100.000</option>
+        </optgroup>
+        <optgroup label="Otros">
+          <option>Retiro semipermanente sencillo — $15.000</option>
+          <option>Retiro semipermanente manos completo — $30.000</option>
+          <option>Retiro semipermanente pies completo — $35.000</option>
+          <option>Retiro acrílico, dipping o press on — $30.000</option>
+          <option>Uña acrílico o dipping manos — $15.000</option>
+          <option>Uña acrílico o dipping pies — $10.000</option>
+        </optgroup>
       </select>
     </div>
     <div class="form-group">
@@ -799,6 +851,15 @@ function cerrarSesion() {
   var fw = document.getElementById('f-whatsapp'); if(fw) fw.value = '';
   mostrarFormularioDeslogueado();
   showToast('Sesion cerrada');
+}
+
+function cambiarTab(tab, btn) {
+  document.querySelectorAll('.svc-tab').forEach(function(b){ b.classList.remove('active'); });
+  btn.classList.add('active');
+  document.getElementById('tab-manos').style.display = 'none';
+  document.getElementById('tab-pies').style.display = 'none';
+  document.getElementById('tab-otros').style.display = 'none';
+  document.getElementById('tab-' + tab).style.display = 'grid';
 }
 
 function seleccionarServicio(servicio) {
