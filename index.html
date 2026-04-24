@@ -912,22 +912,6 @@ function cargarServicios(callback) {
       if (porCategoria[d.categoria]) porCategoria[d.categoria].push(d);
     });
 
-    // Actualizar select del formulario
-    var select = document.getElementById('f-servicio');
-    select.innerHTML = '';
-    categorias.forEach(function(cat) {
-      var lista = porCategoria[cat];
-      if (!lista || lista.length === 0) return;
-      var group = document.createElement('optgroup');
-      group.label = nombresCat[cat];
-      lista.forEach(function(s) {
-        var opt = document.createElement('option');
-        opt.textContent = s.nombre + ' — $' + s.precio.toLocaleString('es-CO');
-        group.appendChild(opt);
-      });
-      select.appendChild(group);
-    });
-
     // Actualizar grids de servicios
     categorias.forEach(function(cat) {
       var grid = document.getElementById('tab-' + cat);
