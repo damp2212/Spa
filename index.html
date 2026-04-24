@@ -49,7 +49,7 @@ nav { position: fixed; top: 0; left: 0; right: 0; z-index: 999; display: flex; a
 .sec-title-w em { font-style: italic; color: #f0bcbc; }
 
 .services-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-.service-card { background: #ffffff; border-radius: 20px; overflow: hidden; border: 1px solid #f5d5d5; }
+.service-card { background: #ffffff; border-radius: 20px; overflow: hidden; border: 1px solid #f5d5d5; display: flex; flex-direction: column; }
 .svc-img { height: 180px; display: flex; align-items: center; justify-content: center; font-size: 3rem; }
 .si1 { background: linear-gradient(135deg, #f9e4dc, #f0bcbc); }
 .si2 { background: linear-gradient(135deg, #e8d5f0, #c9a8e0); }
@@ -57,10 +57,10 @@ nav { position: fixed; top: 0; left: 0; right: 0; z-index: 999; display: flex; a
 .si4 { background: linear-gradient(135deg, #d5e8f0, #a8cce0); }
 .si5 { background: linear-gradient(135deg, #f0e8d5, #e0cca8); }
 .si6 { background: linear-gradient(135deg, #d5f0e8, #a8e0cc); }
-.svc-body { padding: 16px; }
+.svc-body { padding: 16px; display: flex; flex-direction: column; flex: 1; }
 .svc-name { font-family: ‘Playfair Display’, Georgia, serif; font-size: 1rem; color: #1a1a1a; margin-bottom: 4px; }
 .svc-desc { font-size: 0.78rem; color: #8a7676; line-height: 1.5; margin-bottom: 10px; }
-.svc-foot { display: flex; flex-direction: column; gap: 6px; margin-bottom: 10px; }
+.svc-foot { display: flex; flex-direction: column; gap: 6px; margin-bottom: 10px; flex: 1; justify-content: flex-end; }
 .svc-price { font-family: ‘Playfair Display’, Georgia, serif; font-size: 1.1rem; color: #b87070; font-weight: 700; }
 .svc-dur { font-size: 0.72rem; color: #8a7676; }
 
@@ -278,10 +278,14 @@ footer { background-color: #1a1a1a; padding: 52px 24px 32px; }
       </select>
     </div>
     <div class="form-group">
-      <label class="form-label">Servicio</label>
-      <select class="form-control" id="f-servicio" onchange="cargarHorarios()">
-        <option>Cargando servicios...</option>
-      </select>
+      <label class="form-label">Servicios seleccionados</label>
+      <div id="carrito-servicios" style="background:#f7ecec;border-radius:12px;padding:12px;min-height:50px;margin-bottom:8px;">
+        <div id="carrito-vacio" style="color:#b87070;font-size:0.82rem;text-align:center;padding:8px;">Selecciona un servicio arriba 👆</div>
+      </div>
+      <div id="carrito-total" style="display:none;background:#fff;border:1.5px solid #f5d5d5;border-radius:12px;padding:10px 14px;font-size:0.82rem;color:#8a7676;display:flex;justify-content:space-between;">
+        <span id="carrito-total-tiempo">⏱ 0 min</span>
+        <span id="carrito-total-precio" style="font-weight:700;color:#b87070;">$0</span>
+      </div>
     </div>
     <div class="form-group">
       <label class="form-label">Profesional</label>
@@ -683,9 +687,10 @@ var DURACIONES = {
 };
 
 function getDuracion() {
-  var servicio = document.getElementById('f-servicio').value;
-  var nombre = servicio.split('—')[0].trim();
-  return DURACIONES[nombre] || 60;
+  if (carritoServicios && carritoServicios.length > 0) {
+    return carritoServicios.reduce(function(total, s){ return total + (s.duracion || 60); }, 0);
+  }
+  return 60;
 }
 
 function cargarHorarios() {
@@ -934,8 +939,8 @@ function cargarServicios(callback) {
         var precio = s.precio ? '$' + s.precio.toLocaleString('es-CO') : 'Consultar';
         var duracion = s.duracion ? '⏱ ' + s.duracion + ' min' : '';
         var imgHtml = s.foto ? '<div class="svc-img" style="background-image:url(' + s.foto + ');background-size:cover;background-position:center;"></div>' : '<div class="svc-img si' + ((i%6)+1) + '">' + emoji + '</div>';
-        var nombreFormato = s.nombre + ' — $' + s.precio.toLocaleString('es-CO');
-        grid.innerHTML += '<div class="service-card">' + imgHtml + '<div class="svc-body"><div class="svc-name">' + s.nombre + '</div><div class="svc-desc">' + (s.descripcion || '') + '</div><div class="svc-foot"><div class="svc-price">' + precio + '</div><div class="svc-dur">' + duracion + '</div></div><button class="btn-ag" style="margin-top:12px;" onclick="seleccionarServicio(\'' + nombreFormato.replace(/'/g, "\\'") + '\')">Agendar</button></div></div>';
+        var nombreFormato = s.nombre;
+        grid.innerHTML += '<div class="service-card">' + imgHtml + '<div class="svc-body"><div class="svc-name">' + s.nombre + '</div><div class="svc-desc">' + (s.descripcion || '') + '</div><div class="svc-foot"><div class="svc-price">' + precio + '</div><div class="svc-dur">' + duracion + '</div></div><button class="btn-ag" style="margin-top:12px;" onclick="seleccionarServicio(\'' + nombreFormato.replace(/'/g, "\\'") + '\',' + (s.precio||0) + ',' + (s.duracion||60) + ')">Agendar</button></div></div>';
       });
     });
     if(callback) callback();
@@ -951,17 +956,55 @@ function cambiarTab(tab, btn) {
   document.getElementById('tab-' + tab).style.display = 'grid';
 }
 
-function seleccionarServicio(servicio) {
-  var select = document.getElementById('f-servicio');
-  for (var i = 0; i < select.options.length; i++) {
-    if (select.options[i].text.indexOf(servicio.split('—')[0].trim()) !== -1) {
-      select.selectedIndex = i;
-      break;
-    }
+var carritoServicios = [];
+
+function seleccionarServicio(nombre, precio, duracion) {
+  // Si ya está en el carrito, no agregar
+  var yaEsta = carritoServicios.find(function(s){ return s.nombre === nombre; });
+  if (yaEsta) {
+    showToast('Ya agregaste este servicio', 'error');
+    return;
   }
+  carritoServicios.push({ nombre: nombre, precio: precio || 0, duracion: duracion || 60 });
+  renderCarrito();
   cargarHorarios();
   document.getElementById('profesionales').scrollIntoView({ behavior: 'smooth' });
-  showToast('Servicio seleccionado: ' + servicio.split('—')[0].trim());
+  showToast('✓ ' + nombre + ' agregado');
+}
+
+function quitarServicio(nombre) {
+  carritoServicios = carritoServicios.filter(function(s){ return s.nombre !== nombre; });
+  renderCarrito();
+  cargarHorarios();
+}
+
+function renderCarrito() {
+  var contenedor = document.getElementById('carrito-servicios');
+  var vacio = document.getElementById('carrito-vacio');
+  var totalDiv = document.getElementById('carrito-total');
+  
+  if (carritoServicios.length === 0) {
+    contenedor.innerHTML = '<div id="carrito-vacio" style="color:#b87070;font-size:0.82rem;text-align:center;padding:8px;">Selecciona un servicio arriba 👆</div>';
+    totalDiv.style.display = 'none';
+    return;
+  }
+
+  var html = '';
+  var totalTiempo = 0;
+  var totalPrecio = 0;
+  carritoServicios.forEach(function(s) {
+    totalTiempo += s.duracion;
+    totalPrecio += s.precio;
+    html += '<div style="display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid #f0d0d0;">';
+    html += '<div><div style="font-size:0.85rem;font-weight:500;color:#1a1a1a;">' + s.nombre + '</div>';
+    html += '<div style="font-size:0.75rem;color:#8a7676;">$' + s.precio.toLocaleString('es-CO') + ' · ⏱ ' + s.duracion + ' min</div></div>';
+    html += '<button onclick="quitarServicio(\'' + s.nombre.replace(/'/g,"\\'") + '\')" style="background:none;border:none;color:#e57373;font-size:1.1rem;cursor:pointer;">✕</button>';
+    html += '</div>';
+  });
+  contenedor.innerHTML = html;
+  totalDiv.style.display = 'flex';
+  document.getElementById('carrito-total-tiempo').textContent = '⏱ ' + totalTiempo + ' min';
+  document.getElementById('carrito-total-precio').textContent = '$' + totalPrecio.toLocaleString('es-CO');
 }
 
 function agendarCon(nombre) {
@@ -989,7 +1032,6 @@ function guardarCita() {
 
   var nombre = document.getElementById('f-nombre').value.trim();
   var whatsapp = document.getElementById('f-whatsapp').value.trim();
-  var servicio = document.getElementById('f-servicio').value;
   var profesional = document.getElementById('f-profesional').value;
   var sucursal = document.getElementById('f-sucursal').value;
   var fecha = document.getElementById('f-fecha').value;
@@ -998,7 +1040,12 @@ function guardarCita() {
   if (!nombre) { showToast('Ingresa tu nombre', 'error'); return; }
   if (!whatsapp) { showToast('Ingresa tu WhatsApp', 'error'); return; }
   if (!sucursal) { showToast('Selecciona una sucursal', 'error'); return; }
+  if (carritoServicios.length === 0) { showToast('Selecciona al menos un servicio', 'error'); return; }
   if (!fecha) { showToast('Selecciona una fecha', 'error'); return; }
+
+  // Construir texto de servicios
+  var servicioTexto = carritoServicios.map(function(s){ return s.nombre; }).join(' + ');
+  var totalPrecio = carritoServicios.reduce(function(t,s){ return t + s.precio; }, 0);
   var ahora = new Date();
   var hoy = ahora.getFullYear() + '-' + String(ahora.getMonth()+1).padStart(2,'0') + '-' + String(ahora.getDate()).padStart(2,'0');
   if (fecha < hoy) { showToast('No puedes agendar en fechas pasadas', 'error'); return; }
@@ -1017,7 +1064,9 @@ function guardarCita() {
     uid: usuarioActual.tel,
     nombre: nombre,
     whatsapp: whatsapp,
-    servicio: servicio,
+    servicio: servicioTexto,
+    servicios: carritoServicios,
+    precio: totalPrecio,
     profesional: profesional,
     sucursal: sucursal,
     fecha: fecha,
@@ -1030,6 +1079,8 @@ function guardarCita() {
       nombre: nombre, whatsapp: whatsapp
     }, { merge: true });
     showToast('Cita agendada! Te confirmamos pronto', 'success');
+    carritoServicios = [];
+    renderCarrito();
     document.getElementById('f-fecha').value = '';
   }).catch(function() {
     showToast('Error al guardar. Intenta de nuevo.', 'error');
