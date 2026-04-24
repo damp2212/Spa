@@ -77,11 +77,11 @@ nav { position: fixed; top: 0; left: 0; right: 0; z-index: 999; display: flex; a
 .slot-on { background: #b87070; color: #ffffff; border-color: #b87070; }
 .btn-ag { width: 100%; background: #b87070; color: #ffffff; border: none; border-radius: 50px; padding: 12px; font-size: 0.85rem; font-weight: 500; cursor: pointer; font-family: ‘DM Sans’, sans-serif; }
 
-.inspo-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-.inspo-card { border-radius: 16px; overflow: hidden; position: relative; }
-.inspo-card:first-child { grid-column: span 2; }
-.inspo-img { width: 100%; aspect-ratio: 1; display: flex; align-items: center; justify-content: center; font-size: 2.5rem; }
-.inspo-card:first-child .inspo-img { aspect-ratio: 2/1; }
+.inspo-carrusel { display: flex; gap: 12px; overflow-x: auto; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; padding-bottom: 8px; scrollbar-width: none; }
+.inspo-card { border-radius: 16px; overflow: hidden; position: relative; flex: 0 0 70vw; max-width: 280px; scroll-snap-align: start; }
+.inspo-carrusel::-webkit-scrollbar { display: none; }
+.inspo-img { width: 100%; aspect-ratio: 3/4; display: flex; align-items: center; justify-content: center; font-size: 2.5rem; }
+
 .ib1 { background: linear-gradient(135deg, #f9c5d1, #e891a8); }
 .ib2 { background: linear-gradient(135deg, #c5d9f9, #91b8e8); }
 .ib3 { background: linear-gradient(135deg, #f9e4c5, #e8c891); }
@@ -239,7 +239,7 @@ footer { background-color: #1a1a1a; padding: 52px 24px 32px; }
 <section class="section" id="inspiracion">
   <div class="sec-label">¿Sin ideas?</div>
   <h2 class="sec-title">Inspírate <em>aquí</em></h2>
-  <div class="inspo-grid" id="inspo-grid">
+  <div class="inspo-carrusel" id="inspo-grid">
     <div class="inspo-card"><div class="inspo-img ib1">💅</div><div class="inspo-label">Francesa clásica</div></div>
     <div class="inspo-card"><div class="inspo-img ib2">🌸</div><div class="inspo-label">Floral primavera</div></div>
     <div class="inspo-card"><div class="inspo-img ib3">✨</div><div class="inspo-label">Glitter sunset</div></div>
