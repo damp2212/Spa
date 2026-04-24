@@ -1406,19 +1406,6 @@ function previewFotoServicio(input) {
   reader.readAsDataURL(input.files[0]);
 }
 
-function aplicarRecorte() {
-  if (!cropperInstance) return;
-  var canvas = cropperInstance.getCroppedCanvas({ width: 800, height: 600, imageSmoothingQuality: 'high' });
-  canvas.toBlob(function(blob) {
-    imagenRecortada = blob;
-    var url = URL.createObjectURL(blob);
-    document.getElementById('ms-foto-img').src = url;
-    document.getElementById('ms-foto-preview').style.display = 'block';
-    document.getElementById('ms-cropper-wrap').style.display = 'none';
-    cropperInstance.destroy();
-    cropperInstance = null;
-  }, 'image/jpeg', 0.85);
-}
 
 function editarServicio(id) {
   db.collection('spas').doc(sucursalActual).collection('servicios').doc(id).get().then(function(doc) {
