@@ -603,8 +603,21 @@ tbody td{padding:13px 14px;color:#1a1a1a;vertical-align:middle}
   </div>
   <div class="card">
     <div class="card-title">Servicios del spa</div>
-    <div id="config-servicios-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;margin-top:16px;">
+    <input type="text" id="buscador-servicios" placeholder="🔍 Buscar servicio..." oninput="filtrarServicios()" style="width:100%;padding:12px 16px;border:1.5px solid #c8e6c9;border-radius:12px;font-size:0.9rem;font-family:'DM Sans',sans-serif;outline:none;box-sizing:border-box;margin-bottom:16px;">
+    <div id="config-servicios-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;">
       <div class="empty"><div class="empty-txt">Cargando servicios...</div></div>
+    </div>
+  </div>
+  <div class="card" style="margin-top:16px;">
+    <div class="card-title" style="display:flex;justify-content:space-between;align-items:center;">
+      Inspírate aquí
+      <label style="background:#51BC54;color:#fff;border-radius:50px;padding:8px 16px;font-size:0.82rem;cursor:pointer;font-family:'DM Sans',sans-serif;">
+        + Subir foto
+        <input type="file" accept="image/*" style="display:none;" onchange="subirFotoInspiracion(this)">
+      </label>
+    </div>
+    <div id="inspo-admin-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px;margin-top:16px;">
+      <div class="empty"><div class="empty-txt">Cargando...</div></div>
     </div>
   </div>
 </div>
@@ -1338,18 +1351,30 @@ function guardarCitaManual() {
 }
 
 // ===== CONFIGURACIÓN DE SERVICIOS =====
+var todosServicios = [];
+
 function cargarConfigServicios() {
   db.collection('spas').doc(sucursalActual).collection('servicios').get().then(function(snap) {
-    var grid = document.getElementById('config-servicios-grid');
-    if (snap.empty) { grid.innerHTML = '<div class="empty"><div class="empty-txt">No hay servicios</div></div>'; return; }
-    grid.innerHTML = '';
-    snap.forEach(function(doc) {
-      var s = doc.data();
-      var precio = s.precio ? '$' + Number(s.precio).toLocaleString('es-CO') : '';
-      var estado = s.activo ? '<span style="color:#51BC54;font-size:0.75rem;">● Activo</span>' : '<span style="color:#ccc;font-size:0.75rem;">● Inactivo</span>';
-      var foto = s.foto ? '<img src="' + s.foto + '" style="width:100%;height:200px;object-fit:cover;border-radius:12px;margin-bottom:12px;">' : '<div style="width:100%;height:80px;background:#f5f5f5;border-radius:12px;margin-bottom:12px;display:flex;align-items:center;justify-content:center;font-size:2rem;">💅</div>';
-      grid.innerHTML += '<div style="background:#fff;border:1.5px solid #e8f5e9;border-radius:16px;padding:16px;">' + foto + '<div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:6px;"><div style="font-weight:600;font-size:0.9rem;color:#1a1a1a;">' + s.nombre + '</div>' + estado + '</div><div style="font-size:0.8rem;color:#8a7a76;margin-bottom:8px;">' + (s.descripcion || '') + '</div><div style="display:flex;justify-content:space-between;align-items:center;"><div><span style="font-weight:600;color:#2D6C2F;">' + precio + '</span><span style="color:#8a7a76;font-size:0.8rem;margin-left:8px;">⏱ ' + (s.duracion || 0) + ' min</span></div><div style="display:flex;gap:8px;"><button onclick="editarServicio(\'' + doc.id + '\')" style="background:#e8f5e9;color:#2D6C2F;border:none;border-radius:8px;padding:6px 12px;font-size:0.78rem;cursor:pointer;">Editar</button><button onclick="eliminarServicio(\'' + doc.id + '\')" style="background:#ffeaea;color:#e57373;border:none;border-radius:8px;padding:6px 12px;font-size:0.78rem;cursor:pointer;">Borrar</button></div></div></div>';
-    });
+    todosServicios = [];
+    snap.forEach(function(doc) { var s = doc.data(); s._id = doc.id; todosServicios.push(s); });
+    renderServicios(todosServicios);
+  });
+}
+
+function filtrarServicios() {
+  var q = document.getElementById('buscador-servicios').value.toLowerCase();
+  renderServicios(todosServicios.filter(function(s){ return s.nombre.toLowerCase().includes(q) || (s.categoria||'').toLowerCase().includes(q); }));
+}
+
+function renderServicios(lista) {
+  var grid = document.getElementById('config-servicios-grid');
+  if (!lista || lista.length === 0) { grid.innerHTML = '<div class="empty"><div class="empty-txt">No hay servicios</div></div>'; return; }
+  grid.innerHTML = '';
+  lista.forEach(function(s) {
+    var precio = s.precio ? '$' + Number(s.precio).toLocaleString('es-CO') : '';
+    var estado = s.activo ? '<span style="color:#51BC54;font-size:0.75rem;">● Activo</span>' : '<span style="color:#ccc;font-size:0.75rem;">● Inactivo</span>';
+    var foto = s.foto ? '<img src="' + s.foto + '" style="width:100%;height:200px;object-fit:cover;border-radius:12px;margin-bottom:12px;">' : '<div style="width:100%;height:80px;background:#f5f5f5;border-radius:12px;margin-bottom:12px;display:flex;align-items:center;justify-content:center;font-size:2rem;">💅</div>';
+    grid.innerHTML += '<div style="background:#fff;border:1.5px solid #e8f5e9;border-radius:16px;padding:16px;">' + foto + '<div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:6px;"><div style="font-weight:600;font-size:0.9rem;color:#1a1a1a;">' + s.nombre + '</div>' + estado + '</div><div style="font-size:0.8rem;color:#8a7a76;margin-bottom:8px;">' + (s.descripcion || '') + '</div><div style="display:flex;justify-content:space-between;align-items:center;"><div><span style="font-weight:600;color:#2D6C2F;">' + precio + '</span><span style="color:#8a7a76;font-size:0.8rem;margin-left:8px;">⏱ ' + (s.duracion || 0) + ' min</span></div><div style="display:flex;gap:8px;"><button onclick="editarServicio(\'' + s._id + '\')" style="background:#e8f5e9;color:#2D6C2F;border:none;border-radius:8px;padding:6px 12px;font-size:0.78rem;cursor:pointer;">Editar</button><button onclick="eliminarServicio(\'' + s._id + '\')" style="background:#ffeaea;color:#e57373;border:none;border-radius:8px;padding:6px 12px;font-size:0.78rem;cursor:pointer;">Borrar</button></div></div></div>';
   });
 }
 
@@ -1460,6 +1485,48 @@ function eliminarServicio(id) {
   db.collection('spas').doc(sucursalActual).collection('servicios').doc(id).delete().then(function() {
     toast('Servicio eliminado', 'ok');
     cargarConfigServicios();
+  });
+}
+
+// ===== INSPIRACIÓN =====
+function cargarInspoAdmin() {
+  db.collection('spas').doc(sucursalActual).collection('inspiracion').orderBy('orden').get().then(function(snap) {
+    var grid = document.getElementById('inspo-admin-grid');
+    if (snap.empty) { grid.innerHTML = '<div style="color:#8a7a76;font-size:0.85rem;">No hay fotos aún. Sube la primera!</div>'; return; }
+    grid.innerHTML = '';
+    snap.forEach(function(doc) {
+      var d = doc.data();
+      grid.innerHTML += '<div style="position:relative;border-radius:12px;overflow:hidden;"><img src="' + d.foto + '" style="width:100%;height:150px;object-fit:cover;display:block;"><div style="position:absolute;inset:0;background:rgba(0,0,0,0);transition:0.2s;" onmouseover="this.style.background=\'rgba(0,0,0,0.4)\'" onmouseout="this.style.background=\'rgba(0,0,0,0)\'"><button onclick="eliminarInspo(\'' + doc.id + '\')" style="position:absolute;top:6px;right:6px;background:#e57373;color:#fff;border:none;border-radius:50%;width:28px;height:28px;cursor:pointer;font-size:0.75rem;">✕</button></div><div style="padding:6px;font-size:0.75rem;color:#1a1a1a;">' + (d.nombre || '') + '</div></div>';
+    });
+  });
+}
+
+function subirFotoInspiracion(input) {
+  if (!input.files || !input.files[0]) return;
+  var file = input.files[0];
+  var nombre = prompt('Nombre del diseño (ej: Francesa clásica):') || 'Diseño';
+  var id = Date.now().toString();
+  var storageRef = firebase.storage().ref('spas/' + sucursalActual + '/inspiracion/' + id + '.jpg');
+  toast('Subiendo foto...', 'ok');
+  storageRef.put(file).then(function(snap) {
+    return snap.ref.getDownloadURL();
+  }).then(function(url) {
+    return db.collection('spas').doc(sucursalActual).collection('inspiracion').doc(id).set({
+      foto: url, nombre: nombre, orden: Date.now()
+    });
+  }).then(function() {
+    toast('Foto subida!', 'ok');
+    cargarInspoAdmin();
+  }).catch(function() {
+    toast('Error subiendo foto', 'err');
+  });
+}
+
+function eliminarInspo(id) {
+  if (!confirm('¿Eliminar esta foto?')) return;
+  db.collection('spas').doc(sucursalActual).collection('inspiracion').doc(id).delete().then(function() {
+    toast('Foto eliminada', 'ok');
+    cargarInspoAdmin();
   });
 }
 
@@ -1729,7 +1796,7 @@ function showPage(pageName,btn){
   document.getElementById('page-'+pageName).classList.add('active');
   btn.classList.add('active');
   if(pageName==='reporte') filtrarReporte('semana',document.querySelector('#page-reporte .fb'));
-  if(pageName==='configuracion') cargarConfigServicios();
+  if(pageName==='configuracion') { cargarConfigServicios(); cargarInspoAdmin(); }
   if(pageName==='horarios') renderHorarioProSelect();
   if(pageName==='calificaciónes'){
     db.collection('spas').doc(sucursalActual).collection('calificaciónes').get().then(function(snap){
