@@ -509,6 +509,15 @@ function mostrarFormularioDeslogueado() {
   if(gWa) gWa.style.display = 'block';
 }
 
+function formatearTelefono(input) {
+  var val = input.value.replace(/\D/g, '').substring(0, 10);
+  var formato = '';
+  if (val.length > 0) formato = val.substring(0, 3);
+  if (val.length > 3) formato += ' ' + val.substring(3, 6);
+  if (val.length > 6) formato += ' ' + val.substring(6, 10);
+  input.value = formato;
+}
+
 function abrirLogin() {
   document.getElementById('login-overlay').style.display = 'flex';
   document.getElementById('paso-telefono').style.display = 'block';
@@ -1160,7 +1169,7 @@ function guardarCita() {
         <option value="+56">🇨🇱 +56</option>
         <option value="+54">🇦🇷 +54</option>
       </select>
-      <input id="login-telefono" type="tel" placeholder="300 000 0000" autocomplete="tel" inputmode="numeric" style="flex:1;padding:13px 16px;border:1.5px solid #f0bcbc;border-radius:12px;font-size:0.9rem;color:#1a1a1a;background:#fbf3f3;font-family:'DM Sans',sans-serif;outline:none;-webkit-appearance:none;">
+      <input id="login-telefono" type="tel" placeholder="300 000 0000" autocomplete="tel" inputmode="numeric" maxlength="12" oninput="formatearTelefono(this)" style="flex:1;padding:13px 16px;border:1.5px solid #f0bcbc;border-radius:12px;font-size:0.9rem;color:#1a1a1a;background:#fbf3f3;font-family:'DM Sans',sans-serif;outline:none;-webkit-appearance:none;letter-spacing:1px;">
     </div>
   </div>
   <button id="btn-enviar-codigo" onclick="enviarCodigo()" style="width:100%;background:#b87070;color:#ffffff;border:none;border-radius:50px;padding:15px;font-size:0.92rem;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif;margin-bottom:12px;">Enviar codigo por WhatsApp</button>
