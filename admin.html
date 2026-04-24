@@ -1388,24 +1388,6 @@ function previewFotoServicio(input) {
     reader.readAsDataURL(input.files[0]);
   }
 }
-  if (!input.files || !input.files[0]) return;
-  var reader = new FileReader();
-  reader.onload = function(e) {
-    var img = document.getElementById('ms-cropper-img');
-    img.src = e.target.result;
-    document.getElementById('ms-cropper-wrap').style.display = 'block';
-    document.getElementById('ms-foto-preview').style.display = 'none';
-    imagenRecortada = null;
-    if (cropperInstance) { cropperInstance.destroy(); }
-    cropperInstance = new Cropper(img, {
-      aspectRatio: 4 / 3,
-      viewMode: 1,
-      autoCropArea: 0.9
-    });
-  };
-  reader.readAsDataURL(input.files[0]);
-}
-
 
 function editarServicio(id) {
   db.collection('spas').doc(sucursalActual).collection('servicios').doc(id).get().then(function(doc) {
