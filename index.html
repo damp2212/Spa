@@ -64,7 +64,7 @@ nav { position: fixed; top: 0; left: 0; right: 0; z-index: 999; display: flex; a
 .svc-price { font-family: ‘Playfair Display’, Georgia, serif; font-size: 1.1rem; color: #b87070; font-weight: 700; }
 .svc-dur { font-size: 0.72rem; color: #8a7676; }
 
-.pros-grid { display: flex; flex-direction: column; gap: 16px; }
+.pros-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
 .pro-card { background: #ffffff; border-radius: 20px; padding: 28px 20px; text-align: center; border: 1px solid #f0bcbc; }
 .pro-avatar { width: 80px; height: 80px; border-radius: 50%; margin: 0 auto 14px; display: flex; align-items: center; justify-content: center; font-size: 2rem; border: 3px solid #f0bcbc; }
 .pa1 { background: linear-gradient(135deg, #f9e4dc, #f0bcbc); }
@@ -985,6 +985,7 @@ function renderCarrito() {
     html += '<button onclick="quitarServicio(\'' + s.nombre.replace(/'/g,"\\'") + '\')" style="background:none;border:none;color:#e57373;font-size:1.1rem;cursor:pointer;">✕</button>';
     html += '</div>';
   });
+  html += '<button onclick="document.getElementById(\'servicios\').scrollIntoView({behavior:\'smooth\'})" style="width:100%;margin-top:10px;background:#f7ecec;color:#b87070;border:1.5px dashed #f5d5d5;border-radius:10px;padding:8px;font-size:0.82rem;cursor:pointer;font-family:\'DM Sans\',sans-serif;">+ Agregar otro servicio</button>';
   contenedor.innerHTML = html;
   totalDiv.style.display = 'flex';
   document.getElementById('carrito-total-tiempo').textContent = '⏱ ' + totalTiempo + ' min';
