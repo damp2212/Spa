@@ -26,6 +26,10 @@ body{font-family:'DM Sans',Georgia,sans-serif;background:#f4f6f9;color:#1a1a1a;-
 
 /* APP */
 #app{display:none;min-height:100vh}
+#admin-loader{position:fixed;inset:0;background:#fff;z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity 0.4s;}
+#admin-loader .al-spinner{width:36px;height:36px;border:3px solid #e8f5e9;border-top:3px solid #51BC54;border-radius:50%;animation:spin 0.8s linear infinite;margin-top:20px;}
+@keyframes spin{to{transform:rotate(360deg);}}
+#admin-loader.oculto{opacity:0;pointer-events:none;}
 
 /* MOBILE HEADER */
 .mob-header{display:none;background:#1a1a1a;padding:15px 20px;position:fixed;top:0;left:0;right:0;z-index:300;align-items:center;justify-content:space-between}
@@ -303,6 +307,11 @@ tbody td{padding:13px 14px;color:#1a1a1a;vertical-align:middle}
 
 <!-- LOGIN -->
 
+<div id="admin-loader">
+  <img src="maposnegro.png" alt="MApos" style="height:60px;">
+  <div class="al-spinner"></div>
+</div>
+
 <div id="login-screen">
   <div class="login-card">
     <img src="maposnegro.png" alt="MApos" style="height:60px;margin-bottom:8px;">
@@ -529,7 +538,7 @@ tbody td{padding:13px 14px;color:#1a1a1a;vertical-align:middle}
   <!-- RESUMEN -->
   <div class="cal-resumen">
     <div class="stat-card accent"><div class="sc-label">Promedio general</div><div class="sc-num" id="cal-promedio">0.0</div><div class="sc-sub">estrellas</div></div>
-    <div class="stat-card"><div class="sc-label">Total reseñas</div><div class="sc-num" id="cal-total">0</div><div class="sc-sub">calificaciónes</div></div>
+    <div class="stat-card"><div class="sc-label">Total reseñas</div><div class="sc-num" id="cal-total">0</div><div class="sc-sub">calificaciones</div></div>
     <div class="stat-card"><div class="sc-label">Esta semana</div><div class="sc-num" id="cal-semana">0</div><div class="sc-sub">nuevas reseñas</div></div>
   </div>
 
@@ -846,11 +855,22 @@ var opc={weekday:'long',year:'numeric',month:'long',day:'numeric'};
 document.getElementById('fecha-hoy').textContent=hoy.toLocaleDateString('es-CO',opc);
 
 auth.onAuthStateChanged(function(user){
+  // Ocultar loader
+  var loader = document.getElementById('admin-loader');
+  if (loader) { loader.classList.add('oculto'); setTimeout(function(){ loader.style.display='none'; }, 400); }
   if(user){
     document.getElementById('login-screen').style.display='none';
     document.getElementById('app').style.display='block';
     document.getElementById('sb-user').textContent=user.email;
     cargarDatos();
+    // Restaurar módulo activo
+    var paginaGuardada = localStorage.getItem('rose_admin_page');
+    if (paginaGuardada && paginaGuardada !== 'dashboard') {
+      setTimeout(function() {
+        var btn = document.querySelector('.slink[onclick*="' + paginaGuardada + '"]');
+        if (btn) showPage(paginaGuardada, btn);
+      }, 800);
+    }
   } else {
     document.getElementById('login-screen').style.display='flex';
     document.getElementById('app').style.display='none';
@@ -861,8 +881,15 @@ function loginAdmin(){
   var email=document.getElementById('admin-email').value.trim();
   var pass=document.getElementById('admin-pass').value;
   var err=document.getElementById('lerror');
+  var btn=document.querySelector('.lbtn');
   err.style.display='none';
-  auth.signInWithEmailAndPassword(email,pass).catch(function(){err.style.display='block';});
+  btn.disabled=true;
+  btn.textContent='⏳ Ingresando...';
+  auth.signInWithEmailAndPassword(email,pass).catch(function(){
+    err.style.display='block';
+    btn.disabled=false;
+    btn.textContent='Ingresar al panel';
+  });
 }
 
 function logoutAdmin(){auth.signOut();}
@@ -1795,13 +1822,13 @@ function showPage(pageName,btn){
   document.querySelectorAll('.slink').forEach(function(l){l.classList.remove('active');});
   document.getElementById('page-'+pageName).classList.add('active');
   btn.classList.add('active');
+  localStorage.setItem('rose_admin_page', pageName);
   if(pageName==='reporte') filtrarReporte('semana',document.querySelector('#page-reporte .fb'));
   if(pageName==='configuracion') { cargarConfigServicios(); cargarInspoAdmin(); }
   if(pageName==='horarios') renderHorarioProSelect();
-  if(pageName==='calificaciónes'){
-    db.collection('spas').doc(sucursalActual).collection('calificaciónes').get().then(function(snap){
+  if(pageName==='calificaciones'){
+    db.collection('spas').doc(sucursalActual).collection('calificaciones').get().then(function(snap){
       todasCalificaciones=snap.docs.map(function(d){var o=d.data();o.id=d.id;return o;});
-      console.log('Calificaciónes recargadas:', todasCalificaciones.length);
       renderCalificaciones('todas');
     });
   }
