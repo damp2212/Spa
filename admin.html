@@ -263,6 +263,7 @@ tbody td{padding:13px 14px;color:#1a1a1a;vertical-align:middle}
 }
 </style>
 
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css">
 </head>
 <body>
 
@@ -724,8 +725,17 @@ tbody td{padding:13px 14px;color:#1a1a1a;vertical-align:middle}
     </div>
     <div style="margin-bottom:14px;">
       <label style="display:block;font-size:0.72rem;color:#8a7a76;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;">Foto del servicio</label>
-      <input id="ms-foto-input" type="file" accept="image/*" onchange="previewFotoServicio(this)" style="width:100%;padding:10px;border:1.5px dashed #c8e6c9;border-radius:12px;font-size:0.85rem;font-family:'DM Sans',sans-serif;box-sizing:border-box;">
-      <div id="ms-foto-preview" style="margin-top:8px;display:none;"><img id="ms-foto-img" style="width:100%;height:160px;object-fit:cover;border-radius:12px;"></div>
+      <input id="ms-foto-input" type="file" accept="image/*" onchange="cargarImagenCropper(this)" style="width:100%;padding:10px;border:1.5px dashed #c8e6c9;border-radius:12px;font-size:0.85rem;font-family:'DM Sans',sans-serif;box-sizing:border-box;">
+      <div id="ms-cropper-wrap" style="margin-top:10px;display:none;">
+        <div style="width:100%;max-height:280px;overflow:hidden;border-radius:12px;background:#000;">
+          <img id="ms-cropper-img" style="max-width:100%;display:block;">
+        </div>
+        <button onclick="aplicarRecorte()" style="margin-top:8px;width:100%;background:#2D6C2F;color:#fff;border:none;border-radius:50px;padding:10px;font-size:0.85rem;cursor:pointer;font-family:'DM Sans',sans-serif;">✂️ Aplicar recorte</button>
+      </div>
+      <div id="ms-foto-preview" style="margin-top:8px;display:none;">
+        <img id="ms-foto-img" style="width:100%;height:200px;object-fit:cover;border-radius:12px;">
+        <div style="font-size:0.75rem;color:#51BC54;margin-top:4px;text-align:center;">✓ Imagen recortada</div>
+      </div>
     </div>
     <div style="margin-bottom:20px;display:flex;align-items:center;gap:10px;">
       <input type="checkbox" id="ms-activo" checked style="width:18px;height:18px;accent-color:#51BC54;">
@@ -757,6 +767,8 @@ tbody td{padding:13px 14px;color:#1a1a1a;vertical-align:middle}
 </div>
 
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
 
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 
@@ -1335,6 +1347,9 @@ function abrirModalServicio() {
   document.getElementById('ms-activo').checked = true;
   document.getElementById('ms-foto-preview').style.display = 'none';
   document.getElementById('ms-foto-input').value = '';
+  document.getElementById('ms-cropper-wrap').style.display = 'none';
+  imagenRecortada = null;
+  if (cropperInstance) { cropperInstance.destroy(); cropperInstance = null; }
   document.getElementById('modal-servicio').style.display = 'flex';
 }
 
@@ -1342,15 +1357,40 @@ function cerrarModalServicio() {
   document.getElementById('modal-servicio').style.display = 'none';
 }
 
-function previewFotoServicio(input) {
-  if (input.files && input.files[0]) {
-    var reader = new FileReader();
-    reader.onload = function(e) {
-      document.getElementById('ms-foto-img').src = e.target.result;
-      document.getElementById('ms-foto-preview').style.display = 'block';
-    };
-    reader.readAsDataURL(input.files[0]);
-  }
+var cropperInstance = null;
+var imagenRecortada = null;
+
+function cargarImagenCropper(input) {
+  if (!input.files || !input.files[0]) return;
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    var img = document.getElementById('ms-cropper-img');
+    img.src = e.target.result;
+    document.getElementById('ms-cropper-wrap').style.display = 'block';
+    document.getElementById('ms-foto-preview').style.display = 'none';
+    imagenRecortada = null;
+    if (cropperInstance) { cropperInstance.destroy(); }
+    cropperInstance = new Cropper(img, {
+      aspectRatio: 4 / 3,
+      viewMode: 1,
+      autoCropArea: 0.9
+    });
+  };
+  reader.readAsDataURL(input.files[0]);
+}
+
+function aplicarRecorte() {
+  if (!cropperInstance) return;
+  var canvas = cropperInstance.getCroppedCanvas({ width: 800, height: 600, imageSmoothingQuality: 'high' });
+  canvas.toBlob(function(blob) {
+    imagenRecortada = blob;
+    var url = URL.createObjectURL(blob);
+    document.getElementById('ms-foto-img').src = url;
+    document.getElementById('ms-foto-preview').style.display = 'block';
+    document.getElementById('ms-cropper-wrap').style.display = 'none';
+    cropperInstance.destroy();
+    cropperInstance = null;
+  }, 'image/jpeg', 0.85);
 }
 
 function editarServicio(id) {
@@ -1405,11 +1445,9 @@ function guardarServicio() {
     });
   }
 
-  if (fotoInput.files && fotoInput.files[0]) {
-    var file = fotoInput.files[0];
-    var ext = file.name.split('.').pop();
-    var storageRef = firebase.storage().ref('spas/' + sucursalActual + '/servicios/' + docId + '.' + ext);
-    storageRef.put(file).then(function(snapshot) {
+  if (imagenRecortada) {
+    var storageRef = firebase.storage().ref('spas/' + sucursalActual + '/servicios/' + docId + '.jpg');
+    storageRef.put(imagenRecortada).then(function(snapshot) {
       return snapshot.ref.getDownloadURL();
     }).then(function(url) {
       guardarDatos(url);
