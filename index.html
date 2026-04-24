@@ -175,6 +175,12 @@ footer { background-color: #1a1a1a; padding: 52px 24px 32px; }
   <div class="loader-spinner"></div>
 </div>
 
+<!-- BOTÓN FLOTANTE AGREGAR SERVICIO -->
+
+<button id="btn-agregar-mas" onclick="document.getElementById('servicios').scrollIntoView({behavior:'smooth'})" style="display:none;position:fixed;bottom:24px;right:20px;z-index:999;background:#D99595;color:#fff;border:none;border-radius:50px;padding:14px 20px;font-size:0.85rem;font-weight:600;font-family:'DM Sans',sans-serif;cursor:pointer;box-shadow:0 4px 20px rgba(217,149,149,0.5);align-items:center;gap:8px;">
+  💅 Agregar servicio
+</button>
+
 <!-- TOAST -->
 
 <div class="toast" id="toast"></div>
@@ -188,7 +194,7 @@ footer { background-color: #1a1a1a; padding: 52px 24px 32px; }
         Iniciar sesion
       </button>
     </div>
-    <a href="#agendar" class="nav-cta">Agendar cita</a>
+    <a href="#servicios" class="nav-cta">Agendar cita</a>
   </div>
 </nav>
 
@@ -199,7 +205,7 @@ footer { background-color: #1a1a1a; padding: 52px 24px 32px; }
   <h1 class="hero-title">Uñas que<br><em>cuentan tu</em><br>historia</h1>
   <p class="hero-sub">Tu estilo empieza en tus manos. Agenda tu cita con las mejores profesionales de Cali y luce unas uñas perfectas para cada momento.</p>
   <div class="hero-actions">
-    <a href="#agendar" class="btn-primary">Agendar ahora</a>
+    <a href="#servicios" class="btn-primary">Agendar ahora</a>
     <a href="#inspiracion" class="btn-ghost">Ver diseños →</a>
   </div>
   <div class="hero-stats">
@@ -280,12 +286,14 @@ footer { background-color: #1a1a1a; padding: 52px 24px 32px; }
     <div class="form-group">
       <label class="form-label">Servicios seleccionados</label>
       <div id="carrito-servicios" style="background:#f7ecec;border-radius:12px;padding:12px;min-height:50px;margin-bottom:8px;">
-        <div id="carrito-vacio" style="color:#b87070;font-size:0.82rem;text-align:center;padding:8px;">Selecciona un servicio arriba 👆</div>
+        <button onclick="document.getElementById('servicios').scrollIntoView({behavior:'smooth'})" style="width:100%;background:none;border:1.5px dashed #f5d5d5;border-radius:10px;padding:14px;font-size:0.85rem;color:#b87070;cursor:pointer;font-family:'DM Sans',sans-serif;">💅 Toca para seleccionar servicios</button>
       </div>
-      <div id="carrito-total" style="display:none;background:#fff;border:1.5px solid #f5d5d5;border-radius:12px;padding:10px 14px;font-size:0.82rem;color:#8a7676;display:flex;justify-content:space-between;">
+      <div id="carrito-total" style="display:none;background:#fff;border:1.5px solid #f5d5d5;border-radius:12px;padding:10px 14px;font-size:0.82rem;color:#8a7676;justify-content:space-between;">
         <span id="carrito-total-tiempo">⏱ 0 min</span>
         <span id="carrito-total-precio" style="font-weight:700;color:#b87070;">$0</span>
       </div>
+      <!-- Dropdown de servicios -->
+      <div id="servicios-dropdown" style="display:none;background:#fff;border:1.5px solid #f5d5d5;border-radius:12px;margin-top:8px;max-height:280px;overflow-y:auto;"></div>
     </div>
     <div class="form-group">
       <label class="form-label">Profesional</label>
@@ -940,6 +948,50 @@ function cambiarTab(tab, btn) {
   document.getElementById('tab-' + tab).style.display = 'grid';
 }
 
+var todosServiciosCache = [];
+
+function toggleDropdownServicios() {
+  var dropdown = document.getElementById('servicios-dropdown');
+  if (dropdown.style.display === 'none') {
+    // Llenar con servicios
+    if (todosServiciosCache.length === 0) {
+      dropdown.innerHTML = '<div style="padding:12px;color:#8a7676;font-size:0.85rem;">Cargando...</div>';
+      dropdown.style.display = 'block';
+      db.collection('spas').doc('rose').collection('servicios').where('activo','==',true).get().then(function(snap) {
+        todosServiciosCache = [];
+        snap.forEach(function(doc) { todosServiciosCache.push(doc.data()); });
+        renderDropdown();
+      });
+    } else {
+      renderDropdown();
+      dropdown.style.display = 'block';
+    }
+  } else {
+    dropdown.style.display = 'none';
+  }
+}
+
+function renderDropdown() {
+  var dropdown = document.getElementById('servicios-dropdown');
+  var cats = { manos: '💅 Manos', pies: '🦶 Pies', otros: '✨ Otros' };
+  var porCat = { manos: [], pies: [], otros: [] };
+  todosServiciosCache.forEach(function(s) { if(porCat[s.categoria]) porCat[s.categoria].push(s); });
+  var html = '';
+  Object.keys(cats).forEach(function(cat) {
+    if (!porCat[cat] || porCat[cat].length === 0) return;
+    html += '<div style="padding:8px 14px;font-size:0.72rem;font-weight:700;color:#8a7676;background:#fafafa;text-transform:uppercase;letter-spacing:0.5px;">' + cats[cat] + '</div>';
+    porCat[cat].forEach(function(s) {
+      var yaEsta = carritoServicios.find(function(c){ return c.nombre === s.nombre; });
+      html += '<div onclick="' + (yaEsta ? '' : 'seleccionarServicio(\'' + s.nombre.replace(/'/g,"\\'") + '\',' + s.precio + ',' + s.duracion + ');renderDropdown()') + '" style="padding:10px 14px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #fff5f5;cursor:' + (yaEsta ? 'default' : 'pointer') + ';opacity:' + (yaEsta ? '0.4' : '1') + ';">';
+      html += '<div><div style="font-size:0.85rem;color:#1a1a1a;">' + s.nombre + '</div><div style="font-size:0.75rem;color:#8a7676;">⏱ ' + s.duracion + ' min</div></div>';
+      html += '<div style="font-weight:600;color:#b87070;font-size:0.85rem;">$' + (s.precio||0).toLocaleString('es-CO') + '</div>';
+      html += '</div>';
+    });
+  });
+  dropdown.innerHTML = html;
+  dropdown.style.display = 'block';
+}
+
 var carritoServicios = [];
 
 function seleccionarServicio(nombre, precio, duracion) {
@@ -968,8 +1020,10 @@ function renderCarrito() {
   var totalDiv = document.getElementById('carrito-total');
   
   if (carritoServicios.length === 0) {
-    contenedor.innerHTML = '<div id="carrito-vacio" style="color:#b87070;font-size:0.82rem;text-align:center;padding:8px;">Selecciona un servicio arriba 👆</div>';
+    contenedor.innerHTML = '<button onclick="toggleDropdownServicios()" style="width:100%;background:none;border:1.5px dashed #f5d5d5;border-radius:10px;padding:14px;font-size:0.85rem;color:#b87070;cursor:pointer;font-family:\'DM Sans\',sans-serif;">💅 Toca para seleccionar servicios</button>';
     totalDiv.style.display = 'none';
+    var btnFlotante = document.getElementById('btn-agregar-mas');
+    if (btnFlotante) btnFlotante.style.display = 'none';
     return;
   }
 
@@ -985,8 +1039,10 @@ function renderCarrito() {
     html += '<button onclick="quitarServicio(\'' + s.nombre.replace(/'/g,"\\'") + '\')" style="background:none;border:none;color:#e57373;font-size:1.1rem;cursor:pointer;">✕</button>';
     html += '</div>';
   });
-  html += '<button onclick="document.getElementById(\'servicios\').scrollIntoView({behavior:\'smooth\'})" style="width:100%;margin-top:10px;background:#f7ecec;color:#b87070;border:1.5px dashed #f5d5d5;border-radius:10px;padding:8px;font-size:0.82rem;cursor:pointer;font-family:\'DM Sans\',sans-serif;">+ Agregar otro servicio</button>';
   contenedor.innerHTML = html;
+  // Mostrar botón flotante
+  var btnFlotante = document.getElementById('btn-agregar-mas');
+  if (btnFlotante) { btnFlotante.style.display = 'flex'; btnFlotante.onclick = function(){ toggleDropdownServicios(); document.getElementById('agendar').scrollIntoView({behavior:'smooth'}); }; }
   totalDiv.style.display = 'flex';
   document.getElementById('carrito-total-tiempo').textContent = '⏱ ' + totalTiempo + ' min';
   document.getElementById('carrito-total-precio').textContent = '$' + totalPrecio.toLocaleString('es-CO');
