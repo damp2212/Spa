@@ -673,6 +673,24 @@ tbody td{padding:13px 14px;color:#1a1a1a;vertical-align:middle}
   </div>
 </div>
 
+<!-- HORARIOS -->
+<div class="page" id="page-horarios">
+  <div class="topbar">
+    <div><div class="topbar-title">Horario <em>profesionales</em></div></div>
+    <div class="topbar-badge" id="badge-horarios">Sede Ciudad Jardín</div>
+  </div>
+  <div class="card">
+    <div class="card-title">Selecciona una profesional</div>
+    <div class="horario-pro-select" id="horario-pro-select"></div>
+    <div id="horario-contenido">
+      <div class="empty">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        <div class="empty-txt">Selecciona una profesional para editar su horario</div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- CONFIGURACIÓN -->
 <div class="page" id="page-configuracion">
   <div class="topbar">
@@ -725,7 +743,7 @@ tbody td{padding:13px 14px;color:#1a1a1a;vertical-align:middle}
     </div>
     <div style="margin-bottom:14px;">
       <label style="display:block;font-size:0.72rem;color:#8a7a76;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;">Foto del servicio</label>
-      <input id="ms-foto-input" type="file" accept="image/*" onchange="cargarImagenCropper(this)" style="width:100%;padding:10px;border:1.5px dashed #c8e6c9;border-radius:12px;font-size:0.85rem;font-family:'DM Sans',sans-serif;box-sizing:border-box;">
+      <input id="ms-foto-input" type="file" accept="image/*" onchange="previewFotoServicio(this)" style="width:100%;padding:10px;border:1.5px dashed #c8e6c9;border-radius:12px;font-size:0.85rem;font-family:'DM Sans',sans-serif;box-sizing:border-box;">
       <div id="ms-cropper-wrap" style="margin-top:10px;display:none;">
         <div style="width:100%;max-height:280px;overflow:hidden;border-radius:12px;background:#000;">
           <img id="ms-cropper-img" style="max-width:100%;display:block;">
@@ -734,7 +752,6 @@ tbody td{padding:13px 14px;color:#1a1a1a;vertical-align:middle}
       </div>
       <div id="ms-foto-preview" style="margin-top:8px;display:none;">
         <img id="ms-foto-img" style="width:100%;height:200px;object-fit:cover;border-radius:12px;">
-        <div style="font-size:0.75rem;color:#51BC54;margin-top:4px;text-align:center;">✓ Imagen recortada</div>
       </div>
     </div>
     <div style="margin-bottom:20px;display:flex;align-items:center;gap:10px;">
@@ -1360,7 +1377,17 @@ function cerrarModalServicio() {
 var cropperInstance = null;
 var imagenRecortada = null;
 
-function cargarImagenCropper(input) {
+function previewFotoServicio(input) {
+  if (input.files && input.files[0]) {
+    imagenRecortada = input.files[0];
+    var reader = new FileReader();
+    reader.onload = function(e) {
+      document.getElementById('ms-foto-img').src = e.target.result;
+      document.getElementById('ms-foto-preview').style.display = 'block';
+    };
+    reader.readAsDataURL(input.files[0]);
+  }
+}
   if (!input.files || !input.files[0]) return;
   var reader = new FileReader();
   reader.onload = function(e) {
