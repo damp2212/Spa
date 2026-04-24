@@ -565,7 +565,7 @@ function enviarCodigo() {
 
   var btn = document.getElementById('btn-enviar-codigo');
   btn.disabled = true;
-  btn.textContent = 'Enviando...';
+  btn.textContent = '⏳ Enviando código...';
 
   fetch(ENVIAR_URL, {
     method: 'POST',
@@ -594,7 +594,7 @@ function verificarCodigo() {
 
   var btn = document.getElementById('btn-verificar');
   btn.disabled = true;
-  btn.textContent = 'Verificando...';
+  btn.textContent = '⏳ Verificando...';
 
   fetch(VERIFICAR_URL, {
     method: 'POST',
@@ -604,6 +604,7 @@ function verificarCodigo() {
     if (data.ok) {
       usuarioActual = { tel: data.tel };
       localStorage.setItem('rose_session', JSON.stringify(usuarioActual));
+      btn.textContent = '✓ Ingresando...';
 
       // Verificar si es primera vez
       db.collection('spas').doc('rose').collection('clientes').doc(data.tel).get().then(function(doc) {
