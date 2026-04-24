@@ -82,7 +82,7 @@ nav { position: fixed; top: 0; left: 0; right: 0; z-index: 999; display: flex; a
 .slot-on { background: #b87070; color: #ffffff; border-color: #b87070; }
 .btn-ag { width: 100%; background: #b87070; color: #ffffff; border: none; border-radius: 50px; padding: 12px; font-size: 0.85rem; font-weight: 500; cursor: pointer; font-family: ‘DM Sans’, sans-serif; }
 
-.inspo-carrusel { display: flex; gap: 12px; overflow-x: auto; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; padding-bottom: 8px; scrollbar-width: none; }
+.inspo-carrusel { display: flex; gap: 12px; overflow-x: auto; -webkit-overflow-scrolling: touch; padding-bottom: 8px; scrollbar-width: none; cursor: grab; }
 .inspo-card { border-radius: 16px; overflow: hidden; position: relative; flex: 0 0 70vw; max-width: 280px; scroll-snap-align: start; }
 .inspo-carrusel::-webkit-scrollbar { display: none; }
 .inspo-img { width: 100%; aspect-ratio: 3/4; display: flex; align-items: center; justify-content: center; font-size: 2.5rem; }
@@ -805,6 +805,60 @@ function cargarProfesionalesPublico(callback) {
     });
   });
 }
+
+// ===== CARRUSEL AUTOPLAY =====
+(function() {
+  var el, isDragging = false, startX, scrollLeft, autoplayInterval;
+
+  function initCarrusel() {
+    el = document.getElementById('inspo-grid');
+    if (!el) return;
+
+    // Drag con mouse
+    el.addEventListener('mousedown', function(e) {
+      isDragging = true;
+      startX = e.pageX - el.offsetLeft;
+      scrollLeft = el.scrollLeft;
+      el.style.cursor = 'grabbing';
+      clearInterval(autoplayInterval);
+    });
+    el.addEventListener('mouseleave', function() { isDragging = false; el.style.cursor = 'grab'; startAutoplay(); });
+    el.addEventListener('mouseup', function() { isDragging = false; el.style.cursor = 'grab'; startAutoplay(); });
+    el.addEventListener('mousemove', function(e) {
+      if (!isDragging) return;
+      e.preventDefault();
+      var x = e.pageX - el.offsetLeft;
+      el.scrollLeft = scrollLeft - (x - startX) * 1.5;
+    });
+
+    // Touch
+    el.addEventListener('touchstart', function(e) { startX = e.touches[0].pageX; scrollLeft = el.scrollLeft; clearInterval(autoplayInterval); }, { passive: true });
+    el.addEventListener('touchend', function() { startAutoplay(); }, { passive: true });
+    el.addEventListener('touchmove', function(e) {
+      var x = e.touches[0].pageX;
+      el.scrollLeft = scrollLeft - (x - startX);
+    }, { passive: true });
+
+    startAutoplay();
+  }
+
+  function startAutoplay() {
+    clearInterval(autoplayInterval);
+    autoplayInterval = setInterval(function() {
+      if (!el) return;
+      var maxScroll = el.scrollWidth - el.clientWidth;
+      if (el.scrollLeft >= maxScroll) {
+        el.scrollLeft = 0;
+      } else {
+        el.scrollLeft += 1;
+      }
+    }, 20);
+  }
+
+  document.addEventListener('DOMContentLoaded', function() {
+    setTimeout(initCarrusel, 1500); // Iniciar después del loader
+  });
+})();
 
 function cargarInspiracion() {
   db.collection('spas').doc('rose').collection('inspiracion').orderBy('orden').get().then(function(snap) {
