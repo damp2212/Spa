@@ -1016,7 +1016,7 @@ function seleccionarServicio(nombre, precio, duracion) {
   var profSelect = document.getElementById('f-profesional');
   var profSeleccionada = profSelect && profSelect.value && profSelect.value !== 'Cualquiera disponible';
   if (profSeleccionada) {
-    document.getElementById('f-fecha').scrollIntoView({ behavior: 'smooth' });
+    document.getElementById('agendar').scrollIntoView({ behavior: 'smooth' });
   } else {
     document.getElementById('profesionales').scrollIntoView({ behavior: 'smooth' });
   }
