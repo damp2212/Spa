@@ -11,8 +11,6 @@
 <meta name="robots" content="index, follow">
 <meta name="theme-color" content="#D99595">
 <link rel="canonical" href="https://roseoficial.com/">
-  <link rel="icon" href="/rose-logo-color.png" type="image/png">
-<link rel="apple-touch-icon" href="/rose-logo-color.png">
 <!-- Open Graph -->
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://roseoficial.com/">
@@ -409,6 +407,23 @@ footer { background-color: #1a1a1a; padding: 52px 24px 32px; }
 
 <!-- FIREBASE -->
 
+<!-- MODAL POLÍTICA DE DATOS -->
+
+<div id="modal-politica" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:10000;align-items:center;justify-content:center;padding:20px;">
+  <div style="background:#fff;border-radius:20px;padding:28px 24px;width:100%;max-width:400px;max-height:80vh;overflow-y:auto;">
+    <div style="font-family:'Playfair Display',Georgia,serif;font-size:1.2rem;color:#1a1a1a;margin-bottom:16px;">Política de datos personales</div>
+    <div style="font-size:0.82rem;color:#5a5a5a;line-height:1.7;">
+      <p><strong>Responsable:</strong> Rosē Spa — Ciudad Jardín, Cali, Colombia.</p>
+      <p><strong>Datos recopilados:</strong> Nombre y número de WhatsApp.</p>
+      <p><strong>Finalidad:</strong> Gestionar tu cita, enviarte confirmaciones y recordatorios por WhatsApp, y acumular tus RosePoints.</p>
+      <p><strong>Derechos:</strong> Puedes solicitar la eliminación de tus datos escribiéndonos al WhatsApp <a href="https://wa.me/573104114945" style="color:#b87070;">310 411 4945</a>.</p>
+      <p><strong>Confidencialidad:</strong> Tus datos no serán compartidos con terceros.</p>
+      <p style="color:#8a7676;font-size:0.75rem;">De conformidad con la Ley 1581 de 2012 y el Decreto 1377 de 2013 de Colombia.</p>
+    </div>
+    <button onclick="document.getElementById('modal-politica').style.display='none'" style="width:100%;margin-top:16px;background:#b87070;color:#fff;border:none;border-radius:50px;padding:12px;font-size:0.88rem;cursor:pointer;font-family:'DM Sans',sans-serif;">Entendido</button>
+  </div>
+</div>
+
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
@@ -539,6 +554,10 @@ function formatearTelefono(input) {
   if (val.length > 3) formato += ' ' + val.substring(3, 6);
   if (val.length > 6) formato += ' ' + val.substring(6, 10);
   input.value = formato;
+}
+
+function abrirPolitica() {
+  document.getElementById('modal-politica').style.display = 'flex';
 }
 
 function abrirLogin() {
@@ -1203,6 +1222,7 @@ function guardarCita() {
     </div>
   </div>
   <button id="btn-enviar-codigo" onclick="enviarCodigo()" style="width:100%;background:#b87070;color:#ffffff;border:none;border-radius:50px;padding:15px;font-size:0.92rem;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif;margin-bottom:12px;">Enviar codigo por WhatsApp</button>
+  <p style="font-size:0.72rem;color:#b0a0a0;text-align:center;margin:0;line-height:1.5;">Al continuar aceptas nuestra <a href="#" onclick="abrirPolitica();return false;" style="color:#b87070;text-decoration:underline;">política de tratamiento de datos personales</a></p>
   <div style="text-align:center;font-size:0.78rem;color:#8a7676;">Te enviaremos un codigo por WhatsApp</div>
 </div>
 
