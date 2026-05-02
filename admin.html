@@ -345,7 +345,7 @@ tbody td{padding:13px 14px;color:#1a1a1a;vertical-align:middle}
 ```
 <div class="suc-wrap">
   <select class="suc-sel" id="suc-sel" onchange="cambiarSucursal(this.value)">
-    <option value="rose">Sede El Poblado</option>
+    <option value="rose">Rosē — Ciudad Jardín</option>
     <option value="rose-laureles">Sede Laureles</option>
     <option value="rose-envigado">Sede Envigado</option>
   </select>
@@ -413,7 +413,7 @@ tbody td{padding:13px 14px;color:#1a1a1a;vertical-align:middle}
       <div class="topbar-title">Buen dia, <em>Admin</em></div>
       <div class="topbar-sub" id="fecha-hoy"></div>
     </div>
-    <div class="topbar-badge" id="badge-dash">Sede El Poblado</div>
+    <div class="topbar-badge" id="badge-dash">Rosē — Ciudad Jardín</div>
   </div>
   <div class="stats-grid">
     <div class="stat-card accent"><div class="sc-label">Esta semana</div><div class="sc-num" id="stat-semana">--</div><div class="sc-sub">citas</div></div>
@@ -446,7 +446,7 @@ tbody td{padding:13px 14px;color:#1a1a1a;vertical-align:middle}
     <div><div class="topbar-title">Todas las <em>citas</em></div></div>
     <div style="display:flex;gap:10px;align-items:center;">
       <button onclick="abrirModalCitaManual()" style="background:#51BC54;color:#fff;border:none;border-radius:50px;padding:10px 20px;font-size:0.85rem;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif;">+ Cita manual</button>
-      <div class="topbar-badge" id="badge-citas">Sede El Poblado</div>
+      <div class="topbar-badge" id="badge-citas">Rosē — Ciudad Jardín</div>
     </div>
   </div>
   <div class="card">
@@ -473,7 +473,7 @@ tbody td{padding:13px 14px;color:#1a1a1a;vertical-align:middle}
 <div class="page" id="page-profesionales-stats">
   <div class="topbar">
     <div><div class="topbar-title">Ventas por <em>profesional</em></div></div>
-    <div class="topbar-badge" id="badge-pro-stats">Sede El Poblado</div>
+    <div class="topbar-badge" id="badge-pro-stats">Rosē — Ciudad Jardín</div>
   </div>
   <div class="card">
     <div class="filtros">
@@ -494,7 +494,7 @@ tbody td{padding:13px 14px;color:#1a1a1a;vertical-align:middle}
 <div class="page" id="page-profesionales-mgmt">
   <div class="topbar">
     <div><div class="topbar-title">Gestionar <em>equipo</em></div></div>
-    <div class="topbar-badge" id="badge-mgmt">Sede El Poblado</div>
+    <div class="topbar-badge" id="badge-mgmt">Rosē — Ciudad Jardín</div>
   </div>
   <button class="btn-add-pro" onclick="abrirModalPro()">
     <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
@@ -507,7 +507,7 @@ tbody td{padding:13px 14px;color:#1a1a1a;vertical-align:middle}
 <div class="page" id="page-crm">
   <div class="topbar">
     <div><div class="topbar-title">CRM <em>Clientas</em></div></div>
-    <div class="topbar-badge" id="badge-crm">Sede El Poblado</div>
+    <div class="topbar-badge" id="badge-crm">Rosē — Ciudad Jardín</div>
   </div>
   <div class="crm-resumen">
     <div class="crm-stat"><div class="crm-stat-num" id="crm-total">0</div><div class="crm-stat-label">Total clientas</div></div>
@@ -532,7 +532,7 @@ tbody td{padding:13px 14px;color:#1a1a1a;vertical-align:middle}
 <div class="page" id="page-calificaciones">
   <div class="topbar">
     <div><div class="topbar-title"><em>Calificaciónes</em></div></div>
-    <div class="topbar-badge" id="badge-cal">Sede El Poblado</div>
+    <div class="topbar-badge" id="badge-cal">Rosē — Ciudad Jardín</div>
   </div>
 
   <!-- RESUMEN -->
@@ -556,7 +556,7 @@ tbody td{padding:13px 14px;color:#1a1a1a;vertical-align:middle}
 <div class="page" id="page-reporte">
   <div class="topbar">
     <div><div class="topbar-title">Reporte del <em>spa</em></div></div>
-    <div class="topbar-badge" id="badge-reporte">Sede El Poblado</div>
+    <div class="topbar-badge" id="badge-reporte">Rosē — Ciudad Jardín</div>
   </div>
   <div class="filtros">
     <button class="fb active" onclick="filtrarReporte('semana',this)">Esta semana</button>
@@ -878,7 +878,7 @@ function logoutAdmin(){auth.signOut();}
 
 function cambiarSucursal(val){
   sucursalActual=val;
-  var nombres={'rose':'Sede El Poblado','rose-laureles':'Sede Laureles','rose-envigado':'Sede Envigado'};
+  var nombres={'rose':'Rosē — Ciudad Jardín','rose-laureles':'Sede Laureles','rose-envigado':'Sede Envigado'};
   var n=nombres[val]||val;
   ['badge-dash','badge-citas','badge-pro-stats','badge-mgmt','badge-crm','badge-reporte','badge-horarios','badge-cal'].forEach(function(id){
     var el=document.getElementById(id);if(el)el.textContent=n;
