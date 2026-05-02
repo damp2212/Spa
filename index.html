@@ -462,7 +462,9 @@ function showToast(msg, type) {
 
 // Cargar sesion guardada
 document.addEventListener('DOMContentLoaded', function() {
-  var pendientes = 3; // sucursales + profesionales + servicios
+  window.scrollTo(0, 0);
+  history.scrollRestoration = 'manual';
+  var pendientes = 3;
   function checkListo() {
     pendientes--;
     if (pendientes <= 0) {
@@ -476,7 +478,14 @@ document.addEventListener('DOMContentLoaded', function() {
   cargarProfesionalesPublico(checkListo);
   cargarServicios(checkListo);
   cargarInspiracion();
-  // Cargar video hero desde Firestore
+  // Forzar reproducción del video hero
+  var heroVideo = document.getElementById('hero-video');
+  if (heroVideo) {
+    heroVideo.play().catch(function() {
+      heroVideo.muted = true;
+      heroVideo.play();
+    });
+  }
   db.collection('spas').doc('rose').collection('config').doc('hero').get().then(function(doc) {
     if (doc.exists && doc.data().videoUrl) {
       var video = document.getElementById('hero-video');
