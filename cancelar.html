@@ -5,7 +5,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="color-scheme" content="light">
-<title>Cancelar cita — GlamNails</title>
+<title>Cancelar cita — Rosē</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:'DM Sans',Georgia,sans-serif;background:#fdf8f5;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
@@ -15,7 +15,7 @@ body{font-family:'DM Sans',Georgia,sans-serif;background:#fdf8f5;min-height:100v
 .icon-err{background:#f8d7da}
 .icon-ok{background:#d4edda}
 .icon svg{width:36px;height:36px}
-.title{font-family:'Playfair Display',Georgia,serif;font-size:1.6rem;color:#1a1a1a;margin-bottom:10px}
+.title{font-family:'Cormorant Garamond',Georgia,serif;font-size:1.6rem;color:#1a1a1a;margin-bottom:10px}
 .subtitle{font-size:0.9rem;color:#8a7a76;line-height:1.6;margin-bottom:28px}
 .detail{background:#f5ede6;border-radius:14px;padding:16px;margin-bottom:24px;text-align:left}
 .detail-row{display:flex;justify-content:space-between;font-size:0.85rem;margin-bottom:8px}
@@ -70,7 +70,7 @@ function mostrarConfirmacion(cita) {
       '<div class="detail-row"><span class="detail-key">Hora</span><span class="detail-val">' + (cita.hora || '') + '</span></div>' +
     '</div>' +
     '<button class="btn btn-cancel" onclick="confirmarCancelacion()">Si, cancelar mi cita</button>' +
-    '<a href="index.html" class="btn btn-back" style="display:block;text-align:center;margin-top:10px">No, mantener cita</a>' +
+    '<a href="https://roseoficial.com" class="btn btn-back" style="display:block;text-align:center;margin-top:10px">No, mantener cita</a>' +
     '<div class="powered">Powered by MApos</div>';
 }
 
@@ -79,15 +79,15 @@ function confirmarCancelacion() {
     document.getElementById('card').innerHTML =
       '<div class="icon icon-err"><svg viewBox="0 0 24 24" fill="none" stroke="#721c24" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div>' +
       '<div class="title">Cita cancelada</div>' +
-      '<div class="subtitle">Tu cita fue cancelada. Esperamos verte pronto en GlamNails.</div>' +
-      '<a href="index.html" class="btn btn-back" style="display:block;text-align:center">Volver al inicio</a>' +
+      '<div class="subtitle">Tu cita fue cancelada. Esperamos verte pronto en Rosē.</div>' +
+      '<a href="https://roseoficial.com" class="btn btn-back" style="display:block;text-align:center">Volver al inicio</a>' +
       '<div class="powered">Powered by MApos</div>';
   }).catch(function() {
     document.getElementById('card').innerHTML =
       '<div class="icon icon-err"><svg viewBox="0 0 24 24" fill="none" stroke="#721c24" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div>' +
       '<div class="title">Error</div>' +
       '<div class="subtitle">No pudimos cancelar tu cita. Intenta de nuevo.</div>' +
-      '<a href="index.html" class="btn btn-back" style="display:block;text-align:center">Volver al inicio</a>' +
+      '<a href="https://roseoficial.com" class="btn btn-back" style="display:block;text-align:center">Volver al inicio</a>' +
       '<div class="powered">Powered by MApos</div>';
   });
 }
@@ -97,7 +97,7 @@ function mostrarError(msg) {
     '<div class="icon icon-err"><svg viewBox="0 0 24 24" fill="none" stroke="#721c24" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div>' +
     '<div class="title">Algo salio mal</div>' +
     '<div class="subtitle">' + msg + '</div>' +
-    '<a href="index.html" class="btn btn-back" style="display:block;text-align:center">Volver al inicio</a>' +
+    '<a href="https://roseoficial.com" class="btn btn-back" style="display:block;text-align:center">Volver al inicio</a>' +
     '<div class="powered">Powered by MApos</div>';
 }
 
