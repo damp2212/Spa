@@ -815,7 +815,7 @@ tbody td{padding:13px 14px;color:#1a1a1a;vertical-align:middle}
   <!-- Tabs de navegación -->
 
   <div style="display:flex;background:#fff;border-bottom:1px solid #e8f5e9;overflow-x:auto;scrollbar-width:none;">
-    <button onclick="espTab('citas',this)" class="esp-tab active">Mis citas</button>
+    <button onclick="espTab('citas',this)" class="esp-tab">Mis citas</button>
     <button onclick="espTab('perfil',this)" class="esp-tab">Mi perfil</button>
     <button onclick="espTab('horario',this)" class="esp-tab">Mi horario</button>
     <button onclick="espTab('calificaciones',this)" class="esp-tab">Calificaciones</button>
@@ -935,6 +935,9 @@ auth.onAuthStateChanged(function(user){
         document.getElementById('app').style.display='none';
         document.getElementById('app-especialista').style.display='block';
         document.getElementById('esp-nombre').textContent = userData.nombre || user.email;
+        // Activar primera tab
+        var primerTab = document.querySelector('.esp-tab');
+        if (primerTab) espTab('citas', primerTab);
         cargarDatosEspecialista(user.uid, userData);
       } else {
         // Vista de admin
