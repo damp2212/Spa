@@ -4,6 +4,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/png" href="rose-logo-color.png">
 <meta name="color-scheme" content="light">
 <title>Rosē - Admin</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
@@ -26,7 +27,8 @@ body{font-family:'DM Sans',Georgia,sans-serif;background:#f4f6f9;color:#1a1a1a;-
 
 /* APP */
 #app{display:none;min-height:100vh}
-#admin-loader{position:fixed;inset:0;background:#fff;z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity 0.4s;}
+.esp-tab { flex:0 0 auto;padding:14px 20px;border:none;background:none;font-size:0.82rem;font-family:‘DM Sans’,sans-serif;color:#8a7a76;border-bottom:2px solid transparent;cursor:pointer;font-weight:400; }
+.esp-tab.active { color:#51BC54;border-bottom:2px solid #51BC54;font-weight:600; }inset:0;background:#fff;z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity 0.4s;}
 #admin-loader .al-spinner{width:36px;height:36px;border:3px solid #e8f5e9;border-top:3px solid #51BC54;border-radius:50%;animation:spin 0.8s linear infinite;margin-top:20px;}
 @keyframes spin{to{transform:rotate(360deg);}}
 #admin-loader.oculto{opacity:0;pointer-events:none;}
@@ -813,10 +815,10 @@ tbody td{padding:13px 14px;color:#1a1a1a;vertical-align:middle}
   <!-- Tabs de navegación -->
 
   <div style="display:flex;background:#fff;border-bottom:1px solid #e8f5e9;overflow-x:auto;scrollbar-width:none;">
-    <button onclick="espTab('citas',this)" class="esp-tab active" style="flex:0 0 auto;padding:14px 20px;border:none;background:none;font-size:0.82rem;font-family:'DM Sans',sans-serif;color:#51BC54;border-bottom:2px solid #51BC54;cursor:pointer;font-weight:600;">Mis citas</button>
-    <button onclick="espTab('perfil',this)" class="esp-tab" style="flex:0 0 auto;padding:14px 20px;border:none;background:none;font-size:0.82rem;font-family:'DM Sans',sans-serif;color:#8a7a76;border-bottom:2px solid transparent;cursor:pointer;">Mi perfil</button>
-    <button onclick="espTab('horario',this)" class="esp-tab" style="flex:0 0 auto;padding:14px 20px;border:none;background:none;font-size:0.82rem;font-family:'DM Sans',sans-serif;color:#8a7a76;border-bottom:2px solid transparent;cursor:pointer;">Mi horario</button>
-    <button onclick="espTab('calificaciones',this)" class="esp-tab" style="flex:0 0 auto;padding:14px 20px;border:none;background:none;font-size:0.82rem;font-family:'DM Sans',sans-serif;color:#8a7a76;border-bottom:2px solid transparent;cursor:pointer;">Calificaciones</button>
+    <button onclick="espTab('citas',this)" class="esp-tab active">Mis citas</button>
+    <button onclick="espTab('perfil',this)" class="esp-tab">Mi perfil</button>
+    <button onclick="espTab('horario',this)" class="esp-tab">Mi horario</button>
+    <button onclick="espTab('calificaciones',this)" class="esp-tab">Calificaciones</button>
   </div>
 
   <!-- Contenido tabs -->
