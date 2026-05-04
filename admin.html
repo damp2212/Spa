@@ -1715,10 +1715,10 @@ function espTab(tab, btn) {
   btn.style.borderBottom = '2px solid #51BC54';
   btn.style.fontWeight = '600';
   btn.classList.add('active');
-  document.getElementById('esp-page-citas').style.display = tab === 'citas' ? 'block' : 'none';
-  document.getElementById('esp-page-perfil').style.display = tab === 'perfil' ? 'block' : 'none';
-  document.getElementById('esp-page-horario').style.display = tab === 'horario' ? 'block' : 'none';
-  document.getElementById('esp-page-calificaciones').style.display = tab === 'calificaciones' ? 'block' : 'none';
+  ['citas','perfil','horario','calificaciones'].forEach(function(t) {
+    var el = document.getElementById('esp-page-' + t);
+    if (el) el.style.display = t === tab ? 'block' : 'none';
+  });
   if (tab === 'calificaciones') cargarCalificacionesEsp();
   if (tab === 'horario') cargarHorarioEsp();
 }
@@ -1807,14 +1807,16 @@ function cargarHorarioEsp() {
     docs.forEach(function(doc, i) {
       var dia = dias[i];
       var data = doc.exists ? doc.data() : { abre: '09:00', cierra: '18:00', activo: false };
+    var abre = data.abre ? (data.abre.length === 4 ? '0' + data.abre : data.abre) : '09:00';
+    var cierra = data.cierra ? (data.cierra.length === 4 ? '0' + data.cierra : data.cierra) : '18:00';
       html += '<div style="background:#fff;border-radius:14px;padding:16px;margin-bottom:10px;border:1px solid #e8f5e9;">';
       html += '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">';
       html += '<div style="font-weight:600;color:#1a1a1a;">' + nombres[dia] + '</div>';
       html += '<label style="display:flex;align-items:center;gap:8px;cursor:pointer;"><input type="checkbox" id="h-' + dia + '-activo" ' + (data.activo ? 'checked' : '') + ' style="accent-color:#51BC54;width:18px;height:18px;"><span style="font-size:0.82rem;color:#8a7a76;">Activo</span></label>';
       html += '</div>';
       html += '<div style="display:flex;gap:12px;">';
-      html += '<div style="flex:1;"><label style="font-size:0.72rem;color:#8a7a76;">Abre</label><input type="time" id="h-' + dia + '-abre" value="' + (data.abre||'09:00') + '" style="width:100%;padding:8px;border:1.5px solid #c8e6c9;border-radius:10px;font-family:\'DM Sans\',sans-serif;"></div>';
-      html += '<div style="flex:1;"><label style="font-size:0.72rem;color:#8a7a76;">Cierra</label><input type="time" id="h-' + dia + '-cierra" value="' + (data.cierra||'18:00') + '" style="width:100%;padding:8px;border:1.5px solid #c8e6c9;border-radius:10px;font-family:\'DM Sans\',sans-serif;"></div>';
+      html += '<div style="flex:1;"><label style="font-size:0.72rem;color:#8a7a76;">Abre</label><input type="time" id="h-' + dia + '-abre" value="' + abre + '" style="width:100%;padding:8px;border:1.5px solid #c8e6c9;border-radius:10px;font-family:\'DM Sans\',sans-serif;"></div>';
+      html += '<div style="flex:1;"><label style="font-size:0.72rem;color:#8a7a76;">Cierra</label><input type="time" id="h-' + dia + '-cierra" value="' + cierra + '" style="width:100%;padding:8px;border:1.5px solid #c8e6c9;border-radius:10px;font-family:\'DM Sans\',sans-serif;"></div>';
       html += '</div></div>';
     });
     html += '<button onclick="guardarHorarioEsp()" style="width:100%;background:#51BC54;color:#fff;border:none;border-radius:50px;padding:13px;font-size:0.9rem;font-weight:500;cursor:pointer;font-family:\'DM Sans\',sans-serif;margin-top:8px;">Guardar horario</button>';
