@@ -1708,14 +1708,8 @@ function cargarDatosEspecialista(uid, userData) {
 
 function espTab(tab, btn) {
   document.querySelectorAll('.esp-tab').forEach(function(b) {
-    b.style.color = '#8a7a76';
-    b.style.borderBottom = '2px solid transparent';
-    b.style.fontWeight = '400';
     b.classList.remove('active');
   });
-  btn.style.color = '#51BC54';
-  btn.style.borderBottom = '2px solid #51BC54';
-  btn.style.fontWeight = '600';
   btn.classList.add('active');
   ['citas','perfil','horario','calificaciones'].forEach(function(t) {
     var el = document.getElementById('esp-page-' + t);
