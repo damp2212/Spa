@@ -793,6 +793,84 @@ tbody td{padding:13px 14px;color:#1a1a1a;vertical-align:middle}
   </div>
 </div>
 
+<!-- PANEL ESPECIALISTA -->
+
+<div id="app-especialista" style="display:none;min-height:100vh;background:#f5faf5;">
+  <!-- Header móvil -->
+  <div style="background:#111a11;padding:16px 20px;display:flex;justify-content:space-between;align-items:center;">
+    <img src="mapos.png" alt="MApos" style="height:32px;">
+    <button onclick="auth.signOut()" style="background:none;border:1px solid rgba(255,255,255,0.3);color:#fff;border-radius:50px;padding:6px 14px;font-size:0.78rem;cursor:pointer;font-family:'DM Sans',sans-serif;">Salir</button>
+  </div>
+
+  <!-- Bienvenida -->
+
+  <div style="background:linear-gradient(135deg,#2D6C2F,#51BC54);padding:24px 20px;color:#fff;">
+    <div style="font-size:0.82rem;opacity:0.8;margin-bottom:4px;">Bienvenida 👋</div>
+    <div id="esp-nombre" style="font-family:'Playfair Display',Georgia,serif;font-size:1.5rem;font-weight:600;"></div>
+    <div style="font-size:0.8rem;opacity:0.8;margin-top:4px;">Rosē — Ciudad Jardín</div>
+  </div>
+
+  <!-- Tabs de navegación -->
+
+  <div style="display:flex;background:#fff;border-bottom:1px solid #e8f5e9;overflow-x:auto;scrollbar-width:none;">
+    <button onclick="espTab('citas',this)" class="esp-tab active" style="flex:0 0 auto;padding:14px 20px;border:none;background:none;font-size:0.82rem;font-family:'DM Sans',sans-serif;color:#51BC54;border-bottom:2px solid #51BC54;cursor:pointer;font-weight:600;">Mis citas</button>
+    <button onclick="espTab('perfil',this)" class="esp-tab" style="flex:0 0 auto;padding:14px 20px;border:none;background:none;font-size:0.82rem;font-family:'DM Sans',sans-serif;color:#8a7a76;border-bottom:2px solid transparent;cursor:pointer;">Mi perfil</button>
+    <button onclick="espTab('horario',this)" class="esp-tab" style="flex:0 0 auto;padding:14px 20px;border:none;background:none;font-size:0.82rem;font-family:'DM Sans',sans-serif;color:#8a7a76;border-bottom:2px solid transparent;cursor:pointer;">Mi horario</button>
+    <button onclick="espTab('calificaciones',this)" class="esp-tab" style="flex:0 0 auto;padding:14px 20px;border:none;background:none;font-size:0.82rem;font-family:'DM Sans',sans-serif;color:#8a7a76;border-bottom:2px solid transparent;cursor:pointer;">Calificaciones</button>
+  </div>
+
+  <!-- Contenido tabs -->
+
+  <div style="padding:20px;">
+
+```
+<!-- MIS CITAS -->
+<div id="esp-page-citas">
+  <div style="display:flex;gap:8px;margin-bottom:16px;overflow-x:auto;scrollbar-width:none;">
+    <button onclick="filtrarCitasEsp('hoy',this)" style="flex:0 0 auto;background:#51BC54;color:#fff;border:none;border-radius:50px;padding:8px 16px;font-size:0.78rem;cursor:pointer;font-family:'DM Sans',sans-serif;">Hoy</button>
+    <button onclick="filtrarCitasEsp('semana',this)" style="flex:0 0 auto;background:#f0f7f0;color:#2D6C2F;border:none;border-radius:50px;padding:8px 16px;font-size:0.78rem;cursor:pointer;font-family:'DM Sans',sans-serif;">Esta semana</button>
+    <button onclick="filtrarCitasEsp('todas',this)" style="flex:0 0 auto;background:#f0f7f0;color:#2D6C2F;border:none;border-radius:50px;padding:8px 16px;font-size:0.78rem;cursor:pointer;font-family:'DM Sans',sans-serif;">Todas</button>
+  </div>
+  <div id="esp-citas-lista"></div>
+</div>
+
+<!-- MI PERFIL -->
+<div id="esp-page-perfil" style="display:none;">
+  <div style="background:#fff;border-radius:16px;padding:20px;border:1px solid #e8f5e9;">
+    <div style="text-align:center;margin-bottom:20px;">
+      <div id="esp-foto-preview" style="width:90px;height:90px;border-radius:50%;background:#e8f5e9;margin:0 auto 12px;overflow:hidden;display:flex;align-items:center;justify-content:center;font-size:2.5rem;">👩🏽</div>
+      <label style="background:#51BC54;color:#fff;border-radius:50px;padding:8px 16px;font-size:0.78rem;cursor:pointer;font-family:'DM Sans',sans-serif;">
+        Cambiar foto
+        <input type="file" accept="image/*" style="display:none;" onchange="cambiarFotoEsp(this)">
+      </label>
+    </div>
+    <div style="margin-bottom:14px;">
+      <label style="display:block;font-size:0.72rem;color:#8a7a76;text-transform:uppercase;margin-bottom:6px;">Nombre</label>
+      <input id="esp-inp-nombre" type="text" style="width:100%;padding:12px;border:1.5px solid #c8e6c9;border-radius:12px;font-size:0.9rem;font-family:'DM Sans',sans-serif;outline:none;">
+    </div>
+    <div style="margin-bottom:20px;">
+      <label style="display:block;font-size:0.72rem;color:#8a7a76;text-transform:uppercase;margin-bottom:6px;">Especialidad</label>
+      <input id="esp-inp-especialidad" type="text" style="width:100%;padding:12px;border:1.5px solid #c8e6c9;border-radius:12px;font-size:0.9rem;font-family:'DM Sans',sans-serif;outline:none;">
+    </div>
+    <button onclick="guardarPerfilEsp()" style="width:100%;background:#51BC54;color:#fff;border:none;border-radius:50px;padding:13px;font-size:0.9rem;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif;">Guardar cambios</button>
+  </div>
+</div>
+
+<!-- MI HORARIO -->
+<div id="esp-page-horario" style="display:none;">
+  <div id="esp-horario-contenido"></div>
+</div>
+
+<!-- MIS CALIFICACIONES -->
+<div id="esp-page-calificaciones" style="display:none;">
+  <div id="esp-stats-cal" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;"></div>
+  <div id="esp-cal-lista"></div>
+</div>
+```
+
+  </div>
+</div>
+
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
@@ -843,25 +921,42 @@ var opc={weekday:'long',year:'numeric',month:'long',day:'numeric'};
 document.getElementById('fecha-hoy').textContent=hoy.toLocaleDateString('es-CO',opc);
 
 auth.onAuthStateChanged(function(user){
-  // Ocultar loader
   var loader = document.getElementById('admin-loader');
   if (loader) { loader.classList.add('oculto'); setTimeout(function(){ loader.style.display='none'; }, 400); }
   if(user){
     document.getElementById('login-screen').style.display='none';
-    document.getElementById('app').style.display='block';
-    document.getElementById('sb-user').textContent=user.email;
-    cargarDatos();
-    // Restaurar módulo activo
-    var paginaGuardada = localStorage.getItem('rose_admin_page');
-    if (paginaGuardada && paginaGuardada !== 'dashboard') {
-      setTimeout(function() {
-        var btn = document.querySelector('.slink[onclick*="' + paginaGuardada + '"]');
-        if (btn) showPage(paginaGuardada, btn);
-      }, 800);
-    }
+    // Verificar rol en Firestore
+    db.collection('usuarios').doc(user.uid).get().then(function(doc) {
+      if (doc.exists && doc.data().rol === 'especialista') {
+        // Vista de especialista
+        var userData = doc.data();
+        document.getElementById('app').style.display='none';
+        document.getElementById('app-especialista').style.display='block';
+        document.getElementById('esp-nombre').textContent = userData.nombre || user.email;
+        cargarDatosEspecialista(user.uid, userData);
+      } else {
+        // Vista de admin
+        document.getElementById('app').style.display='block';
+        document.getElementById('sb-user').textContent=user.email;
+        cargarDatos();
+        var paginaGuardada = localStorage.getItem('rose_admin_page');
+        if (paginaGuardada && paginaGuardada !== 'dashboard') {
+          setTimeout(function() {
+            var btn = document.querySelector('.slink[onclick*="' + paginaGuardada + '"]');
+            if (btn) showPage(paginaGuardada, btn);
+          }, 800);
+        }
+      }
+    }).catch(function() {
+      // Si no hay documento de usuario, tratar como admin
+      document.getElementById('app').style.display='block';
+      document.getElementById('sb-user').textContent=user.email;
+      cargarDatos();
+    });
   } else {
     document.getElementById('login-screen').style.display='flex';
     document.getElementById('app').style.display='none';
+    document.getElementById('app-especialista').style.display='none';
   }
 });
 
@@ -1577,6 +1672,190 @@ function eliminarInspo(id) {
   db.collection('spas').doc(sucursalActual).collection('inspiracion').doc(id).delete().then(function() {
     toast('Foto eliminada', 'ok');
     cargarInspoAdmin();
+  });
+}
+
+// ===== PANEL ESPECIALISTA =====
+var espUserData = null;
+var espCitasAll = [];
+
+function cargarDatosEspecialista(uid, userData) {
+  espUserData = userData;
+  // Cargar citas de esta profesional
+  db.collection('spas').doc('rose').collection('citas')
+    .where('profesional', '==', userData.nombre)
+    .orderBy('fecha', 'desc')
+    .onSnapshot(function(snap) {
+      espCitasAll = snap.docs.map(function(d){ var o=d.data(); o.id=d.id; return o; });
+      filtrarCitasEsp('hoy', document.querySelector('.esp-tab.active'));
+    });
+  // Cargar perfil
+  if (userData.profesionalId) {
+    db.collection('spas').doc('rose').collection('sucursales').doc('ciudad-jardin').collection('profesionales').doc(userData.profesionalId).get().then(function(doc) {
+      if (doc.exists) {
+        var p = doc.data();
+        document.getElementById('esp-inp-nombre').value = p.nombre || '';
+        document.getElementById('esp-inp-especialidad').value = p.especialidad || '';
+        if (p.foto) {
+          document.getElementById('esp-foto-preview').innerHTML = '<img src="' + p.foto + '" style="width:100%;height:100%;object-fit:cover;">';
+        }
+      }
+    });
+  }
+}
+
+function espTab(tab, btn) {
+  document.querySelectorAll('.esp-tab').forEach(function(b) {
+    b.style.color = '#8a7a76';
+    b.style.borderBottom = '2px solid transparent';
+    b.style.fontWeight = '400';
+    b.classList.remove('active');
+  });
+  btn.style.color = '#51BC54';
+  btn.style.borderBottom = '2px solid #51BC54';
+  btn.style.fontWeight = '600';
+  btn.classList.add('active');
+  document.getElementById('esp-page-citas').style.display = tab === 'citas' ? 'block' : 'none';
+  document.getElementById('esp-page-perfil').style.display = tab === 'perfil' ? 'block' : 'none';
+  document.getElementById('esp-page-horario').style.display = tab === 'horario' ? 'block' : 'none';
+  document.getElementById('esp-page-calificaciones').style.display = tab === 'calificaciones' ? 'block' : 'none';
+  if (tab === 'calificaciones') cargarCalificacionesEsp();
+  if (tab === 'horario') cargarHorarioEsp();
+}
+
+function filtrarCitasEsp(filtro, btn) {
+  if (btn) {
+    document.querySelectorAll('#esp-page-citas button').forEach(function(b) {
+      b.style.background = '#f0f7f0'; b.style.color = '#2D6C2F';
+    });
+    btn.style.background = '#51BC54'; btn.style.color = '#fff';
+  }
+  var hoyStr = new Date().toISOString().split('T')[0];
+  var citas = espCitasAll;
+  if (filtro === 'hoy') citas = citas.filter(function(c){ return c.fecha === hoyStr; });
+  if (filtro === 'semana') {
+    var fin = new Date(); fin.setDate(fin.getDate() + 7);
+    var finStr = fin.toISOString().split('T')[0];
+    citas = citas.filter(function(c){ return c.fecha >= hoyStr && c.fecha <= finStr; });
+  }
+  renderCitasEsp(citas);
+}
+
+function renderCitasEsp(citas) {
+  var lista = document.getElementById('esp-citas-lista');
+  if (citas.length === 0) {
+    lista.innerHTML = '<div style="text-align:center;padding:40px;color:#8a7a76;font-size:0.88rem;">No hay citas</div>';
+    return;
+  }
+  var html = '';
+  citas.forEach(function(c) {
+    var estadoColor = c.estado === 'atendida' ? '#51BC54' : c.estado === 'cancelada' ? '#e57373' : '#EB8899';
+    var estadoLabel = c.estado === 'atendida' ? '✓ Atendida' : c.estado === 'cancelada' ? '✕ Cancelada' : '⏳ Pendiente';
+    html += '<div style="background:#fff;border-radius:16px;padding:16px;margin-bottom:12px;border-left:4px solid ' + estadoColor + ';box-shadow:0 2px 8px rgba(0,0,0,0.05);">';
+    html += '<div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:8px;">';
+    html += '<div style="font-weight:600;font-size:0.92rem;color:#1a1a1a;">' + (c.nombre || 'Cliente') + '</div>';
+    html += '<span style="font-size:0.72rem;color:' + estadoColor + ';font-weight:600;">' + estadoLabel + '</span>';
+    html += '</div>';
+    html += '<div style="font-size:0.82rem;color:#8a7a76;margin-bottom:4px;">📅 ' + c.fecha + ' · ⏰ ' + c.hora + '</div>';
+    html += '<div style="font-size:0.82rem;color:#5a5a5a;margin-bottom:10px;">💅 ' + (c.servicio || '') + '</div>';
+    if (c.estado === 'pendiente' || c.estado === 'confirmada') {
+      html += '<button onclick="marcarAtendidaEsp(\'' + c.id + '\')" style="background:#51BC54;color:#fff;border:none;border-radius:50px;padding:8px 18px;font-size:0.78rem;cursor:pointer;font-family:\'DM Sans\',sans-serif;">✓ Marcar atendida</button>';
+    }
+    html += '</div>';
+  });
+  lista.innerHTML = html;
+}
+
+function marcarAtendidaEsp(citaId) {
+  if (!confirm('¿Marcar esta cita como atendida?')) return;
+  db.collection('spas').doc('rose').collection('citas').doc(citaId).update({ estado: 'atendida' }).then(function() {
+    toast('Cita marcada como atendida', 'ok');
+  });
+}
+
+function guardarPerfilEsp() {
+  if (!espUserData || !espUserData.profesionalId) return;
+  var nombre = document.getElementById('esp-inp-nombre').value.trim();
+  var especialidad = document.getElementById('esp-inp-especialidad').value.trim();
+  db.collection('spas').doc('rose').collection('sucursales').doc('ciudad-jardin').collection('profesionales').doc(espUserData.profesionalId).update({ nombre: nombre, especialidad: especialidad }).then(function() {
+    toast('Perfil actualizado', 'ok');
+    document.getElementById('esp-nombre').textContent = nombre;
+  });
+}
+
+function cambiarFotoEsp(input) {
+  if (!input.files || !input.files[0] || !espUserData || !espUserData.profesionalId) return;
+  var file = input.files[0];
+  var storageRef = firebase.storage().ref('spas/rose/profesionales/' + espUserData.profesionalId + '.jpg');
+  toast('Subiendo foto...', 'ok');
+  storageRef.put(file).then(function(snap){ return snap.ref.getDownloadURL(); }).then(function(url) {
+    document.getElementById('esp-foto-preview').innerHTML = '<img src="' + url + '" style="width:100%;height:100%;object-fit:cover;">';
+    return db.collection('spas').doc('rose').collection('sucursales').doc('ciudad-jardin').collection('profesionales').doc(espUserData.profesionalId).update({ foto: url });
+  }).then(function() { toast('Foto actualizada', 'ok'); });
+}
+
+function cargarHorarioEsp() {
+  var dias = ['lunes','martes','miercoles','jueves','viernes','sabado'];
+  var nombres = { lunes:'Lunes', martes:'Martes', miercoles:'Miércoles', jueves:'Jueves', viernes:'Viernes', sabado:'Sábado' };
+  var contenido = document.getElementById('esp-horario-contenido');
+  contenido.innerHTML = '<div style="color:#8a7a76;font-size:0.85rem;text-align:center;padding:20px;">Cargando horario...</div>';
+  var promises = dias.map(function(dia) {
+    return db.collection('spas').doc('rose').collection('sucursales').doc('ciudad-jardin').collection('horarios').doc(dia).get();
+  });
+  Promise.all(promises).then(function(docs) {
+    var html = '';
+    docs.forEach(function(doc, i) {
+      var dia = dias[i];
+      var data = doc.exists ? doc.data() : { abre: '09:00', cierra: '18:00', activo: false };
+      html += '<div style="background:#fff;border-radius:14px;padding:16px;margin-bottom:10px;border:1px solid #e8f5e9;">';
+      html += '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">';
+      html += '<div style="font-weight:600;color:#1a1a1a;">' + nombres[dia] + '</div>';
+      html += '<label style="display:flex;align-items:center;gap:8px;cursor:pointer;"><input type="checkbox" id="h-' + dia + '-activo" ' + (data.activo ? 'checked' : '') + ' style="accent-color:#51BC54;width:18px;height:18px;"><span style="font-size:0.82rem;color:#8a7a76;">Activo</span></label>';
+      html += '</div>';
+      html += '<div style="display:flex;gap:12px;">';
+      html += '<div style="flex:1;"><label style="font-size:0.72rem;color:#8a7a76;">Abre</label><input type="time" id="h-' + dia + '-abre" value="' + (data.abre||'09:00') + '" style="width:100%;padding:8px;border:1.5px solid #c8e6c9;border-radius:10px;font-family:\'DM Sans\',sans-serif;"></div>';
+      html += '<div style="flex:1;"><label style="font-size:0.72rem;color:#8a7a76;">Cierra</label><input type="time" id="h-' + dia + '-cierra" value="' + (data.cierra||'18:00') + '" style="width:100%;padding:8px;border:1.5px solid #c8e6c9;border-radius:10px;font-family:\'DM Sans\',sans-serif;"></div>';
+      html += '</div></div>';
+    });
+    html += '<button onclick="guardarHorarioEsp()" style="width:100%;background:#51BC54;color:#fff;border:none;border-radius:50px;padding:13px;font-size:0.9rem;font-weight:500;cursor:pointer;font-family:\'DM Sans\',sans-serif;margin-top:8px;">Guardar horario</button>';
+    contenido.innerHTML = html;
+  });
+}
+
+function guardarHorarioEsp() {
+  var dias = ['lunes','martes','miercoles','jueves','viernes','sabado'];
+  var promises = dias.map(function(dia) {
+    return db.collection('spas').doc('rose').collection('sucursales').doc('ciudad-jardin').collection('horarios').doc(dia).set({
+      activo: document.getElementById('h-' + dia + '-activo').checked,
+      abre: document.getElementById('h-' + dia + '-abre').value,
+      cierra: document.getElementById('h-' + dia + '-cierra').value
+    });
+  });
+  Promise.all(promises).then(function() { toast('Horario guardado', 'ok'); });
+}
+
+function cargarCalificacionesEsp() {
+  if (!espUserData) return;
+  db.collection('spas').doc('rose').collection('calificaciones').where('profesional', '==', espUserData.nombre).get().then(function(snap) {
+    var cals = snap.docs.map(function(d){ return d.data(); });
+    var total = cals.length;
+    var promedio = total > 0 ? (cals.reduce(function(s,c){ return s + (c.calificacion||0); }, 0) / total).toFixed(1) : '0.0';
+    document.getElementById('esp-stats-cal').innerHTML =
+      '<div style="background:#fff;border-radius:14px;padding:16px;text-align:center;border:1px solid #e8f5e9;"><div style="font-size:2rem;font-weight:700;color:#51BC54;">' + promedio + '</div><div style="font-size:0.75rem;color:#8a7a76;">Calificación</div></div>' +
+      '<div style="background:#fff;border-radius:14px;padding:16px;text-align:center;border:1px solid #e8f5e9;"><div style="font-size:2rem;font-weight:700;color:#51BC54;">' + total + '</div><div style="font-size:0.75rem;color:#8a7a76;">Reseñas</div></div>';
+    var html = '';
+    cals.forEach(function(c) {
+      var estrellas = '';
+      for (var i=1;i<=5;i++) estrellas += i <= c.calificacion ? '★' : '☆';
+      html += '<div style="background:#fff;border-radius:14px;padding:14px;margin-bottom:10px;border:1px solid #e8f5e9;">';
+      html += '<div style="display:flex;justify-content:space-between;margin-bottom:6px;">';
+      html += '<span style="color:#51BC54;font-size:1.1rem;">' + estrellas + '</span>';
+      html += '<span style="font-size:0.75rem;color:#8a7a76;">' + (c.fecha||'') + '</span>';
+      html += '</div>';
+      if (c.comentario) html += '<div style="font-size:0.85rem;color:#5a5a5a;">"' + c.comentario + '"</div>';
+      html += '</div>';
+    });
+    document.getElementById('esp-cal-lista').innerHTML = html || '<div style="text-align:center;padding:20px;color:#8a7a76;">Aún no tienes reseñas</div>';
   });
 }
 
