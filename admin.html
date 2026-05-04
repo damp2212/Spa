@@ -816,10 +816,10 @@ tbody td{padding:13px 14px;color:#1a1a1a;vertical-align:middle}
   <!-- Tabs de navegación -->
 
   <div style="display:flex;background:#fff;border-bottom:1px solid #e8f5e9;overflow-x:auto;scrollbar-width:none;">
-    <button onclick="espTab('citas',this)" class="esp-tab">Mis citas</button>
-    <button onclick="espTab('perfil',this)" class="esp-tab">Mi perfil</button>
-    <button onclick="espTab('horario',this)" class="esp-tab">Mi horario</button>
-    <button onclick="espTab('calificaciones',this)" class="esp-tab">Calificaciones</button>
+    <button onclick="espTab('citas',this)" class="esp-tab" style="color:#8a7a76;border-bottom:2px solid transparent;">Mis citas</button>
+    <button onclick="espTab('perfil',this)" class="esp-tab" style="color:#8a7a76;border-bottom:2px solid transparent;">Mi perfil</button>
+    <button onclick="espTab('horario',this)" class="esp-tab" style="color:#8a7a76;border-bottom:2px solid transparent;">Mi horario</button>
+    <button onclick="espTab('calificaciones',this)" class="esp-tab" style="color:#8a7a76;border-bottom:2px solid transparent;">Calificaciones</button>
   </div>
 
   <!-- Contenido tabs -->
@@ -1712,9 +1712,13 @@ function cargarDatosEspecialista(uid, userData) {
 
 function espTab(tab, btn) {
   document.querySelectorAll('.esp-tab').forEach(function(b) {
-    b.classList.remove('active');
+    b.style.color = '#8a7a76';
+    b.style.borderBottom = '2px solid transparent';
+    b.style.fontWeight = '400';
   });
-  btn.classList.add('active');
+  btn.style.color = '#51BC54';
+  btn.style.borderBottom = '2px solid #51BC54';
+  btn.style.fontWeight = '600';
   ['citas','perfil','horario','calificaciones'].forEach(function(t) {
     var el = document.getElementById('esp-page-' + t);
     if (el) el.style.display = t === tab ? 'block' : 'none';
