@@ -1845,7 +1845,7 @@ function cargarCalificacionesEsp() {
   db.collection('spas').doc('rose').collection('calificaciones').where('profesional', '==', espUserData.nombre).get().then(function(snap) {
     var cals = snap.docs.map(function(d){ return d.data(); });
     var total = cals.length;
-    var promedio = total > 0 ? (cals.reduce(function(s,c){ return s + (c.calificacion||0); }, 0) / total).toFixed(1) : '0.0';
+    var promedio = total > 0 ? (cals.reduce(function(s,c){ return s + (c.estrellas||c.calificacion||0); }, 0) / total).toFixed(1) : '0.0';
     document.getElementById('esp-stats-cal').innerHTML =
       '<div style="background:#fff;border-radius:14px;padding:16px;text-align:center;border:1px solid #e8f5e9;"><div style="font-size:2rem;font-weight:700;color:#51BC54;">' + promedio + '</div><div style="font-size:0.75rem;color:#8a7a76;">Calificación</div></div>' +
       '<div style="background:#fff;border-radius:14px;padding:16px;text-align:center;border:1px solid #e8f5e9;"><div style="font-size:2rem;font-weight:700;color:#51BC54;">' + total + '</div><div style="font-size:0.75rem;color:#8a7a76;">Reseñas</div></div>';
