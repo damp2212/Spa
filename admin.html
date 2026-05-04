@@ -1842,7 +1842,7 @@ function guardarHorarioEsp() {
 
 function cargarCalificacionesEsp() {
   if (!espUserData) return;
-  db.collection('spas').doc('rose').collection('calificaciones').where('profesional', '==', espUserData.nombre).get().then(function(snap) {
+  db.collection('spas').doc('rose').collection('calificaciones').where('profesional', '==', espUserData.nombre).onSnapshot(function(snap) {
     var cals = snap.docs.map(function(d){ return d.data(); });
     var total = cals.length;
     var promedio = total > 0 ? (cals.reduce(function(s,c){ return s + (c.estrellas||c.calificacion||0); }, 0) / total).toFixed(1) : '0.0';
@@ -1851,11 +1851,12 @@ function cargarCalificacionesEsp() {
       '<div style="background:#fff;border-radius:14px;padding:16px;text-align:center;border:1px solid #e8f5e9;"><div style="font-size:2rem;font-weight:700;color:#51BC54;">' + total + '</div><div style="font-size:0.75rem;color:#8a7a76;">Reseñas</div></div>';
     var html = '';
     cals.forEach(function(c) {
+      var cal = c.estrellas || c.calificacion || 0;
       var estrellas = '';
-      for (var i=1;i<=5;i++) estrellas += i <= c.calificacion ? '★' : '☆';
+      for (var i=1;i<=5;i++) estrellas += '<span style="color:' + (i<=cal ? '#FFB800' : '#ddd') + ';font-size:1.2rem;">★</span>';
       html += '<div style="background:#fff;border-radius:14px;padding:14px;margin-bottom:10px;border:1px solid #e8f5e9;">';
-      html += '<div style="display:flex;justify-content:space-between;margin-bottom:6px;">';
-      html += '<span style="color:#51BC54;font-size:1.1rem;">' + estrellas + '</span>';
+      html += '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">';
+      html += '<span>' + estrellas + '</span>';
       html += '<span style="font-size:0.75rem;color:#8a7a76;">' + (c.fecha||'') + '</span>';
       html += '</div>';
       if (c.comentario) html += '<div style="font-size:0.85rem;color:#5a5a5a;">"' + c.comentario + '"</div>';
