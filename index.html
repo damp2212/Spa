@@ -10,7 +10,8 @@
 <meta name="keywords" content="spa uñas cali, manicure cali, pedicure cali, uñas acrílicas cali, nail art cali, ciudad jardín">
 <meta name="robots" content="index, follow">
 <meta name="theme-color" content="#EB8899">
-<link rel="canonical" href="https://roseoficial.com/">
+<link rel="icon" type="image/png" href="rose-logo-color.png">
+<link rel="apple-touch-icon" href="rose-logo-color.png">
 <!-- Open Graph -->
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://roseoficial.com/">
@@ -845,7 +846,13 @@ function cargarHorarios() {
       var slotsNecesarios = Math.ceil(duracion / 60);
       var hayDisponibles = false;
 
+      var ahora = new Date();
+      var hoyStr = ahora.toISOString().split('T')[0];
+      var horaActual = fecha === hoyStr ? ahora.getHours() + 1 : 0; // +1 hora de margen
+
       for (var h = abre; h <= cierra - slotsNecesarios; h++) {
+        // Bloquear horas pasadas si es hoy
+        if (h <= horaActual) continue;
         var disponible = true;
         for (var s = 0; s < slotsNecesarios; s++) {
           if (ocupados[h + s]) { disponible = false; break; }
