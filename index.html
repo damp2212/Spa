@@ -847,8 +847,8 @@ function cargarHorarios() {
       var hayDisponibles = false;
 
       var ahora = new Date();
-      var hoyStr = ahora.toISOString().split('T')[0];
-      var horaActual = fecha === hoyStr ? ahora.getHours() + 1 : 0; // +1 hora de margen
+      var hoyStr = ahora.toLocaleDateString('en-CA', { timeZone: 'America/Bogota' });
+      var horaActual = fecha === hoyStr ? parseInt(ahora.toLocaleTimeString('en-US', { timeZone: 'America/Bogota', hour: 'numeric', hour12: false })) + 1 : 0;
 
       for (var h = abre; h <= cierra - slotsNecesarios; h++) {
         // Bloquear horas pasadas si es hoy
