@@ -466,15 +466,24 @@ document.addEventListener('DOMContentLoaded', function() {
   window.scrollTo(0, 0);
   history.scrollRestoration = 'manual';
   var pendientes = 3;
+  var loaderOculto = false;
+
+  function ocultarLoader() {
+    if (loaderOculto) return;
+    loaderOculto = true;
+    var loader = document.getElementById('page-loader');
+    if (loader) { loader.classList.add('oculto'); setTimeout(function(){ loader.style.display='none'; }, 500); }
+  }
+
   function checkListo() {
     pendientes--;
     if (pendientes <= 0) {
-      setTimeout(function() {
-        var loader = document.getElementById('page-loader');
-        if (loader) { loader.classList.add('oculto'); setTimeout(function(){ loader.style.display='none'; }, 500); }
-      }, 300);
+      setTimeout(ocultarLoader, 300);
     }
   }
+
+  // Timeout máximo de 6 segundos
+  setTimeout(ocultarLoader, 6000);
   cargarSucursales(checkListo);
   cargarProfesionalesPublico(checkListo);
   cargarServicios(checkListo);
@@ -591,6 +600,12 @@ function abrirLogin() {
   document.getElementById('login-overlay').style.display = 'flex';
   document.getElementById('paso-telefono').style.display = 'block';
   document.getElementById('paso-codigo').style.display = 'none';
+  var btn = document.getElementById('btn-enviar-codigo');
+  if (btn) { btn.disabled = false; btn.textContent = 'Enviar codigo por WhatsApp'; }
+  var btnVer = document.getElementById('btn-verificar');
+  if (btnVer) { btnVer.disabled = false; btnVer.textContent = 'Verificar codigo'; }
+  var tel = document.getElementById('login-telefono');
+  if (tel) tel.value = '';
 }
 
 function actualizarNavUsuario(tel, nombre) {
@@ -1301,3 +1316,4 @@ function guardarCita() {
 
 </body>
 </html>
+
