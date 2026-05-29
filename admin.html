@@ -715,6 +715,10 @@ tbody td{padding:13px 14px;color:#1a1a1a;vertical-align:middle}
       <label class="modal-label">Especialidad</label>
       <input class="modal-input" id="pro-especialidad" type="text" placeholder="Nail Art - Acrilicas">
     </div>
+    <div class="modal-form-group">
+      <label class="modal-label">WhatsApp notificaciones</label>
+      <input class="modal-input" id="pro-whatsapp" type="tel" placeholder="+573188065152">
+    </div>
     <input type="hidden" id="pro-edit-id">
     <input type="hidden" id="pro-foto-url">
     <div class="modal-actions">
@@ -1199,6 +1203,7 @@ function abrirModalPro(){
   document.getElementById('pro-edit-id').value='';
   document.getElementById('pro-nombre').value='';
   document.getElementById('pro-especialidad').value='';
+  document.getElementById('pro-whatsapp').value='';
   document.getElementById('pro-horario')&&(document.getElementById('pro-horario').value='');
   document.getElementById('pro-foto-url').value='';
   document.getElementById('pro-foto-file').value='';
@@ -1221,6 +1226,7 @@ function editarPro(id){
   document.getElementById('pro-edit-id').value=id;
   document.getElementById('pro-nombre').value=p.nombre||'';
   document.getElementById('pro-especialidad').value=p.especialidad||'';
+  document.getElementById('pro-whatsapp').value=p.whatsapp||'';
   document.getElementById('pro-foto-url').value=p.foto||'';
   document.getElementById('pro-foto-file').value='';
   document.getElementById('foto-progress').style.display='none';
@@ -1240,6 +1246,7 @@ function editarPro(id){
 function guardarPro(){
   var nombre=document.getElementById('pro-nombre').value.trim();
   var especialidad=document.getElementById('pro-especialidad').value.trim();
+  var whatsapp=document.getElementById('pro-whatsapp').value.trim();
   var horario='';
   var editId=document.getElementById('pro-edit-id').value;
   if(!nombre){toast('Ingresa el nombre','err');return;}
@@ -1247,7 +1254,7 @@ function guardarPro(){
   btn.disabled=true;btn.textContent='Guardando...';
 
   function guardarEnDB(fotoUrl){
-    var data={nombre:nombre,especialidad:especialidad,horario:horario,foto:fotoUrl};
+    var data={nombre:nombre,especialidad:especialidad,horario:horario,foto:fotoUrl,whatsapp:whatsapp};
     var prom=editId?
       db.collection('spas').doc(sucursalActual).collection('sucursales').doc('ciudad-jardin').collection('profesionales').doc(editId).update(data):
       db.collection('spas').doc(sucursalActual).collection('sucursales').doc('ciudad-jardin').collection('profesionales').add(Object.assign(data,{creadoEn:firebase.firestore.FieldValue.serverTimestamp()}));
