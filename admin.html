@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="es">
 <head>
 <meta charset="UTF-8">
@@ -16,18 +15,18 @@ body{font-family:'DM Sans',Georgia,sans-serif;background:#f4f6f9;color:#1a1a1a;-
 /* LOGIN */
 #login-screen{min-height:100vh;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#2D6C2F,#51BC54);padding:24px;position:fixed;inset:0;z-index:1000;overflow-y:auto;}
 .login-card{background:#fff;border-radius:24px;padding:40px 32px;width:100%;max-width:400px;box-shadow:0 20px 60px rgba(0,0,0,0.2)}
-.login-logo{font-family:‘Playfair Display’,Georgia,serif;font-size:1.8rem;font-weight:700;color:#2D6C2F;margin-bottom:4px}
+.login-logo{font-family:'Playfair Display',Georgia,serif;font-size:1.8rem;font-weight:700;color:#2D6C2F;margin-bottom:4px}
 .login-logo span{color:#51BC54;font-style:italic}
 .login-sub{font-size:0.85rem;color:#8a7a76;margin-bottom:32px}
 .lbl{display:block;font-size:0.72rem;color:#8a7a76;text-transform:uppercase;letter-spacing:0.5px;font-weight:500;margin-bottom:7px}
-.linput{width:100%;padding:13px 16px;border:1.5px solid #c8e6c9;border-radius:12px;font-size:0.9rem;color:#1a1a1a;background:#f5faf5;font-family:‘DM Sans’,sans-serif;outline:none;margin-bottom:16px;-webkit-appearance:none;appearance:none}
+.linput{width:100%;padding:13px 16px;border:1.5px solid #c8e6c9;border-radius:12px;font-size:0.9rem;color:#1a1a1a;background:#f5faf5;font-family:'DM Sans',sans-serif;outline:none;margin-bottom:16px;-webkit-appearance:none;appearance:none}
 .linput:focus{border-color:#51BC54}
-.lbtn{width:100%;background:#2D6C2F;color:#fff;border:none;border-radius:50px;padding:15px;font-size:0.92rem;font-weight:500;cursor:pointer;font-family:‘DM Sans’,sans-serif}
+.lbtn{width:100%;background:#2D6C2F;color:#fff;border:none;border-radius:50px;padding:15px;font-size:0.92rem;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif}
 .lerror{font-size:0.8rem;color:#c0392b;margin-top:12px;text-align:center;display:none}
 
 /* APP */
 #app{display:none;min-height:100vh}
-.esp-tab { flex:0 0 auto;padding:14px 20px;border:none;background:none;font-size:0.82rem;font-family:‘DM Sans’,sans-serif;color:#8a7a76;border-bottom:2px solid transparent;cursor:pointer;font-weight:400; }
+.esp-tab { flex:0 0 auto;padding:14px 20px;border:none;background:none;font-size:0.82rem;font-family:'DM Sans',sans-serif;color:#8a7a76;border-bottom:2px solid transparent;cursor:pointer;font-weight:400; }
 .esp-tab.active { color:#51BC54 !important;border-bottom:2px solid #51BC54 !important;font-weight:600 !important; }
 #admin-loader{position:fixed;inset:0;background:#fff;z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity 0.4s;}
 #admin-loader .al-spinner{width:36px;height:36px;border:3px solid #e8f5e9;border-top:3px solid #51BC54;border-radius:50%;animation:spin 0.8s linear infinite;margin-top:20px;}
@@ -36,7 +35,7 @@ body{font-family:'DM Sans',Georgia,sans-serif;background:#f4f6f9;color:#1a1a1a;-
 
 /* MOBILE HEADER */
 .mob-header{display:none;background:#1a1a1a;padding:15px 20px;position:fixed;top:0;left:0;right:0;z-index:300;align-items:center;justify-content:space-between}
-.mob-logo{font-family:‘Playfair Display’,Georgia,serif;font-size:1.2rem;color:#fff}
+.mob-logo{font-family:'Playfair Display',Georgia,serif;font-size:1.2rem;color:#fff}
 .mob-logo span{color:#51BC54;font-style:italic}
 .hamburger{background:none;border:none;color:#fff;cursor:pointer;padding:4px;display:flex;align-items:center}
 
@@ -46,11 +45,11 @@ body{font-family:'DM Sans',Georgia,sans-serif;background:#f4f6f9;color:#1a1a1a;-
 
 /* SIDEBAR */
 .sidebar{position:fixed;top:0;left:0;bottom:0;width:240px;background:#1a1a1a;z-index:200;display:flex;flex-direction:column;overflow-y:auto;overflow-x:hidden;transition:transform 0.3s ease}
-.sl{font-family:‘Playfair Display’,Georgia,serif;font-size:1.4rem;color:#fff;padding:28px 24px 4px;flex-shrink:0}
+.sl{font-family:'Playfair Display',Georgia,serif;font-size:1.4rem;color:#fff;padding:28px 24px 4px;flex-shrink:0}
 .sl span{color:#51BC54;font-style:italic}
 .sr{font-size:0.72rem;color:#777;padding:0 24px;margin-bottom:16px;text-transform:uppercase;letter-spacing:1px;flex-shrink:0}
 .suc-wrap{padding:0 16px;margin-bottom:16px;flex-shrink:0}
-.suc-sel{width:100%;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);border-radius:10px;color:#fff;padding:9px 12px;font-size:0.8rem;font-family:‘DM Sans’,sans-serif;outline:none;-webkit-appearance:none;appearance:none;cursor:pointer}
+.suc-sel{width:100%;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);border-radius:10px;color:#fff;padding:9px 12px;font-size:0.8rem;font-family:'DM Sans',sans-serif;outline:none;-webkit-appearance:none;appearance:none;cursor:pointer}
 .suc-sel option{background:#1a1a1a;color:#fff}
 .ss{font-size:0.68rem;color:#555;text-transform:uppercase;letter-spacing:1px;padding:0 24px;margin-bottom:6px;margin-top:14px;flex-shrink:0}
 .slink{display:flex;align-items:center;gap:10px;padding:11px 24px;color:#aaa;font-size:0.85rem;font-weight:500;transition:all 0.2s;cursor:pointer;border:none;background:none;width:100%;text-align:left;border-left:3px solid transparent;flex-shrink:0}
@@ -59,16 +58,16 @@ body{font-family:'DM Sans',Georgia,sans-serif;background:#f4f6f9;color:#1a1a1a;-
 .slink svg{width:17px;height:17px;flex-shrink:0;stroke:currentColor}
 .sb{margin-top:auto;padding:16px 24px;border-top:1px solid #333;flex-shrink:0}
 .sb-user{font-size:0.75rem;color:#777;margin-bottom:10px;word-break:break-all}
-.btn-out{font-size:0.78rem;color:#51BC54;background:none;border:none;cursor:pointer;font-family:‘DM Sans’,sans-serif}
+.btn-out{font-size:0.78rem;color:#51BC54;background:none;border:none;cursor:pointer;font-family:'DM Sans',sans-serif}
 
 /* MAIN */
-.main{margin-left:240px;padding:32px;min-height:100vh}
+.main{margin-left:240px;padding:32px 40px;min-height:100vh}
 .page{display:none}
 .page.active{display:block}
 
 /* TOPBAR */
 .topbar{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:28px;flex-wrap:wrap;gap:12px}
-.topbar-title{font-family:‘Playfair Display’,Georgia,serif;font-size:1.8rem;color:#1a1a1a;line-height:1.2}
+.topbar-title{font-family:'Playfair Display',Georgia,serif;font-size:1.8rem;color:#1a1a1a;line-height:1.2}
 .topbar-title em{font-style:italic;color:#51BC54}
 .topbar-sub{font-size:0.82rem;color:#8a7a76;margin-top:4px}
 .topbar-badge{background:#f0f7f0;color:#2D6C2F;font-size:0.75rem;font-weight:600;padding:6px 14px;border-radius:50px;border:1px solid #c8e6c9}
@@ -79,24 +78,24 @@ body{font-family:'DM Sans',Georgia,sans-serif;background:#f4f6f9;color:#1a1a1a;-
 .stat-card.accent{background:#2D6C2F;border-color:#2D6C2F}
 .sc-label{font-size:0.72rem;color:#8a7a76;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px}
 .accent .sc-label{color:rgba(245,237,230,0.65)}
-.sc-num{font-family:‘Playfair Display’,Georgia,serif;font-size:2rem;font-weight:700;color:#1a1a1a;line-height:1;margin-bottom:4px}
+.sc-num{font-family:'Playfair Display',Georgia,serif;font-size:2rem;font-weight:700;color:#1a1a1a;line-height:1;margin-bottom:4px}
 .accent .sc-num{color:#fff}
 .sc-sub{font-size:0.72rem;color:#8a7a76}
 .accent .sc-sub{color:rgba(245,237,230,0.55)}
 
 /* CARD */
 .card{background:#fff;border-radius:16px;padding:24px;border:1px solid #eee;margin-bottom:20px}
-.card-title{font-family:‘Playfair Display’,Georgia,serif;font-size:1.05rem;color:#1a1a1a;margin-bottom:18px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
-.ct-right{font-size:0.78rem;color:#8a7a76;font-family:‘DM Sans’,sans-serif;font-weight:400}
+.card-title{font-family:'Playfair Display',Georgia,serif;font-size:1.05rem;color:#1a1a1a;margin-bottom:18px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
+.ct-right{font-size:0.78rem;color:#8a7a76;font-family:'DM Sans',sans-serif;font-weight:400}
 
 /* FILTROS */
 .filtros{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
-.fb{padding:7px 14px;border-radius:50px;font-size:0.75rem;font-weight:500;cursor:pointer;font-family:‘DM Sans’,sans-serif;border:1.5px solid #e0e0e0;background:#fff;color:#8a7a76;transition:all 0.2s}
+.fb{padding:7px 14px;border-radius:50px;font-size:0.75rem;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif;border:1.5px solid #e0e0e0;background:#fff;color:#8a7a76;transition:all 0.2s}
 .fb.active{background:#2D6C2F;color:#fff;border-color:#2D6C2F}
 .filtro-fechas{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:20px;padding:16px;background:#f9f9f9;border-radius:12px}
 .filtro-fechas label{font-size:0.75rem;color:#8a7a76;font-weight:500}
-.filtro-fechas input{padding:8px 12px;border:1.5px solid #c8e6c9;border-radius:10px;font-size:0.82rem;font-family:‘DM Sans’,sans-serif;color:#1a1a1a;background:#fff;outline:none;-webkit-appearance:none;appearance:none}
-.btn-filtrar{background:#2D6C2F;color:#fff;border:none;border-radius:50px;padding:8px 18px;font-size:0.78rem;font-weight:500;cursor:pointer;font-family:‘DM Sans’,sans-serif}
+.filtro-fechas input{padding:8px 12px;border:1.5px solid #c8e6c9;border-radius:10px;font-size:0.82rem;font-family:'DM Sans',sans-serif;color:#1a1a1a;background:#fff;outline:none;-webkit-appearance:none;appearance:none}
+.btn-filtrar{background:#2D6C2F;color:#fff;border:none;border-radius:50px;padding:8px 18px;font-size:0.78rem;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif}
 
 /* TABLA */
 .tabla-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
@@ -122,9 +121,9 @@ tbody td{padding:13px 14px;color:#1a1a1a;vertical-align:middle}
 .be-nueva{background:#d1ecf1;color:#0c5460}
 
 /* BOTONES ACCION */
-.btn-ok{background:#d4edda;color:#155724;border:none;border-radius:50px;padding:5px 12px;font-size:0.72rem;cursor:pointer;font-family:‘DM Sans’,sans-serif;font-weight:600;margin-right:4px;white-space:nowrap}
-.btn-no{background:#f8d7da;color:#721c24;border:none;border-radius:50px;padding:5px 12px;font-size:0.72rem;cursor:pointer;font-family:‘DM Sans’,sans-serif;font-weight:600;white-space:nowrap}
-.btn-at{background:#d1ecf1;color:#0c5460;border:none;border-radius:50px;padding:5px 12px;font-size:0.72rem;cursor:pointer;font-family:‘DM Sans’,sans-serif;font-weight:600;white-space:nowrap}
+.btn-ok{background:#d4edda;color:#155724;border:none;border-radius:50px;padding:5px 12px;font-size:0.72rem;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:600;margin-right:4px;white-space:nowrap}
+.btn-no{background:#f8d7da;color:#721c24;border:none;border-radius:50px;padding:5px 12px;font-size:0.72rem;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:600;white-space:nowrap}
+.btn-at{background:#d1ecf1;color:#0c5460;border:none;border-radius:50px;padding:5px 12px;font-size:0.72rem;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:600;white-space:nowrap}
 
 /* PRO GRID */
 .pro-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
@@ -145,7 +144,7 @@ tbody td{padding:13px 14px;color:#1a1a1a;vertical-align:middle}
 /* CRM */
 .crm-resumen{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px}
 .crm-stat{background:#fff;border-radius:14px;padding:18px;border:1px solid #eee;text-align:center}
-.crm-stat-num{font-family:‘Playfair Display’,Georgia,serif;font-size:1.6rem;font-weight:700;color:#2D6C2F}
+.crm-stat-num{font-family:'Playfair Display',Georgia,serif;font-size:1.6rem;font-weight:700;color:#2D6C2F}
 .crm-stat-label{font-size:0.72rem;color:#8a7a76;margin-top:4px}
 .crm-card{background:#fff;border-radius:14px;padding:18px;border:1px solid #eee;margin-bottom:10px}
 .crm-card-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;flex-wrap:wrap;gap:8px}
@@ -163,26 +162,26 @@ tbody td{padding:13px 14px;color:#1a1a1a;vertical-align:middle}
 .pro-admin-avatar{width:72px;height:72px;border-radius:50%;object-fit:cover;border:3px solid #c8e6c9;margin:0 auto 12px;display:block}
 .pro-admin-avatar-placeholder{width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,#f9e4dc,#c8e6c9);display:flex;align-items:center;justify-content:center;margin:0 auto 12px;border:3px solid #c8e6c9}
 .pro-admin-avatar-placeholder svg{width:32px;height:32px;stroke:#2D6C2F}
-.pro-admin-name{font-family:‘Playfair Display’,Georgia,serif;font-size:1rem;color:#1a1a1a;margin-bottom:4px}
+.pro-admin-name{font-family:'Playfair Display',Georgia,serif;font-size:1rem;color:#1a1a1a;margin-bottom:4px}
 .pro-admin-spec{font-size:0.78rem;color:#8a7a76;margin-bottom:14px}
 .pro-admin-actions{display:flex;gap:8px;justify-content:center}
-.btn-edit{background:#f0f7f0;color:#2D6C2F;border:none;border-radius:50px;padding:6px 14px;font-size:0.75rem;cursor:pointer;font-family:‘DM Sans’,sans-serif;font-weight:500}
-.btn-del{background:#f8d7da;color:#721c24;border:none;border-radius:50px;padding:6px 14px;font-size:0.75rem;cursor:pointer;font-family:‘DM Sans’,sans-serif;font-weight:500}
-.btn-add-pro{display:flex;align-items:center;gap:8px;background:#2D6C2F;color:#fff;border:none;border-radius:50px;padding:10px 20px;font-size:0.85rem;font-weight:500;cursor:pointer;font-family:‘DM Sans’,sans-serif;margin-bottom:20px}
+.btn-edit{background:#f0f7f0;color:#2D6C2F;border:none;border-radius:50px;padding:6px 14px;font-size:0.75rem;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:500}
+.btn-del{background:#f8d7da;color:#721c24;border:none;border-radius:50px;padding:6px 14px;font-size:0.75rem;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:500}
+.btn-add-pro{display:flex;align-items:center;gap:8px;background:#2D6C2F;color:#fff;border:none;border-radius:50px;padding:10px 20px;font-size:0.85rem;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif;margin-bottom:20px}
 .btn-add-pro svg{width:16px;height:16px;stroke:currentColor}
 
 /* MODAL */
 .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:500;align-items:center;justify-content:center;padding:20px}
 .modal-overlay.open{display:flex}
 .modal{background:#fff;border-radius:20px;padding:28px 24px;width:100%;max-width:440px;max-height:90vh;overflow-y:auto}
-.modal-title{font-family:‘Playfair Display’,Georgia,serif;font-size:1.3rem;color:#1a1a1a;margin-bottom:20px}
+.modal-title{font-family:'Playfair Display',Georgia,serif;font-size:1.3rem;color:#1a1a1a;margin-bottom:20px}
 .modal-form-group{margin-bottom:16px}
 .modal-label{display:block;font-size:0.72rem;color:#8a7a76;text-transform:uppercase;letter-spacing:0.5px;font-weight:500;margin-bottom:7px}
-.modal-input{width:100%;padding:12px 14px;border:1.5px solid #c8e6c9;border-radius:10px;font-size:0.88rem;color:#1a1a1a;background:#f5faf5;font-family:‘DM Sans’,sans-serif;outline:none;-webkit-appearance:none;appearance:none}
+.modal-input{width:100%;padding:12px 14px;border:1.5px solid #c8e6c9;border-radius:10px;font-size:0.88rem;color:#1a1a1a;background:#f5faf5;font-family:'DM Sans',sans-serif;outline:none;-webkit-appearance:none;appearance:none}
 .modal-input:focus{border-color:#51BC54}
 .modal-actions{display:flex;gap:10px;margin-top:20px}
-.btn-modal-ok{flex:1;background:#2D6C2F;color:#fff;border:none;border-radius:50px;padding:12px;font-size:0.88rem;font-weight:500;cursor:pointer;font-family:‘DM Sans’,sans-serif}
-.btn-modal-cancel{flex:1;background:#f5f5f5;color:#8a7a76;border:none;border-radius:50px;padding:12px;font-size:0.88rem;font-weight:500;cursor:pointer;font-family:‘DM Sans’,sans-serif}
+.btn-modal-ok{flex:1;background:#2D6C2F;color:#fff;border:none;border-radius:50px;padding:12px;font-size:0.88rem;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif}
+.btn-modal-cancel{flex:1;background:#f5f5f5;color:#8a7a76;border:none;border-radius:50px;padding:12px;font-size:0.88rem;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif}
 .avatar-preview{width:80px;height:80px;border-radius:50%;object-fit:cover;border:3px solid #c8e6c9;margin-bottom:12px;display:none}
 .avatar-preview.show{display:block}
 
@@ -217,7 +216,7 @@ tbody td{padding:13px 14px;color:#1a1a1a;vertical-align:middle}
 .reporte-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:20px}
 .rep-card{background:#fff;border-radius:16px;padding:20px;border:1px solid #eee}
 .rep-card-label{font-size:0.72rem;color:#8a7a76;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px}
-.rep-card-num{font-family:‘Playfair Display’,Georgia,serif;font-size:1.8rem;font-weight:700;color:#1a1a1a;line-height:1;margin-bottom:4px}
+.rep-card-num{font-family:'Playfair Display',Georgia,serif;font-size:1.8rem;font-weight:700;color:#1a1a1a;line-height:1;margin-bottom:4px}
 .rep-card-sub{font-size:0.72rem;color:#8a7a76}
 .rep-card.green .rep-card-num{color:#1a7a3d}
 .rep-card.rose .rep-card-num{color:#2D6C2F}
@@ -233,7 +232,7 @@ tbody td{padding:13px 14px;color:#1a1a1a;vertical-align:middle}
 .dia-bar-fill{height:100%;background:linear-gradient(90deg,#c8e6c9,#51BC54);border-radius:50px}
 /* HORARIO */
 .horario-pro-select{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:20px}
-.horario-pro-btn{padding:8px 16px;border-radius:50px;font-size:0.82rem;font-weight:500;cursor:pointer;font-family:‘DM Sans’,sans-serif;border:1.5px solid #e0e0e0;background:#fff;color:#8a7a76;transition:all 0.2s}
+.horario-pro-btn{padding:8px 16px;border-radius:50px;font-size:0.82rem;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif;border:1.5px solid #e0e0e0;background:#fff;color:#8a7a76;transition:all 0.2s}
 .horario-pro-btn.active{background:#2D6C2F;color:#fff;border-color:#2D6C2F}
 .horario-grid{display:flex;flex-direction:column;gap:10px}
 .horario-dia{background:#f9f9f9;border-radius:14px;padding:16px 20px;border:1px solid #eee;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
@@ -242,34 +241,33 @@ tbody td{padding:13px 14px;color:#1a1a1a;vertical-align:middle}
 .horario-toggle input{opacity:0;width:0;height:0;position:absolute}
 .horario-toggle-slider{position:absolute;inset:0;background:#e0e0e0;border-radius:50px;cursor:pointer;transition:0.3s}
 .horario-toggle input:checked+.horario-toggle-slider{background:#2D6C2F}
-.horario-toggle-slider:before{content:’’;position:absolute;width:18px;height:18px;left:3px;top:3px;background:#fff;border-radius:50%;transition:0.3s}
+.horario-toggle-slider:before{content:'';position:absolute;width:18px;height:18px;left:3px;top:3px;background:#fff;border-radius:50%;transition:0.3s}
 .horario-toggle input:checked+.horario-toggle-slider:before{transform:translateX(20px)}
 .horario-horas{display:flex;align-items:center;gap:8px;flex:1;flex-wrap:wrap}
 .horario-horas label{font-size:0.75rem;color:#8a7a76}
-.horario-horas input[type=time]{padding:6px 10px;border:1.5px solid #c8e6c9;border-radius:8px;font-size:0.82rem;font-family:‘DM Sans’,sans-serif;color:#1a1a1a;background:#fff;outline:none}
+.horario-horas input[type=time]{padding:6px 10px;border:1.5px solid #c8e6c9;border-radius:8px;font-size:0.82rem;font-family:'DM Sans',sans-serif;color:#1a1a1a;background:#fff;outline:none}
 .horario-descanso{font-size:0.78rem;color:#8a7a76;font-style:italic}
-.btn-guardar-horario{background:#2D6C2F;color:#fff;border:none;border-radius:50px;padding:12px 28px;font-size:0.88rem;font-weight:500;cursor:pointer;font-family:‘DM Sans’,sans-serif;margin-top:16px}
+.btn-guardar-horario{background:#2D6C2F;color:#fff;border:none;border-radius:50px;padding:12px 28px;font-size:0.88rem;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif;margin-top:16px}
 @media(max-width:960px){.reporte-grid{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:480px){.reporte-grid{grid-template-columns:1fr 1fr}.horario-dia{flex-direction:column;align-items:flex-start}}
-.sidebar{transform:translateX(-240px)}
-.sidebar.open{transform:translateX(0)}
-.main{margin-left:0;padding:76px 16px 24px}
-.mob-header{display:flex}
-.stats-grid{grid-template-columns:repeat(2,1fr);gap:12px}
-.pro-grid{grid-template-columns:1fr}
-.pros-admin-grid{grid-template-columns:repeat(2,1fr)}
-.crm-resumen{grid-template-columns:repeat(3,1fr)}
-.crm-card-stats{grid-template-columns:repeat(2,1fr)}
-.topbar-title{font-size:1.4rem}
+  .sidebar{transform:translateX(-240px)}
+  .sidebar.open{transform:translateX(0)}
+  .main{margin-left:0;padding:76px 16px 24px}
+  .mob-header{display:flex}
+  .stats-grid{grid-template-columns:repeat(2,1fr);gap:12px}
+  .pro-grid{grid-template-columns:1fr}
+  .pros-admin-grid{grid-template-columns:repeat(2,1fr)}
+  .crm-resumen{grid-template-columns:repeat(3,1fr)}
+  .crm-card-stats{grid-template-columns:repeat(2,1fr)}
+  .topbar-title{font-size:1.4rem}
 }
 @media(max-width:480px){
-.stats-grid{grid-template-columns:repeat(2,1fr);gap:10px}
-.sc-num{font-size:1.5rem}
-.pros-admin-grid{grid-template-columns:1fr}
-.filtro-fechas{flex-direction:column;align-items:flex-start}
+  .stats-grid{grid-template-columns:repeat(2,1fr);gap:10px}
+  .sc-num{font-size:1.5rem}
+  .pros-admin-grid{grid-template-columns:1fr}
+  .filtro-fechas{flex-direction:column;align-items:flex-start}
 }
 </style>
-
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css">
 </head>
 <body>
@@ -277,7 +275,6 @@ tbody td{padding:13px 14px;color:#1a1a1a;vertical-align:middle}
 <div class="toast" id="toast"></div>
 
 <!-- MODAL REDENCIÓN -->
-
 <div id="modal-redencion" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:9999;align-items:center;justify-content:center;padding:20px;">
   <div style="background:#fff;border-radius:20px;padding:28px 24px;width:100%;max-width:360px;">
     <div style="font-family:'Playfair Display',Georgia,serif;font-size:1.2rem;color:#1a1a1a;margin-bottom:4px">Canjear puntos</div>
@@ -309,7 +306,6 @@ tbody td{padding:13px 14px;color:#1a1a1a;vertical-align:middle}
 </div>
 
 <!-- LOGIN -->
-
 <div id="admin-loader">
   <img src="maposnegro.png" alt="MApos" style="height:60px;">
   <div class="al-spinner"></div>
@@ -329,7 +325,6 @@ tbody td{padding:13px 14px;color:#1a1a1a;vertical-align:middle}
 </div>
 
 <!-- APP -->
-
 <div id="app">
 
   <div class="mob-header">
@@ -345,303 +340,297 @@ tbody td{padding:13px 14px;color:#1a1a1a;vertical-align:middle}
     <div style="padding:24px 24px 4px;"><img src="mapos.png" alt="MApos" style="height:48px;"></div>
     <div class="sr">Panel Admin</div>
 
+    <div class="suc-wrap">
+      <select class="suc-sel" id="suc-sel" onchange="cambiarSucursal(this.value)">
+        <option value="rose">Rosē — Ciudad Jardín</option>
+        <option value="rose-laureles">Sede Laureles</option>
+        <option value="rose-envigado">Sede Envigado</option>
+      </select>
+    </div>
 
-<div class="suc-wrap">
-  <select class="suc-sel" id="suc-sel" onchange="cambiarSucursal(this.value)">
-    <option value="rose">Rosē — Ciudad Jardín</option>
-    <option value="rose-laureles">Sede Laureles</option>
-    <option value="rose-envigado">Sede Envigado</option>
-  </select>
-</div>
+    <div class="ss">Principal</div>
+    <button class="slink active" onclick="showPage('dashboard',this)">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+      Dashboard
+    </button>
 
-<div class="ss">Principal</div>
-<button class="slink active" onclick="showPage('dashboard',this)">
-  <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
-  Dashboard
-</button>
+    <div class="ss">Operacion</div>
+    <button class="slink" onclick="showPage('citas',this)">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+      Citas
+    </button>
+    <button class="slink" onclick="showPage('profesionales-stats',this)">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+      Ventas profesionales
+    </button>
+    <button class="slink" onclick="showPage('profesionales-mgmt',this)">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>
+      Gestionar equipo
+    </button>
+    <button class="slink" onclick="showPage('horarios',this)">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      Horarios
+    </button>
 
-<div class="ss">Operacion</div>
-<button class="slink" onclick="showPage('citas',this)">
-  <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-  Citas
-</button>
-<button class="slink" onclick="showPage('profesionales-stats',this)">
-  <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
-  Ventas profesionales
-</button>
-<button class="slink" onclick="showPage('profesionales-mgmt',this)">
-  <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>
-  Gestionar equipo
-</button>
-<button class="slink" onclick="showPage('horarios',this)">
-  <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-  Horarios
-</button>
+    <div class="ss">Reportes</div>
+    <button class="slink" onclick="showPage('reporte',this)">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+      Reporte del spa
+    </button>
 
-<div class="ss">Reportes</div>
-<button class="slink" onclick="showPage('reporte',this)">
-  <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
-  Reporte del spa
-</button>
+    <div class="ss">Clientes</div>
+    <button class="slink" onclick="showPage('crm',this)">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      CRM Clientas
+    </button>
+    <button class="slink" onclick="showPage('calificaciones',this)">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+      Calificaciónes
+    </button>
+    <button class="slink" onclick="showPage('configuracion',this)">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+      Configuración
+    </button>
 
-<div class="ss">Clientes</div>
-<button class="slink" onclick="showPage('crm',this)">
-  <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-  CRM Clientas
-</button>
-<button class="slink" onclick="showPage('calificaciones',this)">
-  <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-  Calificaciónes
-</button>
-<button class="slink" onclick="showPage('configuracion',this)">
-  <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-  Configuración
-</button>
-
-<div class="sb">
-  <div class="sb-user" id="sb-user"></div>
-  <button class="btn-out" onclick="logoutAdmin()">Cerrar sesion</button>
-</div>
-
-
+    <div class="sb">
+      <div class="sb-user" id="sb-user"></div>
+      <button class="btn-out" onclick="logoutAdmin()">Cerrar sesion</button>
+    </div>
   </div>
 
   <div class="main">
 
-
-<!-- DASHBOARD -->
-<div class="page active" id="page-dashboard">
-  <div class="topbar">
-    <div>
-      <div class="topbar-title">Buen dia, <em>Admin</em></div>
-      <div class="topbar-sub" id="fecha-hoy"></div>
-    </div>
-    <div class="topbar-badge" id="badge-dash">Rosē — Ciudad Jardín</div>
-  </div>
-  <div class="stats-grid">
-    <div class="stat-card accent"><div class="sc-label">Esta semana</div><div class="sc-num" id="stat-semana">--</div><div class="sc-sub">citas</div></div>
-    <div class="stat-card"><div class="sc-label">Este mes</div><div class="sc-num" id="stat-mes">--</div><div class="sc-sub">citas</div></div>
-    <div class="stat-card"><div class="sc-label">Total citas</div><div class="sc-num" id="stat-total">--</div><div class="sc-sub">en el sistema</div></div>
-    <div class="stat-card"><div class="sc-label">Clientas</div><div class="sc-num" id="stat-clientes">--</div><div class="sc-sub">registradas</div></div>
-  </div>
-  <div class="card">
-    <div class="card-title">Próximas citas <span class="ct-right" id="prox-count">0 citas</span></div>
-    <div class="filtros">
-      <button class="fb active" onclick="filtrarPróximas('hoy',this)">Hoy</button>
-      <button class="fb" onclick="filtrarPróximas('mañana',this)">Mañana</button>
-      <button class="fb" onclick="filtrarPróximas('semana',this)">Esta semana</button>
-      <button class="fb" onclick="filtrarPróximas('todas',this)">Todas</button>
-    </div>
-    <div class="tabla-wrap"><table>
-      <thead><tr><th>Clienta</th><th>Servicio</th><th>Profesional</th><th>Fecha y Hora</th><th>Estado</th><th>Accion</th></tr></thead>
-      <tbody id="tabla-próximas"></tbody>
-    </table></div>
-  </div>
-  <div class="card">
-    <div class="card-title">Rendimiento esta semana</div>
-    <div class="pro-grid" id="pro-semana"></div>
-  </div>
-</div>
-
-<!-- CITAS -->
-<div class="page" id="page-citas">
-  <div class="topbar">
-    <div><div class="topbar-title">Todas las <em>citas</em></div></div>
-    <div style="display:flex;gap:10px;align-items:center;">
-      <button onclick="abrirModalCitaManual()" style="background:#51BC54;color:#fff;border:none;border-radius:50px;padding:10px 20px;font-size:0.85rem;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif;">+ Cita manual</button>
-      <div class="topbar-badge" id="badge-citas">Rosē — Ciudad Jardín</div>
-    </div>
-  </div>
-  <div class="card">
-    <div class="filtros">
-      <button class="fb active" onclick="filtrarCitas('todas',this)">Todas</button>
-      <button class="fb" onclick="filtrarCitas('pendiente',this)">Pendientes</button>
-      <button class="fb" onclick="filtrarCitas('confirmada',this)">Confirmadas</button>
-      <button class="fb" onclick="filtrarCitas('atendida',this)">Atendidas</button>
-      <button class="fb" onclick="filtrarCitas('cancelada',this)">Canceladas</button>
-    </div>
-    <div class="filtro-fechas">
-      <label>Desde</label><input type="date" id="citas-desde">
-      <label>Hasta</label><input type="date" id="citas-hasta">
-      <button class="btn-filtrar" onclick="filtrarCitasRango()">Filtrar</button>
-    </div>
-    <div class="tabla-wrap"><table>
-      <thead><tr><th>Clienta</th><th>Servicio</th><th>Profesional</th><th>Fecha y Hora</th><th>Estado</th><th>Accion</th></tr></thead>
-      <tbody id="tabla-todas"></tbody>
-    </table></div>
-  </div>
-</div>
-
-<!-- VENTAS PROFESIONALES -->
-<div class="page" id="page-profesionales-stats">
-  <div class="topbar">
-    <div><div class="topbar-title">Ventas por <em>profesional</em></div></div>
-    <div class="topbar-badge" id="badge-pro-stats">Rosē — Ciudad Jardín</div>
-  </div>
-  <div class="card">
-    <div class="filtros">
-      <button class="fb active" onclick="filtrarPro('semana',this)">Esta semana</button>
-      <button class="fb" onclick="filtrarPro('mes',this)">Este mes</button>
-      <button class="fb" onclick="filtrarPro('todo',this)">Todo el tiempo</button>
-    </div>
-    <div class="filtro-fechas">
-      <label>Desde</label><input type="date" id="pro-desde">
-      <label>Hasta</label><input type="date" id="pro-hasta">
-      <button class="btn-filtrar" onclick="filtrarProRango()">Filtrar</button>
-    </div>
-    <div class="pro-grid" id="pro-total"></div>
-  </div>
-</div>
-
-<!-- GESTIONAR EQUIPO -->
-<div class="page" id="page-profesionales-mgmt">
-  <div class="topbar">
-    <div><div class="topbar-title">Gestionar <em>equipo</em></div></div>
-    <div class="topbar-badge" id="badge-mgmt">Rosē — Ciudad Jardín</div>
-  </div>
-  <button class="btn-add-pro" onclick="abrirModalPro()">
-    <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-    Agregar profesional
-  </button>
-  <div class="pros-admin-grid" id="pros-admin-grid"></div>
-</div>
-
-<!-- CRM -->
-<div class="page" id="page-crm">
-  <div class="topbar">
-    <div><div class="topbar-title">CRM <em>Clientas</em></div></div>
-    <div class="topbar-badge" id="badge-crm">Rosē — Ciudad Jardín</div>
-  </div>
-  <div class="crm-resumen">
-    <div class="crm-stat"><div class="crm-stat-num" id="crm-total">0</div><div class="crm-stat-label">Total clientas</div></div>
-    <div class="crm-stat"><div class="crm-stat-num" id="crm-activas" style="color:#1a7a3d">0</div><div class="crm-stat-label">Activas</div></div>
-    <div class="crm-stat"><div class="crm-stat-num" id="crm-perdidas" style="color:#7a1a1a">0</div><div class="crm-stat-label">Perdidas</div></div>
-  </div>
-  <div class="filtros">
-    <button class="fb active" onclick="filtrarCRM('todas',this)">Todas</button>
-    <button class="fb" onclick="filtrarCRM('activa',this)">Activas</button>
-    <button class="fb" onclick="filtrarCRM('tibia',this)">Tibias</button>
-    <button class="fb" onclick="filtrarCRM('perdida',this)">Perdidas</button>
-    <button class="fb" onclick="filtrarCRM('nueva',this)">Nuevas</button>
-  </div>
-  <div style="margin-bottom:16px;position:relative;">
-    <input id="crm-buscar" type="text" placeholder="Buscar por nombre o número..." oninput="buscarCRM()" style="width:100%;padding:12px 16px 12px 40px;border:1.5px solid #e0e0e0;border-radius:50px;font-size:0.88rem;font-family:'DM Sans',sans-serif;outline:none;background:#fff;">
-    <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" style="position:absolute;left:14px;top:50%;transform:translateY(-50%);width:16px;height:16px;stroke:#aaa"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-  </div>
-  <div id="crm-lista"></div>
-</div>
-
-<!-- CALIFICACIONES -->
-<div class="page" id="page-calificaciones">
-  <div class="topbar">
-    <div><div class="topbar-title"><em>Calificaciónes</em></div></div>
-    <div class="topbar-badge" id="badge-cal">Rosē — Ciudad Jardín</div>
-  </div>
-
-  <!-- RESUMEN -->
-  <div class="cal-resumen">
-    <div class="stat-card accent"><div class="sc-label">Promedio general</div><div class="sc-num" id="cal-promedio">0.0</div><div class="sc-sub">estrellas</div></div>
-    <div class="stat-card"><div class="sc-label">Total reseñas</div><div class="sc-num" id="cal-total">0</div><div class="sc-sub">calificaciones</div></div>
-    <div class="stat-card"><div class="sc-label">Esta semana</div><div class="sc-num" id="cal-semana">0</div><div class="sc-sub">nuevas reseñas</div></div>
-  </div>
-
-  <!-- FILTRO POR PROFESIONAL -->
-  <div class="card">
-    <div class="card-title">Reseñas por profesional</div>
-    <div class="cal-filtros" id="cal-filtros">
-      <button class="fb active" onclick="filtrarCalificaciones('todas',this)">Todas</button>
-    </div>
-    <div id="cal-lista"></div>
-  </div>
-</div>
-
-<!-- REPORTE DEL SPA -->
-<div class="page" id="page-reporte">
-  <div class="topbar">
-    <div><div class="topbar-title">Reporte del <em>spa</em></div></div>
-    <div class="topbar-badge" id="badge-reporte">Rosē — Ciudad Jardín</div>
-  </div>
-  <div class="filtros">
-    <button class="fb active" onclick="filtrarReporte('semana',this)">Esta semana</button>
-    <button class="fb" onclick="filtrarReporte('mes',this)">Este mes</button>
-    <button class="fb" onclick="filtrarReporte('ano',this)">Este ano</button>
-    <button class="fb" onclick="filtrarReporte('todo',this)">Todo</button>
-  </div>
-  <div class="filtro-fechas">
-    <label>Desde</label><input type="date" id="rep-desde">
-    <label>Hasta</label><input type="date" id="rep-hasta">
-    <button class="btn-filtrar" onclick="filtrarReporteRango()">Filtrar</button>
-  </div>
-  <div class="reporte-grid" id="rep-stats"></div>
-  <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:20px">
-    <div class="card">
-      <div class="card-title">Servicios mas pedidos</div>
-      <div id="rep-servicios-ranking"></div>
-    </div>
-    <div class="card">
-      <div class="card-title">Dias con mas citas</div>
-      <div id="rep-dias-bars"></div>
-    </div>
-  </div>
-  <div class="card">
-    <div class="card-title">Resumen de clientas</div>
-    <div class="reporte-grid" id="rep-clientas"></div>
-  </div>
-</div>
-
-<!-- HORARIOS -->
-<div class="page" id="page-horarios">
-  <div class="topbar">
-    <div><div class="topbar-title">Horario <em>profesionales</em></div></div>
-    <div class="topbar-badge" id="badge-horarios">Sede Ciudad Jardín</div>
-  </div>
-  <div class="card">
-    <div class="card-title">Selecciona una profesional</div>
-    <div class="horario-pro-select" id="horario-pro-select"></div>
-    <div id="horario-contenido">
-      <div class="empty">
-        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-        <div class="empty-txt">Selecciona una profesional para editar su horario</div>
+    <!-- DASHBOARD -->
+    <div class="page active" id="page-dashboard">
+      <div class="topbar">
+        <div>
+          <div class="topbar-title">Buen dia, <em>Admin</em></div>
+          <div class="topbar-sub" id="fecha-hoy"></div>
+        </div>
+        <div class="topbar-badge" id="badge-dash">Rosē — Ciudad Jardín</div>
+      </div>
+      <div class="stats-grid">
+        <div class="stat-card accent"><div class="sc-label">Esta semana</div><div class="sc-num" id="stat-semana">--</div><div class="sc-sub">citas</div></div>
+        <div class="stat-card"><div class="sc-label">Este mes</div><div class="sc-num" id="stat-mes">--</div><div class="sc-sub">citas</div></div>
+        <div class="stat-card"><div class="sc-label">Total citas</div><div class="sc-num" id="stat-total">--</div><div class="sc-sub">en el sistema</div></div>
+        <div class="stat-card"><div class="sc-label">Clientas</div><div class="sc-num" id="stat-clientes">--</div><div class="sc-sub">registradas</div></div>
+      </div>
+      <div class="card">
+        <div class="card-title">Próximas citas <span class="ct-right" id="prox-count">0 citas</span></div>
+        <div class="filtros">
+          <button class="fb active" onclick="filtrarPróximas('hoy',this)">Hoy</button>
+          <button class="fb" onclick="filtrarPróximas('mañana',this)">Mañana</button>
+          <button class="fb" onclick="filtrarPróximas('semana',this)">Esta semana</button>
+          <button class="fb" onclick="filtrarPróximas('todas',this)">Todas</button>
+        </div>
+        <div class="tabla-wrap"><table>
+          <thead><tr><th>Clienta</th><th>Servicio</th><th>Profesional</th><th>Fecha y Hora</th><th>Estado</th><th>Accion</th></tr></thead>
+          <tbody id="tabla-próximas"></tbody>
+        </table></div>
+      </div>
+      <div class="card">
+        <div class="card-title">Rendimiento esta semana</div>
+        <div class="pro-grid" id="pro-semana"></div>
       </div>
     </div>
-  </div>
-</div>
 
-<!-- CONFIGURACIÓN -->
-<div class="page" id="page-configuracion">
-  <div class="topbar">
-    <div><div class="topbar-title"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v2M12 20v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M2 12h2M20 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>️ <em>Configuración</em></div></div>
-    <button onclick="abrirModalServicio()" style="background:#51BC54;color:#fff;border:none;border-radius:50px;padding:10px 20px;font-size:0.85rem;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif;">+ Nuevo servicio</button>
-  </div>
-  <div class="card">
-    <div class="card-title">Servicios del spa</div>
-    <input type="text" id="buscador-servicios" placeholder="<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg> Buscar servicio..." oninput="filtrarServicios()" style="width:100%;padding:12px 16px;border:1.5px solid #c8e6c9;border-radius:12px;font-size:0.9rem;font-family:'DM Sans',sans-serif;outline:none;box-sizing:border-box;margin-bottom:16px;">
-    <div id="config-servicios-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;"></div>
-  </div>
-  <div class="card" style="margin-top:16px;">
-    <div class="card-title">Video del hero</div>
-    <div style="font-size:0.8rem;color:#8a7a76;margin-bottom:12px;">El video aparece de fondo en la pantalla principal del sitio. Máximo <strong>20MB</strong>, formato <strong>MP4</strong> recomendado.</div>
-    <div id="hero-video-preview" style="margin-bottom:12px;"></div>
-    <label style="background:#51BC54;color:#fff;border-radius:50px;padding:10px 20px;font-size:0.85rem;cursor:pointer;font-family:'DM Sans',sans-serif;display:inline-block;">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="2" y="7" width="15" height="10" rx="2"/><path d="M17 9l5-2v10l-5-2V9z"/></svg> Subir video
-      <input type="file" accept="video/mp4,video/quicktime" style="display:none;" onchange="subirVideoHero(this)">
-    </label>
-  </div>
-      <label style="background:#51BC54;color:#fff;border-radius:50px;padding:8px 16px;font-size:0.82rem;cursor:pointer;font-family:'DM Sans',sans-serif;">
-        + Subir foto
-        <input type="file" accept="image/*" style="display:none;" onchange="subirFotoInspiracion(this)">
-      </label>
+    <!-- CITAS -->
+    <div class="page" id="page-citas">
+      <div class="topbar">
+        <div><div class="topbar-title">Todas las <em>citas</em></div></div>
+        <div style="display:flex;gap:10px;align-items:center;">
+          <button onclick="abrirModalCitaManual()" style="background:#51BC54;color:#fff;border:none;border-radius:50px;padding:10px 20px;font-size:0.85rem;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif;">+ Cita manual</button>
+          <div class="topbar-badge" id="badge-citas">Rosē — Ciudad Jardín</div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="filtros">
+          <button class="fb active" onclick="filtrarCitas('todas',this)">Todas</button>
+          <button class="fb" onclick="filtrarCitas('pendiente',this)">Pendientes</button>
+          <button class="fb" onclick="filtrarCitas('confirmada',this)">Confirmadas</button>
+          <button class="fb" onclick="filtrarCitas('atendida',this)">Atendidas</button>
+          <button class="fb" onclick="filtrarCitas('cancelada',this)">Canceladas</button>
+        </div>
+        <div class="filtro-fechas">
+          <label>Desde</label><input type="date" id="citas-desde">
+          <label>Hasta</label><input type="date" id="citas-hasta">
+          <button class="btn-filtrar" onclick="filtrarCitasRango()">Filtrar</button>
+        </div>
+        <div class="tabla-wrap"><table>
+          <thead><tr><th>Clienta</th><th>Servicio</th><th>Profesional</th><th>Fecha y Hora</th><th>Estado</th><th>Accion</th></tr></thead>
+          <tbody id="tabla-todas"></tbody>
+        </table></div>
+      </div>
     </div>
-    <div id="inspo-admin-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px;margin-top:16px;"></div>
-  </div>
-</div>
 
+    <!-- VENTAS PROFESIONALES -->
+    <div class="page" id="page-profesionales-stats">
+      <div class="topbar">
+        <div><div class="topbar-title">Ventas por <em>profesional</em></div></div>
+        <div class="topbar-badge" id="badge-pro-stats">Rosē — Ciudad Jardín</div>
+      </div>
+      <div class="card">
+        <div class="filtros">
+          <button class="fb active" onclick="filtrarPro('semana',this)">Esta semana</button>
+          <button class="fb" onclick="filtrarPro('mes',this)">Este mes</button>
+          <button class="fb" onclick="filtrarPro('todo',this)">Todo el tiempo</button>
+        </div>
+        <div class="filtro-fechas">
+          <label>Desde</label><input type="date" id="pro-desde">
+          <label>Hasta</label><input type="date" id="pro-hasta">
+          <button class="btn-filtrar" onclick="filtrarProRango()">Filtrar</button>
+        </div>
+        <div class="pro-grid" id="pro-total"></div>
+      </div>
+    </div>
+
+    <!-- GESTIONAR EQUIPO -->
+    <div class="page" id="page-profesionales-mgmt">
+      <div class="topbar">
+        <div><div class="topbar-title">Gestionar <em>equipo</em></div></div>
+        <div class="topbar-badge" id="badge-mgmt">Rosē — Ciudad Jardín</div>
+      </div>
+      <button class="btn-add-pro" onclick="abrirModalPro()">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        Agregar profesional
+      </button>
+      <div class="pros-admin-grid" id="pros-admin-grid"></div>
+    </div>
+
+    <!-- CRM -->
+    <div class="page" id="page-crm">
+      <div class="topbar">
+        <div><div class="topbar-title">CRM <em>Clientas</em></div></div>
+        <div class="topbar-badge" id="badge-crm">Rosē — Ciudad Jardín</div>
+      </div>
+      <div class="crm-resumen">
+        <div class="crm-stat"><div class="crm-stat-num" id="crm-total">0</div><div class="crm-stat-label">Total clientas</div></div>
+        <div class="crm-stat"><div class="crm-stat-num" id="crm-activas" style="color:#1a7a3d">0</div><div class="crm-stat-label">Activas</div></div>
+        <div class="crm-stat"><div class="crm-stat-num" id="crm-perdidas" style="color:#7a1a1a">0</div><div class="crm-stat-label">Perdidas</div></div>
+      </div>
+      <div class="filtros">
+        <button class="fb active" onclick="filtrarCRM('todas',this)">Todas</button>
+        <button class="fb" onclick="filtrarCRM('activa',this)">Activas</button>
+        <button class="fb" onclick="filtrarCRM('tibia',this)">Tibias</button>
+        <button class="fb" onclick="filtrarCRM('perdida',this)">Perdidas</button>
+        <button class="fb" onclick="filtrarCRM('nueva',this)">Nuevas</button>
+      </div>
+      <div style="margin-bottom:16px;position:relative;">
+        <input id="crm-buscar" type="text" placeholder="Buscar por nombre o número..." oninput="buscarCRM()" style="width:100%;padding:12px 16px 12px 40px;border:1.5px solid #e0e0e0;border-radius:50px;font-size:0.88rem;font-family:'DM Sans',sans-serif;outline:none;background:#fff;">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" style="position:absolute;left:14px;top:50%;transform:translateY(-50%);width:16px;height:16px;stroke:#aaa"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </div>
+      <div id="crm-lista"></div>
+    </div>
+
+    <!-- CALIFICACIONES -->
+    <div class="page" id="page-calificaciones">
+      <div class="topbar">
+        <div><div class="topbar-title"><em>Calificaciónes</em></div></div>
+        <div class="topbar-badge" id="badge-cal">Rosē — Ciudad Jardín</div>
+      </div>
+
+      <!-- RESUMEN -->
+      <div class="cal-resumen">
+        <div class="stat-card accent"><div class="sc-label">Promedio general</div><div class="sc-num" id="cal-promedio">0.0</div><div class="sc-sub">estrellas</div></div>
+        <div class="stat-card"><div class="sc-label">Total reseñas</div><div class="sc-num" id="cal-total">0</div><div class="sc-sub">calificaciones</div></div>
+        <div class="stat-card"><div class="sc-label">Esta semana</div><div class="sc-num" id="cal-semana">0</div><div class="sc-sub">nuevas reseñas</div></div>
+      </div>
+
+      <!-- FILTRO POR PROFESIONAL -->
+      <div class="card">
+        <div class="card-title">Reseñas por profesional</div>
+        <div class="cal-filtros" id="cal-filtros">
+          <button class="fb active" onclick="filtrarCalificaciones('todas',this)">Todas</button>
+        </div>
+        <div id="cal-lista"></div>
+      </div>
+    </div>
+
+    <!-- REPORTE DEL SPA -->
+    <div class="page" id="page-reporte">
+      <div class="topbar">
+        <div><div class="topbar-title">Reporte del <em>spa</em></div></div>
+        <div class="topbar-badge" id="badge-reporte">Rosē — Ciudad Jardín</div>
+      </div>
+      <div class="filtros">
+        <button class="fb active" onclick="filtrarReporte('semana',this)">Esta semana</button>
+        <button class="fb" onclick="filtrarReporte('mes',this)">Este mes</button>
+        <button class="fb" onclick="filtrarReporte('ano',this)">Este ano</button>
+        <button class="fb" onclick="filtrarReporte('todo',this)">Todo</button>
+      </div>
+      <div class="filtro-fechas">
+        <label>Desde</label><input type="date" id="rep-desde">
+        <label>Hasta</label><input type="date" id="rep-hasta">
+        <button class="btn-filtrar" onclick="filtrarReporteRango()">Filtrar</button>
+      </div>
+      <div class="reporte-grid" id="rep-stats"></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:20px">
+        <div class="card">
+          <div class="card-title">Servicios mas pedidos</div>
+          <div id="rep-servicios-ranking"></div>
+        </div>
+        <div class="card">
+          <div class="card-title">Dias con mas citas</div>
+          <div id="rep-dias-bars"></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">Resumen de clientas</div>
+        <div class="reporte-grid" id="rep-clientas"></div>
+      </div>
+    </div>
+
+    <!-- HORARIOS -->
+    <div class="page" id="page-horarios">
+      <div class="topbar">
+        <div><div class="topbar-title">Horario <em>profesionales</em></div></div>
+        <div class="topbar-badge" id="badge-horarios">Sede Ciudad Jardín</div>
+      </div>
+      <div class="card">
+        <div class="card-title">Selecciona una profesional</div>
+        <div class="horario-pro-select" id="horario-pro-select"></div>
+        <div id="horario-contenido">
+          <div class="empty">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            <div class="empty-txt">Selecciona una profesional para editar su horario</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CONFIGURACIÓN -->
+    <div class="page" id="page-configuracion">
+      <div class="topbar">
+        <div><div class="topbar-title"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v2M12 20v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M2 12h2M20 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>️ <em>Configuración</em></div></div>
+        <button onclick="abrirModalServicio()" style="background:#51BC54;color:#fff;border:none;border-radius:50px;padding:10px 20px;font-size:0.85rem;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif;">+ Nuevo servicio</button>
+      </div>
+      <div class="card">
+        <div class="card-title">Servicios del spa</div>
+        <input type="text" id="buscador-servicios" placeholder="Buscar servicio..." oninput="filtrarServicios()" style="width:100%;padding:12px 16px;border:1.5px solid #c8e6c9;border-radius:12px;font-size:0.9rem;font-family:'DM Sans',sans-serif;outline:none;box-sizing:border-box;margin-bottom:16px;">
+        <div id="config-servicios-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;"></div>
+      </div>
+      <div class="card" style="margin-top:16px;">
+        <div class="card-title">Video del hero</div>
+        <div style="font-size:0.8rem;color:#8a7a76;margin-bottom:12px;">El video aparece de fondo en la pantalla principal del sitio. Máximo <strong>20MB</strong>, formato <strong>MP4</strong> recomendado.</div>
+        <div id="hero-video-preview" style="margin-bottom:12px;"></div>
+        <label style="background:#51BC54;color:#fff;border-radius:50px;padding:10px 20px;font-size:0.85rem;cursor:pointer;font-family:'DM Sans',sans-serif;display:inline-block;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="2" y="7" width="15" height="10" rx="2"/><path d="M17 9l5-2v10l-5-2V9z"/></svg> Subir video
+          <input type="file" accept="video/mp4,video/quicktime" style="display:none;" onchange="subirVideoHero(this)">
+        </label>
+      </div>
+          <label style="background:#51BC54;color:#fff;border-radius:50px;padding:8px 16px;font-size:0.82rem;cursor:pointer;font-family:'DM Sans',sans-serif;">
+            + Subir foto
+            <input type="file" accept="image/*" style="display:none;" onchange="subirFotoInspiracion(this)">
+          </label>
+        </div>
+        <div id="inspo-admin-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px;margin-top:16px;"></div>
+      </div>
+    </div>
 
   </div><!-- fin main -->
 </div><!-- fin admin-wrap -->
 
 <!-- MODAL CITA MANUAL -->
-
 <div id="modal-cita-manual" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:9999;align-items:center;justify-content:center;padding:20px;">
   <div style="background:#fff;border-radius:20px;padding:28px 24px;width:100%;max-width:400px;max-height:90vh;overflow-y:auto;">
     <div style="font-family:'Playfair Display',Georgia,serif;font-size:1.2rem;color:#1a1a1a;margin-bottom:4px">Nueva cita manual</div>
@@ -694,50 +683,45 @@ tbody td{padding:13px 14px;color:#1a1a1a;vertical-align:middle}
 </div>
 
 <!-- MODAL PROFESIONAL -->
-
 <div class="modal-overlay" id="modal-pro">
   <div class="modal">
     <div class="modal-title" id="modal-pro-title">Agregar profesional</div>
 
-
-<!-- FOTO UPLOAD -->
-<div style="text-align:center;margin-bottom:20px">
-  <div id="foto-placeholder" style="width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,#f9e4dc,#c8e6c9);display:flex;align-items:center;justify-content:center;margin:0 auto 12px;border:3px solid #c8e6c9;cursor:pointer" onclick="document.getElementById('pro-foto-file').click()">
-    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#2D6C2F" stroke-width="2" stroke-linecap="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-  </div>
-  <img id="avatar-preview" style="width:80px;height:80px;border-radius:50%;object-fit:cover;border:3px solid #c8e6c9;margin:0 auto 12px;display:none;cursor:pointer" src="" alt="preview" onclick="document.getElementById('pro-foto-file').click()">
-  <div style="font-size:0.78rem;color:#8a7a76;margin-bottom:8px">Toca para seleccionar foto</div>
-  <input type="file" id="pro-foto-file" accept="image/*" style="display:none" onchange="seleccionarFoto(this)">
-  <div id="foto-nombre" style="font-size:0.75rem;color:#51BC54;display:none"></div>
-  <div id="foto-progress" style="display:none;margin-top:8px">
-    <div style="height:4px;background:#f0f7f0;border-radius:50px;overflow:hidden">
-      <div id="foto-progress-bar" style="height:100%;background:#51BC54;border-radius:50px;width:0%;transition:width 0.3s"></div>
+    <!-- FOTO UPLOAD -->
+    <div style="text-align:center;margin-bottom:20px">
+      <div id="foto-placeholder" style="width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,#f9e4dc,#c8e6c9);display:flex;align-items:center;justify-content:center;margin:0 auto 12px;border:3px solid #c8e6c9;cursor:pointer" onclick="document.getElementById('pro-foto-file').click()">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#2D6C2F" stroke-width="2" stroke-linecap="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      </div>
+      <img id="avatar-preview" style="width:80px;height:80px;border-radius:50%;object-fit:cover;border:3px solid #c8e6c9;margin:0 auto 12px;display:none;cursor:pointer" src="" alt="preview" onclick="document.getElementById('pro-foto-file').click()">
+      <div style="font-size:0.78rem;color:#8a7a76;margin-bottom:8px">Toca para seleccionar foto</div>
+      <input type="file" id="pro-foto-file" accept="image/*" style="display:none" onchange="seleccionarFoto(this)">
+      <div id="foto-nombre" style="font-size:0.75rem;color:#51BC54;display:none"></div>
+      <div id="foto-progress" style="display:none;margin-top:8px">
+        <div style="height:4px;background:#f0f7f0;border-radius:50px;overflow:hidden">
+          <div id="foto-progress-bar" style="height:100%;background:#51BC54;border-radius:50px;width:0%;transition:width 0.3s"></div>
+        </div>
+        <div id="foto-progress-txt" style="font-size:0.72rem;color:#8a7a76;margin-top:4px">Subiendo foto...</div>
+      </div>
     </div>
-    <div id="foto-progress-txt" style="font-size:0.72rem;color:#8a7a76;margin-top:4px">Subiendo foto...</div>
-  </div>
-</div>
 
-<div class="modal-form-group">
-  <label class="modal-label">Nombre completo</label>
-  <input class="modal-input" id="pro-nombre" type="text" placeholder="Valentina Garcia">
-</div>
-<div class="modal-form-group">
-  <label class="modal-label">Especialidad</label>
-  <input class="modal-input" id="pro-especialidad" type="text" placeholder="Nail Art - Acrilicas">
-</div>
-<input type="hidden" id="pro-edit-id">
-<input type="hidden" id="pro-foto-url">
-<div class="modal-actions">
-  <button class="btn-modal-cancel" onclick="cerrarModalPro()">Cancelar</button>
-  <button class="btn-modal-ok" id="btn-guardar-pro" onclick="guardarPro()">Guardar</button>
-</div>
-
-
+    <div class="modal-form-group">
+      <label class="modal-label">Nombre completo</label>
+      <input class="modal-input" id="pro-nombre" type="text" placeholder="Valentina Garcia">
+    </div>
+    <div class="modal-form-group">
+      <label class="modal-label">Especialidad</label>
+      <input class="modal-input" id="pro-especialidad" type="text" placeholder="Nail Art - Acrilicas">
+    </div>
+    <input type="hidden" id="pro-edit-id">
+    <input type="hidden" id="pro-foto-url">
+    <div class="modal-actions">
+      <button class="btn-modal-cancel" onclick="cerrarModalPro()">Cancelar</button>
+      <button class="btn-modal-ok" id="btn-guardar-pro" onclick="guardarPro()">Guardar</button>
+    </div>
   </div>
 </div>
 
 <!-- MODAL SERVICIO -->
-
 <div id="modal-servicio" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:9999;align-items:center;justify-content:center;padding:20px;">
   <div style="background:#fff;border-radius:20px;padding:28px 24px;width:100%;max-width:420px;max-height:90vh;overflow-y:auto;">
     <div style="font-family:'Playfair Display',Georgia,serif;font-size:1.2rem;color:#1a1a1a;margin-bottom:20px;" id="modal-servicio-title">Nuevo servicio</div>
@@ -793,16 +777,14 @@ tbody td{padding:13px 14px;color:#1a1a1a;vertical-align:middle}
 </div>
 
 <!-- PANEL ESPECIALISTA -->
-
 <div id="app-especialista" style="display:none;min-height:100vh;background:#f5faf5;">
   <!-- Header móvil -->
   <div style="background:#111a11;padding:16px 20px;display:flex;justify-content:space-between;align-items:center;">
     <img src="mapos.png" alt="MApos" style="height:48px;">
     <button onclick="auth.signOut()" style="background:none;border:1px solid rgba(255,255,255,0.3);color:#fff;border-radius:50px;padding:6px 14px;font-size:0.78rem;cursor:pointer;font-family:'DM Sans',sans-serif;">Salir</button>
   </div>
-
+  
   <!-- Bienvenida -->
-
   <div style="background:linear-gradient(135deg,#2D6C2F,#51BC54);padding:24px 20px;color:#fff;">
     <div style="font-size:0.82rem;opacity:0.8;margin-bottom:4px;">Bienvenida </div>
     <div id="esp-nombre" style="font-family:'Playfair Display',Georgia,serif;font-size:1.5rem;font-weight:600;"></div>
@@ -810,7 +792,6 @@ tbody td{padding:13px 14px;color:#1a1a1a;vertical-align:middle}
   </div>
 
   <!-- Tabs de navegación -->
-
   <div style="display:flex;background:#fff;border-bottom:1px solid #e8f5e9;overflow-x:auto;scrollbar-width:none;">
     <button onclick="espTab('citas',this)" class="esp-tab" style="color:#8a7a76;border-bottom:2px solid transparent;">Mis citas</button>
     <button onclick="espTab('perfil',this)" class="esp-tab" style="color:#8a7a76;border-bottom:2px solid transparent;">Mi perfil</button>
@@ -819,67 +800,59 @@ tbody td{padding:13px 14px;color:#1a1a1a;vertical-align:middle}
   </div>
 
   <!-- Contenido tabs -->
-
   <div style="padding:20px;">
-
-
-<!-- MIS CITAS -->
-<div id="esp-page-citas">
-  <div style="display:flex;gap:8px;margin-bottom:16px;overflow-x:auto;scrollbar-width:none;">
-    <button onclick="filtrarCitasEsp('hoy',this)" style="flex:0 0 auto;background:#51BC54;color:#fff;border:none;border-radius:50px;padding:8px 16px;font-size:0.78rem;cursor:pointer;font-family:'DM Sans',sans-serif;">Hoy</button>
-    <button onclick="filtrarCitasEsp('semana',this)" style="flex:0 0 auto;background:#f0f7f0;color:#2D6C2F;border:none;border-radius:50px;padding:8px 16px;font-size:0.78rem;cursor:pointer;font-family:'DM Sans',sans-serif;">Esta semana</button>
-    <button onclick="filtrarCitasEsp('todas',this)" style="flex:0 0 auto;background:#f0f7f0;color:#2D6C2F;border:none;border-radius:50px;padding:8px 16px;font-size:0.78rem;cursor:pointer;font-family:'DM Sans',sans-serif;">Todas</button>
-  </div>
-  <div id="esp-citas-lista"></div>
-</div>
-
-<!-- MI PERFIL -->
-<div id="esp-page-perfil" style="display:none;">
-  <div style="background:#fff;border-radius:16px;padding:20px;border:1px solid #e8f5e9;">
-    <div style="text-align:center;margin-bottom:20px;">
-      <div id="esp-foto-preview" style="width:90px;height:90px;border-radius:50%;background:#e8f5e9;margin:0 auto 12px;overflow:hidden;display:flex;align-items:center;justify-content:center;font-size:2.5rem;"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#51BC54" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg></div>
-      <label style="background:#51BC54;color:#fff;border-radius:50px;padding:8px 16px;font-size:0.78rem;cursor:pointer;font-family:'DM Sans',sans-serif;">
-        Cambiar foto
-        <input type="file" accept="image/*" style="display:none;" onchange="cambiarFotoEsp(this)">
-      </label>
+    
+    <!-- MIS CITAS -->
+    <div id="esp-page-citas">
+      <div style="display:flex;gap:8px;margin-bottom:16px;overflow-x:auto;scrollbar-width:none;">
+        <button onclick="filtrarCitasEsp('hoy',this)" style="flex:0 0 auto;background:#51BC54;color:#fff;border:none;border-radius:50px;padding:8px 16px;font-size:0.78rem;cursor:pointer;font-family:'DM Sans',sans-serif;">Hoy</button>
+        <button onclick="filtrarCitasEsp('semana',this)" style="flex:0 0 auto;background:#f0f7f0;color:#2D6C2F;border:none;border-radius:50px;padding:8px 16px;font-size:0.78rem;cursor:pointer;font-family:'DM Sans',sans-serif;">Esta semana</button>
+        <button onclick="filtrarCitasEsp('todas',this)" style="flex:0 0 auto;background:#f0f7f0;color:#2D6C2F;border:none;border-radius:50px;padding:8px 16px;font-size:0.78rem;cursor:pointer;font-family:'DM Sans',sans-serif;">Todas</button>
+      </div>
+      <div id="esp-citas-lista"></div>
     </div>
-    <div style="margin-bottom:14px;">
-      <label style="display:block;font-size:0.72rem;color:#8a7a76;text-transform:uppercase;margin-bottom:6px;">Nombre</label>
-      <input id="esp-inp-nombre" type="text" style="width:100%;padding:12px;border:1.5px solid #c8e6c9;border-radius:12px;font-size:0.9rem;font-family:'DM Sans',sans-serif;outline:none;">
+
+    <!-- MI PERFIL -->
+    <div id="esp-page-perfil" style="display:none;">
+      <div style="background:#fff;border-radius:16px;padding:20px;border:1px solid #e8f5e9;">
+        <div style="text-align:center;margin-bottom:20px;">
+          <div id="esp-foto-preview" style="width:90px;height:90px;border-radius:50%;background:#e8f5e9;margin:0 auto 12px;overflow:hidden;display:flex;align-items:center;justify-content:center;font-size:2.5rem;"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#51BC54" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg></div>
+          <label style="background:#51BC54;color:#fff;border-radius:50px;padding:8px 16px;font-size:0.78rem;cursor:pointer;font-family:'DM Sans',sans-serif;">
+            Cambiar foto
+            <input type="file" accept="image/*" style="display:none;" onchange="cambiarFotoEsp(this)">
+          </label>
+        </div>
+        <div style="margin-bottom:14px;">
+          <label style="display:block;font-size:0.72rem;color:#8a7a76;text-transform:uppercase;margin-bottom:6px;">Nombre</label>
+          <input id="esp-inp-nombre" type="text" style="width:100%;padding:12px;border:1.5px solid #c8e6c9;border-radius:12px;font-size:0.9rem;font-family:'DM Sans',sans-serif;outline:none;">
+        </div>
+        <div style="margin-bottom:20px;">
+          <label style="display:block;font-size:0.72rem;color:#8a7a76;text-transform:uppercase;margin-bottom:6px;">Especialidad</label>
+          <input id="esp-inp-especialidad" type="text" style="width:100%;padding:12px;border:1.5px solid #c8e6c9;border-radius:12px;font-size:0.9rem;font-family:'DM Sans',sans-serif;outline:none;">
+        </div>
+        <button onclick="guardarPerfilEsp()" style="width:100%;background:#51BC54;color:#fff;border:none;border-radius:50px;padding:13px;font-size:0.9rem;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif;">Guardar cambios</button>
+      </div>
     </div>
-    <div style="margin-bottom:20px;">
-      <label style="display:block;font-size:0.72rem;color:#8a7a76;text-transform:uppercase;margin-bottom:6px;">Especialidad</label>
-      <input id="esp-inp-especialidad" type="text" style="width:100%;padding:12px;border:1.5px solid #c8e6c9;border-radius:12px;font-size:0.9rem;font-family:'DM Sans',sans-serif;outline:none;">
+
+    <!-- MI HORARIO -->
+    <div id="esp-page-horario" style="display:none;">
+      <div id="esp-horario-contenido"></div>
     </div>
-    <button onclick="guardarPerfilEsp()" style="width:100%;background:#51BC54;color:#fff;border:none;border-radius:50px;padding:13px;font-size:0.9rem;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif;">Guardar cambios</button>
-  </div>
-</div>
 
-<!-- MI HORARIO -->
-<div id="esp-page-horario" style="display:none;">
-  <div id="esp-horario-contenido"></div>
-</div>
-
-<!-- MIS CALIFICACIONES -->
-<div id="esp-page-calificaciones" style="display:none;">
-  <div id="esp-stats-cal" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;"></div>
-  <div id="esp-cal-lista"></div>
-</div>
-
+    <!-- MIS CALIFICACIONES -->
+    <div id="esp-page-calificaciones" style="display:none;">
+      <div id="esp-stats-cal" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;"></div>
+      <div id="esp-cal-lista"></div>
+    </div>
 
   </div>
 </div>
 
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-
 <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
-
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
-
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
-
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
-
 <script>
 const firebaseConfig = {
   apiKey: "AIzaSyBBZInWQZVJyBTP5TG8MrTBOfe7UQFR5uU",
@@ -2145,6 +2118,5 @@ function toggleSidebar(){
   document.getElementById('overlay').classList.toggle('open');
 }
 </script>
-
 </body>
 </html>
