@@ -1094,7 +1094,7 @@ function renderProGrid(idContenedor,citas){
     var pNombre=p.nombre;
     var cp=citas.filter(function(c){return c.profesional===pNombre&&c.estado!=='cancelada';});
     var atendidas=citas.filter(function(c){return c.profesional===pNombre&&c.estado==='atendida';}).length;
-    var ingresos=cp.reduce(function(s,c){return s+getPrecio(c.servicio);},0);
+    var ingresos=cp.reduce(function(s,c){return s+(c.precio||getPrecio(c.servicio)||0);},0);
     stats.push({nombre:p.nombre,especialidad:p.especialidad,foto:p.foto,citas:cp.length,atendidas:atendidas,ingresos:ingresos});
   }
   var todosCero=true;
