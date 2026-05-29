@@ -1285,7 +1285,7 @@ function renderCRM(filtro){
     citasC.sort(function(a,b){return (b.fecha||'').localeCompare(a.fecha||'');});
     var ultimaCita=citasC.length>0?citasC[0]:null;
     var diasSinVenir=ultimaCita?Math.floor((hoy-new Date(ultimaCita.fecha+'T00:00:00'))/86400000):999;
-    var totalGastado=atendidas.reduce(function(s,ct){return s+getPrecio(ct.servicio);},0);
+    var totalGastado=atendidas.reduce(function(s,ct){return s+(ct.precio||getPrecio(ct.servicio)||0);},0);
     var freq={};
     for(var j=0;j<citasC.length;j++){
       var s=citasC[j].servicio?citasC[j].servicio.split('\u2014')[0].trim().split('\u2013')[0].trim():'';
@@ -1981,7 +1981,7 @@ function renderReporte(citas){
   var atendidas=citas.filter(function(c){return c.estado==='atendida';});
   var canceladas=citas.filter(function(c){return c.estado==='cancelada';});
   var pendientes=citas.filter(function(c){return c.estado==='pendiente'||c.estado==='confirmada';});
-  var ingresos=atendidas.reduce(function(s,c){return s+getPrecio(c.servicio);},0);
+  var ingresos=atendidas.reduce(function(s,c){return s+(c.precio||getPrecio(c.servicio)||0);},0);
   var promedio=atendidas.length>0?Math.round(ingresos/atendidas.length):0;
   var tasaCan=citas.length>0?Math.round((canceladas.length/citas.length)*100):0;
 
@@ -1998,7 +1998,7 @@ function renderReporte(citas){
   var ingSvc={};
   for(var i=0;i<atendidas.length;i++){
     var s=atendidas[i].servicio?atendidas[i].servicio.split('\u2014')[0].trim().split('\u2013')[0].trim():'';
-    if(s){freqSvc[s]=(freqSvc[s]||0)+1;ingSvc[s]=(ingSvc[s]||0)+getPrecio(atendidas[i].servicio);}
+    if(s){freqSvc[s]=(freqSvc[s]||0)+1;ingSvc[s]=(ingSvc[s]||0)+(atendidas[i].precio||getPrecio(atendidas[i].servicio)||0);}
   }
   var svcList=Object.keys(freqSvc).sort(function(a,b){return freqSvc[b]-freqSvc[a];});
   var svcHtml='';
