@@ -1891,7 +1891,9 @@ function renderCalificaciones(filtro) {
   var lista = document.getElementById('cal-lista');
   if (!lista) return;
 
-  var cal = filtro === 'todas' ? todasCalificaciones : todasCalificaciones.filter(function(c) { return c.profesional === filtro; });
+  var cal = filtro === 'todas' ? todasCalificaciones : todasCalificaciones.filter(function(c) { 
+    return c.profesional === filtro || (c.profesional && filtro && filtro.startsWith(c.profesional)) || (c.profesional && filtro && c.profesional.startsWith(filtro));
+  });
 
   // Stats generales
   var total = todasCalificaciones.length;
