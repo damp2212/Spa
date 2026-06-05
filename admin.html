@@ -939,6 +939,8 @@ auth.onAuthStateChanged(function(user){
     document.getElementById('login-screen').style.display='flex';
     document.getElementById('app').style.display='none';
     document.getElementById('app-especialista').style.display='none';
+    var btn = document.querySelector('.lbtn');
+    if (btn) { btn.disabled = false; btn.textContent = 'Ingresar al panel'; }
   }
 });
 
