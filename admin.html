@@ -647,15 +647,14 @@ tbody td{padding:13px 14px;color:#1a1a1a;vertical-align:middle}
       <input id="cm-whatsapp" type="tel" placeholder="300 000 0000" style="width:100%;padding:12px 16px;border:1.5px solid #c8e6c9;border-radius:12px;font-size:0.9rem;font-family:'DM Sans',sans-serif;outline:none;">
     </div>
     <div style="margin-bottom:14px;">
-      <label style="display:block;font-size:0.72rem;color:#8a7a76;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;">Servicio</label>
-      <select id="cm-servicio" style="width:100%;padding:12px 16px;border:1.5px solid #c8e6c9;border-radius:12px;font-size:0.88rem;font-family:'DM Sans',sans-serif;outline:none;background:#fff;">
-        <option>Manicure Gel — $45.000</option>
-        <option>Uñas Acrílicas — $80.000</option>
-        <option>Pedicure Spa — $55.000</option>
-        <option>Nail Art — $30.000</option>
-        <option>Semipermanente — $38.000</option>
-        <option>Manicure + Pedicure — $75.000</option>
+      <label style="display:block;font-size:0.72rem;color:#8a7a76;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;">Servicios</label>
+      <div id="cm-carrito" style="background:#f0f7f0;border-radius:12px;padding:10px;min-height:44px;margin-bottom:8px;">
+        <div id="cm-carrito-vacio" style="color:#8a7a76;font-size:0.82rem;text-align:center;padding:6px;">Selecciona servicios abajo</div>
+      </div>
+      <select id="cm-servicio-select" onchange="agregarServicioCM()" style="width:100%;padding:12px 16px;border:1.5px solid #c8e6c9;border-radius:12px;font-size:0.88rem;font-family:'DM Sans',sans-serif;outline:none;background:#fff;">
+        <option value="">+ Agregar servicio...</option>
       </select>
+      <div id="cm-total" style="display:none;font-size:0.82rem;color:#2D6C2F;font-weight:600;margin-top:6px;text-align:right;"></div>
     </div>
     <div style="margin-bottom:14px;">
       <label style="display:block;font-size:0.72rem;color:#8a7a76;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;">Profesional</label>
@@ -1395,11 +1394,27 @@ function abrirRedencion(clienteId, nombre, puntos) {
   modal.style.display = 'flex';
 }
 
+var cmCarrito = [];
+
 function abrirModalCitaManual() {
+  cmCarrito = [];
+  renderCarritoCM();
   var hoyStr = new Date().toISOString().split('T')[0];
   document.getElementById('cm-fecha').value = hoyStr;
   document.getElementById('cm-cliente').value = '';
   document.getElementById('cm-whatsapp').value = '';
+  // Cargar servicios desde Firestore
+  var selectSvc = document.getElementById('cm-servicio-select');
+  selectSvc.innerHTML = '<option value="">+ Agregar servicio...</option>';
+  db.collection('spas').doc(sucursalActual).collection('servicios').where('activo','==',true).get().then(function(snap) {
+    snap.forEach(function(doc) {
+      var s = doc.data();
+      var opt = document.createElement('option');
+      opt.value = JSON.stringify({ nombre: s.nombre, precio: s.precio || 0, duracion: s.duracion || 60 });
+      opt.textContent = s.nombre + ' — $' + (s.precio || 0).toLocaleString('es-CO');
+      selectSvc.appendChild(opt);
+    });
+  });
   // Cargar profesionales desde Firestore
   var select = document.getElementById('cm-profesional');
   select.innerHTML = '';
@@ -1409,9 +1424,48 @@ function abrirModalCitaManual() {
     select.appendChild(opt);
   });
   if (select.options.length === 0) {
-    select.innerHTML = '<option>Valentina G.</option><option>Daniela R.</option><option>Juliana M.</option><option>Camila S.</option>';
+    select.innerHTML = '<option>Valentina G.</option>';
   }
   document.getElementById('modal-cita-manual').style.display = 'flex';
+}
+
+function agregarServicioCM() {
+  var select = document.getElementById('cm-servicio-select');
+  if (!select.value) return;
+  var s = JSON.parse(select.value);
+  var yaEsta = cmCarrito.find(function(c){ return c.nombre === s.nombre; });
+  if (yaEsta) { select.value = ''; return; }
+  cmCarrito.push(s);
+  select.value = '';
+  renderCarritoCM();
+}
+
+function quitarServicioCM(nombre) {
+  cmCarrito = cmCarrito.filter(function(s){ return s.nombre !== nombre; });
+  renderCarritoCM();
+}
+
+function renderCarritoCM() {
+  var cont = document.getElementById('cm-carrito');
+  var totalEl = document.getElementById('cm-total');
+  if (!cont) return;
+  if (cmCarrito.length === 0) {
+    cont.innerHTML = '<div style="color:#8a7a76;font-size:0.82rem;text-align:center;padding:6px;">Selecciona servicios abajo</div>';
+    if (totalEl) totalEl.style.display = 'none';
+    return;
+  }
+  var html = '';
+  var total = 0;
+  cmCarrito.forEach(function(s) {
+    total += s.precio;
+    html += '<div style="display:flex;justify-content:space-between;align-items:center;padding:4px 0;border-bottom:1px solid #c8e6c9;">';
+    html += '<span style="font-size:0.82rem;color:#1a1a1a;">' + s.nombre + '</span>';
+    html += '<div style="display:flex;align-items:center;gap:8px;"><span style="font-size:0.78rem;color:#2D6C2F;">$' + s.precio.toLocaleString('es-CO') + '</span>';
+    html += '<button onclick="quitarServicioCM(\'' + s.nombre.replace(/'/g,"\\'") + '\')" style="background:none;border:none;color:#e57373;cursor:pointer;font-size:0.9rem;">✕</button></div>';
+    html += '</div>';
+  });
+  cont.innerHTML = html;
+  if (totalEl) { totalEl.style.display = 'block'; totalEl.textContent = 'Total: $' + total.toLocaleString('es-CO'); }
 }
 
 function cerrarModalCitaManual() {
@@ -1421,15 +1475,19 @@ function cerrarModalCitaManual() {
 function guardarCitaManual() {
   var cliente = document.getElementById('cm-cliente').value.trim() || 'Cliente ocasional';
   var whatsapp = document.getElementById('cm-whatsapp').value.trim() || '';
-  var servicio = document.getElementById('cm-servicio').value;
   var profesional = document.getElementById('cm-profesional').value;
   var fecha = document.getElementById('cm-fecha').value;
   var hora = document.getElementById('cm-hora').value;
+  if (cmCarrito.length === 0) { toast('Selecciona al menos un servicio', 'err'); return; }
   if (!fecha) { toast('Selecciona una fecha', 'err'); return; }
+  var servicioTexto = cmCarrito.map(function(s){ return s.nombre; }).join(' + ');
+  var totalPrecio = cmCarrito.reduce(function(t,s){ return t + s.precio; }, 0);
   db.collection('spas').doc(sucursalActual).collection('citas').add({
     nombre: cliente,
     whatsapp: whatsapp,
-    servicio: servicio,
+    servicio: servicioTexto,
+    servicios: cmCarrito,
+    precio: totalPrecio,
     profesional: profesional,
     fecha: fecha,
     hora: hora,
