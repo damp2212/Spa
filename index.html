@@ -841,7 +841,14 @@ function cargarHorarios() {
         var ampm = match[3].toUpperCase();
         if (ampm === 'PM' && h !== 12) h += 12;
         if (ampm === 'AM' && h === 12) h = 0;
-        var durCita = DURACIONES[cita.servicio ? cita.servicio.split('—')[0].trim() : ''] || 60;
+        var durCita = 60;
+        if (cita.servicios && cita.servicios.length > 0) {
+          durCita = cita.servicios.reduce(function(t, s) { return t + (s.duracion || 60); }, 0);
+        } else if (cita.duracion) {
+          durCita = cita.duracion;
+        } else {
+          durCita = DURACIONES[cita.servicio ? cita.servicio.split('—')[0].trim() : ''] || 60;
+        }
         var slots = Math.ceil(durCita / 60);
         for (var i = 0; i < slots; i++) {
           ocupados[h + i] = true;
