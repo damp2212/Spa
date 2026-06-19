@@ -525,10 +525,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
 function cargarPerfilUsuario(tel) {
   db.collection('spas').doc('rose').collection('clientes').doc(tel).get().then(function(doc) {
-    if (doc.exists) {
+    if (doc.exists && doc.data().nombre) {
       var data = doc.data();
       if (data.nombre) {
         var fn = document.getElementById('f-nombre'); if(fn) fn.value = data.nombre;
+        var gNombre = document.getElementById('grupo-nombre');
+        if (gNombre) gNombre.style.display = 'none';
         // Actualizar nombre en nav
         var wrap = document.getElementById('nav-user-wrap');
         if (wrap && wrap.querySelector('.nav-user-info')) {
