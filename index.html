@@ -552,7 +552,7 @@ function cargarPerfilUsuario(tel) {
   var hoy = new Date().toISOString().split('T')[0];
   db.collection('spas').doc('rose').collection('citas')
     .where('uid', '==', tel)
-    .where('estado', 'in', ['pendiente', 'confirmada'])
+    .where('estado', 'in', ['pendiente', 'confirmada', 'atendida'])
     .get().then(function(snap) {
       var futuras = snap.docs.map(function(d){return d.data();}).filter(function(c){ return c.fecha >= hoy; });
       futuras.sort(function(a,b){ return (a.fecha+a.hora).localeCompare(b.fecha+b.hora); });
@@ -824,7 +824,7 @@ function cargarHorarios() {
     var query = db.collection('spas').doc('rose').collection('citas')
       .where('fecha', '==', fecha)
       .where('sucursal', '==', sucursalId)
-      .where('estado', 'in', ['pendiente', 'confirmada']);
+      .where('estado', 'in', ['pendiente', 'confirmada', 'atendida']);
 
     if (profesionalId && profesionalId !== 'cualquiera') {
       query = query.where('profesional', '==', profesionalId);
