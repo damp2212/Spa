@@ -1480,31 +1480,24 @@ function guardarCitaManual() {
   var hora = document.getElementById('cm-hora').value;
   if (cmCarrito.length === 0) { toast('Selecciona al menos un servicio', 'err'); return; }
   if (!fecha) { toast('Selecciona una fecha', 'err'); return; }
-  var servicioTexto = cmCarrito.map(function(s){ return s.nombre; }).join(' + ');
-  var totalPrecio = cmCarrito.reduce(function(t,s){ return t + s.precio; }, 0);
-  db.collection('spas').doc(sucursalActual).collection('citas').add({
-    nombre: cliente,
-    whatsapp: whatsapp,
-    servicio: servicioTexto,
-    servicios: cmCarrito,
-    precio: totalPrecio,
-    profesional: profesional,
-    fecha: fecha,
-    hora: hora,
-    sucursal: 'ciudad-jardin',
-    estado: 'pendiente',
-    manual: true,
-    puntos: 0,
-    puntosAcreditados: true,
-    creadoEn: firebase.firestore.FieldValue.serverTimestamp()
-  }).then(function() {
-    toast('Cita manual registrada', 'ok');
-    cerrarModalCitaManual();
-    cargarDatos();
-  }).catch(function() {
-    toast('Error al guardar', 'err');
+  db.collection('spas').doc(sucursalActual).collection('citas').where('profesional','==',profesional).where('fecha','==',fecha).where('hora','==',hora).where('estado','in',['pendiente','confirmada','atendida']).get().then(function(snap) {
+    if (snap.size > 0) { toast('Ya hay una cita en ese horario con esta profesional', 'err'); return; }
+    var servicioTexto = cmCarrito.map(function(s){ return s.nombre; }).join(' + ');
+    var totalPrecio = cmCarrito.reduce(function(t,s){ return t + s.precio; }, 0);
+    db.collection('spas').doc(sucursalActual).collection('citas').add({
+      nombre: cliente, whatsapp: whatsapp, servicio: servicioTexto, servicios: cmCarrito,
+      precio: totalPrecio, profesional: profesional, fecha: fecha, hora: hora,
+      sucursal: 'ciudad-jardin', estado: 'pendiente', manual: true,
+      puntos: 0, puntosAcreditados: true,
+      creadoEn: firebase.firestore.FieldValue.serverTimestamp()
+    }).then(function() {
+      toast('Cita manual registrada', 'ok');
+      cerrarModalCitaManual();
+      cargarDatos();
+    }).catch(function() { toast('Error al guardar', 'err'); });
   });
 }
+
 
 // ===== CONFIGURACIÓN DE SERVICIOS =====
 var todosServicios = [];
