@@ -852,9 +852,11 @@ function cargarHorarios() {
           durCita = DURACIONES[cita.servicio ? cita.servicio.split('—')[0].trim() : ''] || 60;
         }
         var slots = Math.ceil(durCita / 60);
-        for (var i = 0; i < slots; i++) {
-          ocupados[h + i] = true;
+                ocupados[h] = true;
+        for (var i = 1; i < slots; i++) {
+          ocupados[h + i] = 'ocupado_intermedio';
         }
+
       });
 
       // Generar slots disponibles
@@ -870,9 +872,10 @@ function cargarHorarios() {
         // Bloquear horas pasadas si es hoy
         if (h <= horaActual) continue;
         var disponible = true;
-        for (var s = 0; s < slotsNecesarios; s++) {
-          if (ocupados[h + s]) { disponible = false; break; }
+                for (var s = 0; s < slotsNecesarios; s++) {
+          if (ocupados[h + s] === true) { disponible = false; break; }
         }
+
         var ampm = h < 12 ? 'AM' : 'PM';
         var h12 = h === 0 ? 12 : (h <= 12 ? h : h - 12);
         var option = document.createElement('option');
