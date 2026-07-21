@@ -552,7 +552,7 @@ function cargarPerfilUsuario(tel) {
   var hoy = new Date().toISOString().split('T')[0];
   db.collection('spas').doc('rose').collection('citas')
     .where('uid', '==', tel)
-    .where('estado', 'in', ['pendiente', 'confirmada', 'atendida'])
+    .where('estado', 'in', ['pendiente', 'confirmada'])
     .get().then(function(snap) {
       var futuras = snap.docs.map(function(d){return d.data();}).filter(function(c){ return c.fecha >= hoy; });
       futuras.sort(function(a,b){ return (a.fecha+a.hora).localeCompare(b.fecha+b.hora); });
@@ -824,7 +824,7 @@ function cargarHorarios() {
     var query = db.collection('spas').doc('rose').collection('citas')
       .where('fecha', '==', fecha)
       .where('sucursal', '==', sucursalId)
-      .where('estado', 'in', ['pendiente', 'confirmada', 'atendida']);
+      .where('estado', 'in', ['pendiente', 'confirmada']);
 
     if (profesionalId && profesionalId !== 'cualquiera') {
       query = query.where('profesional', '==', profesionalId);
@@ -852,11 +852,9 @@ function cargarHorarios() {
           durCita = DURACIONES[cita.servicio ? cita.servicio.split('—')[0].trim() : ''] || 60;
         }
         var slots = Math.ceil(durCita / 60);
-                ocupados[h] = true;
-        for (var i = 1; i < slots; i++) {
-          ocupados[h + i] = 'ocupado_intermedio';
+        for (var i = 0; i < slots; i++) {
+          ocupados[h + i] = true;
         }
-
       });
 
       // Generar slots disponibles
@@ -872,10 +870,9 @@ function cargarHorarios() {
         // Bloquear horas pasadas si es hoy
         if (h <= horaActual) continue;
         var disponible = true;
-                for (var s = 0; s < slotsNecesarios; s++) {
-          if (ocupados[h + s] === true) { disponible = false; break; }
+        for (var s = 0; s < slotsNecesarios; s++) {
+          if (ocupados[h + s]) { disponible = false; break; }
         }
-
         var ampm = h < 12 ? 'AM' : 'PM';
         var h12 = h === 0 ? 12 : (h <= 12 ? h : h - 12);
         var option = document.createElement('option');
