@@ -718,6 +718,14 @@ tbody td{padding:13px 14px;color:#1a1a1a;vertical-align:middle}
       <label class="modal-label">WhatsApp notificaciones</label>
       <input class="modal-input" id="pro-whatsapp" type="tel" placeholder="+573188065152">
     </div>
+    <div id="pro-credenciales" class="modal-form-group" style="display:none">
+      <label class="modal-label">Email de acceso</label>
+      <input class="modal-input" id="pro-email" type="email" placeholder="valentina@rose.com">
+    </div>
+    <div id="pro-password-group" class="modal-form-group" style="display:none">
+      <label class="modal-label">Contraseña temporal</label>
+      <input class="modal-input" id="pro-password" type="password" placeholder="Mínimo 6 caracteres">
+    </div>
     <input type="hidden" id="pro-edit-id">
     <input type="hidden" id="pro-foto-url">
     <div class="modal-actions">
@@ -855,6 +863,7 @@ tbody td{padding:13px 14px;color:#1a1a1a;vertical-align:middle}
 </div>
 
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-functions-compat.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
@@ -1205,6 +1214,10 @@ function abrirModalPro(){
   document.getElementById('pro-nombre').value='';
   document.getElementById('pro-especialidad').value='';
   document.getElementById('pro-whatsapp').value='';
+  document.getElementById('pro-email').value='';
+  document.getElementById('pro-password').value='';
+  document.getElementById('pro-credenciales').style.display='block';
+  document.getElementById('pro-password-group').style.display='block';
   document.getElementById('pro-horario')&&(document.getElementById('pro-horario').value='');
   document.getElementById('pro-foto-url').value='';
   document.getElementById('pro-foto-file').value='';
@@ -1240,6 +1253,8 @@ function editarPro(id){
     document.getElementById('avatar-preview').style.display='none';
     document.getElementById('foto-placeholder').style.display='flex';
   }
+  document.getElementById('pro-credenciales').style.display='none';
+  document.getElementById('pro-password-group').style.display='none';
   document.getElementById('modal-pro-title').textContent='Editar profesional';
   document.getElementById('modal-pro').classList.add('open');
 }
@@ -1256,14 +1271,28 @@ function guardarPro(){
 
   function guardarEnDB(fotoUrl){
     var data={nombre:nombre,especialidad:especialidad,horario:horario,foto:fotoUrl,whatsapp:whatsapp};
-    var prom=editId?
-      db.collection('spas').doc(sucursalActual).collection('sucursales').doc('ciudad-jardin').collection('profesionales').doc(editId).update(data):
-      db.collection('spas').doc(sucursalActual).collection('sucursales').doc('ciudad-jardin').collection('profesionales').add(Object.assign(data,{creadoEn:firebase.firestore.FieldValue.serverTimestamp()}));
-    prom.then(function(){
-      toast(editId?'Profesional actualizada':'Profesional agregada','ok');
-      cerrarModalPro();cargarDatos();
-    }).catch(function(){toast('Error guardando','err');});
-    btn.disabled=false;btn.textContent='Guardar';
+    if(editId){
+      db.collection('spas').doc(sucursalActual).collection('sucursales').doc('ciudad-jardin').collection('profesionales').doc(editId).update(data).then(function(){
+        toast('Profesional actualizada','ok');
+        cerrarModalPro();cargarDatos();
+      }).catch(function(){toast('Error guardando','err');});
+      btn.disabled=false;btn.textContent='Guardar';
+    } else {
+      // Crear profesional y usuario
+      var email=document.getElementById('pro-email').value.trim();
+      var password=document.getElementById('pro-password').value.trim();
+      if(!email||!password){toast('Ingresa email y contraseña','err');btn.disabled=false;btn.textContent='Guardar';return;}
+      if(password.length<6){toast('La contraseña debe tener mínimo 6 caracteres','err');btn.disabled=false;btn.textContent='Guardar';return;}
+      db.collection('spas').doc(sucursalActual).collection('sucursales').doc('ciudad-jardin').collection('profesionales').add(Object.assign(data,{creadoEn:firebase.firestore.FieldValue.serverTimestamp()})).then(function(docRef){
+        var profesionalId=docRef.id;
+        var crearEspecialista=firebase.functions().httpsCallable('crearEspecialista');
+        return crearEspecialista({nombre:nombre,email:email,password:password,spaId:sucursalActual,sucursalId:'ciudad-jardin',profesionalId:profesionalId});
+      }).then(function(){
+        toast('Profesional y usuario creados','ok');
+        cerrarModalPro();cargarDatos();
+      }).catch(function(e){toast('Error: '+e.message,'err');});
+      btn.disabled=false;btn.textContent='Guardar';
+    }
   }
 
   if(archivoFotoSeleccionado){
@@ -1480,24 +1509,30 @@ function guardarCitaManual() {
   var hora = document.getElementById('cm-hora').value;
   if (cmCarrito.length === 0) { toast('Selecciona al menos un servicio', 'err'); return; }
   if (!fecha) { toast('Selecciona una fecha', 'err'); return; }
-  db.collection('spas').doc(sucursalActual).collection('citas').where('profesional','==',profesional).where('fecha','==',fecha).where('hora','==',hora).where('estado','in',['pendiente','confirmada','atendida']).get().then(function(snap) {
-    if (snap.size > 0) { toast('Ya hay una cita en ese horario con esta profesional', 'err'); return; }
-    var servicioTexto = cmCarrito.map(function(s){ return s.nombre; }).join(' + ');
-    var totalPrecio = cmCarrito.reduce(function(t,s){ return t + s.precio; }, 0);
-    db.collection('spas').doc(sucursalActual).collection('citas').add({
-      nombre: cliente, whatsapp: whatsapp, servicio: servicioTexto, servicios: cmCarrito,
-      precio: totalPrecio, profesional: profesional, fecha: fecha, hora: hora,
-      sucursal: 'ciudad-jardin', estado: 'pendiente', manual: true,
-      puntos: 0, puntosAcreditados: true,
-      creadoEn: firebase.firestore.FieldValue.serverTimestamp()
-    }).then(function() {
-      toast('Cita manual registrada', 'ok');
-      cerrarModalCitaManual();
-      cargarDatos();
-    }).catch(function() { toast('Error al guardar', 'err'); });
+  var servicioTexto = cmCarrito.map(function(s){ return s.nombre; }).join(' + ');
+  var totalPrecio = cmCarrito.reduce(function(t,s){ return t + s.precio; }, 0);
+  db.collection('spas').doc(sucursalActual).collection('citas').add({
+    nombre: cliente,
+    whatsapp: whatsapp,
+    servicio: servicioTexto,
+    servicios: cmCarrito,
+    precio: totalPrecio,
+    profesional: profesional,
+    fecha: fecha,
+    hora: hora,
+    estado: 'atendida',
+    manual: true,
+    puntos: 0,
+    puntosAcreditados: true,
+    creadoEn: firebase.firestore.FieldValue.serverTimestamp()
+  }).then(function() {
+    toast('Cita manual registrada', 'ok');
+    cerrarModalCitaManual();
+    cargarDatos();
+  }).catch(function() {
+    toast('Error al guardar', 'err');
   });
 }
-
 
 // ===== CONFIGURACIÓN DE SERVICIOS =====
 var todosServicios = [];
