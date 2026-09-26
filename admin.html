@@ -574,6 +574,10 @@ tbody td{padding:13px 14px;color:#1a1a1a;vertical-align:middle}
           <div id="rep-dias-bars"></div>
         </div>
       </div>
+      <div class="card" style="margin-bottom:20px">
+        <div class="card-title">Horas mas frecuentes</div>
+        <div id="rep-horas-bars"></div>
+      </div>
       <div class="card">
         <div class="card-title">Resumen de clientas</div>
         <div class="reporte-grid" id="rep-clientas"></div>
@@ -2146,6 +2150,18 @@ function renderReporte(citas){
     diasHtml+='<div class="dia-bar-wrap"><div class="dia-bar-label"><span>'+dias[i]+'</span><span>'+freqDia[i]+' citas</span></div><div class="dia-bar"><div class="dia-bar-fill" style="width:'+pct+'%"></div></div></div>';
   }
   document.getElementById('rep-dias-bars').innerHTML=diasHtml;
+
+  // Horas mas frecuentes
+  var freqHora={};
+  for(var i=0;i<citas.length;i++){ if(citas[i].hora){ freqHora[citas[i].hora]=(freqHora[citas[i].hora]||0)+1; } }
+  var horasList=Object.keys(freqHora).sort(function(a,b){return freqHora[b]-freqHora[a];});
+  var maxHora=horasList.length?freqHora[horasList[0]]:1;
+  var horasHtml='';
+  for(var i=0;i<horasList.length;i++){
+    var pctH=Math.round((freqHora[horasList[i]]/maxHora)*100);
+    horasHtml+='<div class="dia-bar-wrap"><div class="dia-bar-label"><span>'+horasList[i]+'</span><span>'+freqHora[horasList[i]]+' citas</span></div><div class="dia-bar"><div class="dia-bar-fill" style="width:'+pctH+'%"></div></div></div>';
+  }
+  document.getElementById('rep-horas-bars').innerHTML=horasHtml||'<div class="empty-txt" style="color:#aaa;font-size:0.82rem;padding:20px 0">Sin datos</div>';
 
   // Clientas resumen
   var uids=[];
