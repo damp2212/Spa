@@ -1511,24 +1511,44 @@ function guardarCitaManual() {
   if (!fecha) { toast('Selecciona una fecha', 'err'); return; }
   var servicioTexto = cmCarrito.map(function(s){ return s.nombre; }).join(' + ');
   var totalPrecio = cmCarrito.reduce(function(t,s){ return t + s.precio; }, 0);
-  db.collection('spas').doc(sucursalActual).collection('citas').add({
-    nombre: cliente,
-    whatsapp: whatsapp,
-    servicio: servicioTexto,
-    servicios: cmCarrito,
-    precio: totalPrecio,
-    profesional: profesional,
-    fecha: fecha,
-    hora: hora,
-    estado: 'pendiente',
-    manual: true,
-    puntos: 0,
-    puntosAcreditados: true,
-    creadoEn: firebase.firestore.FieldValue.serverTimestamp()
-  }).then(function() {
-    toast('Cita manual registrada', 'ok');
-    cerrarModalCitaManual();
-    cargarDatos();
+  var durNueva = cmCarrito.reduce(function(t,s){ return t + (s.duracion || 60); }, 0);
+  function aMin(h) {
+    var m = (h || '').match(/(\d+):(\d+)\s*(AM|PM)/i); if (!m) return null;
+    var hh = parseInt(m[1]); var ap = m[3].toUpperCase();
+    if (ap === 'PM' && hh !== 12) hh += 12; if (ap === 'AM' && hh === 12) hh = 0;
+    return hh * 60 + parseInt(m[2]);
+  }
+  var iniNueva = aMin(hora), finNueva = iniNueva + durNueva;
+  db.collection('spas').doc(sucursalActual).collection('citas')
+    .where('profesional','==',profesional).where('fecha','==',fecha)
+    .where('estado','in',['pendiente','confirmada','atendida']).get().then(function(snap) {
+    var choca = false;
+    snap.forEach(function(d) {
+      var x = d.data(); var ini = aMin(x.hora); if (ini === null) return;
+      var dur = (x.servicios && x.servicios.length) ? x.servicios.reduce(function(t,s){ return t + (s.duracion || 60); }, 0) : (x.duracion || 60);
+      if (iniNueva < ini + dur && ini < finNueva) choca = true;
+    });
+    if (choca) { toast('Ese horario ya está ocupado con esta profesional', 'err'); return; }
+    return db.collection('spas').doc(sucursalActual).collection('citas').add({
+      nombre: cliente,
+      whatsapp: whatsapp,
+      servicio: servicioTexto,
+      servicios: cmCarrito,
+      precio: totalPrecio,
+      profesional: profesional,
+      fecha: fecha,
+      hora: hora,
+      sucursal: 'ciudad-jardin',
+      estado: 'pendiente',
+      manual: true,
+      puntos: 0,
+      puntosAcreditados: true,
+      creadoEn: firebase.firestore.FieldValue.serverTimestamp()
+    }).then(function() {
+      toast('Cita manual registrada', 'ok');
+      cerrarModalCitaManual();
+      cargarDatos();
+    });
   }).catch(function() {
     toast('Error al guardar', 'err');
   });
