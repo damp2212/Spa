@@ -436,23 +436,26 @@ footer { background-color: #1a1a1a; padding: 52px 24px 32px; }
 
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 <script>
-firebase.initializeApp({
+var appCli = firebase.initializeApp({
   apiKey: "AIzaSyBBZInWQZVJyBTP5TG8MrTBOfe7UQFR5uU",
   authDomain: "mapos-spas.firebaseapp.com",
   projectId: "mapos-spas",
   storageBucket: "mapos-spas.firebasestorage.app",
   messagingSenderId: "704720438670",
   appId: "1:704720438670:web:fd94574e51e97964cd10df"
-});
+}, 'clientes');
 
-var db = firebase.firestore();
+var db = appCli.firestore();
+var authCli = appCli.auth();
 var usuarioActual = null;
 var telefonoActual = null;
 var profesionalSeleccionado = null;
 
 var ENVIAR_URL = "https://us-central1-mapos-spas.cloudfunctions.net/enviarCodigo";
-var VERIFICAR_URL = "https://us-central1-mapos-spas.cloudfunctions.net/verificarCodigo";
+var VERIFICAR_URL = "https://us-central1-mapos-spas.cloudfunctions.net/loginClienta";
+var DISPONIBILIDAD_URL = "https://us-central1-mapos-spas.cloudfunctions.net/disponibilidad";
 
 function showToast(msg, type) {
   var t = document.getElementById('toast');
@@ -511,16 +514,19 @@ document.addEventListener('DOMContentLoaded', function() {
   var inputFecha = document.getElementById('f-fecha');
   inputFecha.value = hoy;
   inputFecha.min = hoy;
-  var sesionGuardada = localStorage.getItem('rose_session');
-  if (sesionGuardada) {
-    try {
-      usuarioActual = JSON.parse(sesionGuardada);
-      telefonoActual = usuarioActual.tel;
-      cargarPerfilUsuario(usuarioActual.tel);
-      actualizarNavUsuario(usuarioActual.tel);
+  var unsubAuth = authCli.onAuthStateChanged(function(user) {
+    unsubAuth();
+    if (user) {
+      usuarioActual = { tel: user.uid };
+      telefonoActual = user.uid;
+      localStorage.setItem('rose_session', JSON.stringify(usuarioActual));
+      cargarPerfilUsuario(user.uid);
+      actualizarNavUsuario(user.uid);
       mostrarFormularioLogueado();
-    } catch(e) { localStorage.removeItem('rose_session'); }
-  }
+    } else {
+      localStorage.removeItem('rose_session');
+    }
+  });
 });
 
 function cargarPerfilUsuario(tel) {
@@ -666,7 +672,8 @@ function verificarCodigo() {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ numero: telefonoActual, codigo: codigo })
   }).then(function(r) { return r.json(); }).then(function(data) {
-    if (data.ok) {
+    if (data.ok && data.token) {
+      return authCli.signInWithCustomToken(data.token).then(function() {
       usuarioActual = { tel: data.tel };
       localStorage.setItem('rose_session', JSON.stringify(usuarioActual));
       btn.textContent = '✓ Ingresando...';
@@ -684,6 +691,7 @@ function verificarCodigo() {
           mostrarFormularioLogueado();
           showToast('Bienvenida de nuevo!', 'success');
         }
+      });
       });
     } else {
       showToast(data.error || 'Codigo incorrecto', 'error');
@@ -821,16 +829,12 @@ function cargarHorarios() {
     var duracion = getDuracion();
 
     // Consultar citas existentes ese día
-    var query = db.collection('spas').doc('rose').collection('citas')
-      .where('fecha', '==', fecha)
-      .where('sucursal', '==', sucursalId)
-      .where('estado', 'in', ['pendiente', 'confirmada']);
-
-    if (profesionalId && profesionalId !== 'cualquiera') {
-      query = query.where('profesional', '==', profesionalId);
-    }
-
-    query.get().then(function(citasSnap) {
+    fetch(DISPONIBILIDAD_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ spaId: 'rose', fecha: fecha, sucursal: sucursalId, profesional: profesionalId })
+    }).then(function(r) { return r.json(); }).then(function(resp) {
+      var citasSnap = (resp.citas || []).map(function(c) { return { data: function() { return c; } }; });
       // Construir mapa de slots ocupados
       var ocupados = {};
       citasSnap.forEach(function(citaDoc) {
@@ -1002,6 +1006,7 @@ function cargarInspiracion() {
 }
 
 function cerrarSesion() {
+  authCli.signOut();
   localStorage.removeItem('rose_session');
   usuarioActual = null;
   telefonoActual = null;
