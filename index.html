@@ -766,26 +766,44 @@ function cargarProfesionales() {
     select.innerHTML = '<option value="">Selecciona una sucursal primero...</option>';
     return;
   }
+  var valorActual = select.value;
   db.collection('spas').doc('rose').collection('sucursales').doc(sucursalId).collection('profesionales').get().then(function(snapshot) {
     select.innerHTML = '<option value="Cualquiera disponible">Cualquiera disponible</option>';
+    var quitada = null;
     snapshot.forEach(function(doc) {
       var data = doc.data();
+      if (profesionalNoHace(data)) {
+        if ((data.nombre || doc.id) === valorActual || (data.nombre || doc.id) === profesionalSeleccionado) quitada = data.nombre || doc.id;
+        return;
+      }
       var option = document.createElement('option');
       option.value = data.nombre || doc.id;
       option.textContent = data.nombre || doc.id;
       select.appendChild(option);
     });
     // Aplicar profesional seleccionado si hay uno guardado
-    if (profesionalSeleccionado) {
+    var aplicar = profesionalSeleccionado || valorActual;
+    if (aplicar) {
       for (var i = 0; i < select.options.length; i++) {
-        if (select.options[i].text === profesionalSeleccionado) {
+        if (select.options[i].text === aplicar) {
           select.selectedIndex = i;
           break;
         }
       }
     }
+    if (quitada) {
+      if (profesionalSeleccionado === quitada) profesionalSeleccionado = null;
+      showToast(quitada + ' no realiza uno de los servicios elegidos', 'error');
+    }
+    cargarHorarios();
   });
   cargarHorarios();
+}
+
+// true si la profesional tiene bloqueada alguna categoria de los servicios del carrito
+function profesionalNoHace(data) {
+  var bloqueadas = data.noHace || [];
+  return carritoServicios.some(function(s) { return s.categoria && bloqueadas.indexOf(s.categoria) !== -1; });
 }
 
 // Cargar horarios según sucursal y fecha
@@ -1115,9 +1133,10 @@ function seleccionarServicio(nombre, precio, duracion) {
     showToast('Ya agregaste este servicio', 'error');
     return;
   }
-  carritoServicios.push({ nombre: nombre, precio: precio || 0, duracion: duracion || 60 });
+  var svcInfo = todosServiciosCache.find(function(x){ return x.nombre === nombre; }) || {};
+  carritoServicios.push({ nombre: nombre, precio: precio || 0, duracion: duracion || 60, categoria: svcInfo.categoria || '' });
   renderCarrito();
-  cargarHorarios();
+  cargarProfesionales();
   var profSelect = document.getElementById('f-profesional');
   var profSeleccionada = profSelect && profSelect.value && profSelect.value !== 'Cualquiera disponible';
   if (profSeleccionada) {
@@ -1131,7 +1150,7 @@ function seleccionarServicio(nombre, precio, duracion) {
 function quitarServicio(nombre) {
   carritoServicios = carritoServicios.filter(function(s){ return s.nombre !== nombre; });
   renderCarrito();
-  cargarHorarios();
+  cargarProfesionales();
 }
 
 function renderCarrito() {
@@ -1169,14 +1188,20 @@ function renderCarrito() {
 }
 
 function agendarCon(nombre) {
-  profesionalSeleccionado = nombre;
   var select = document.getElementById('f-profesional');
+  var encontrada = false;
   for (var i = 0; i < select.options.length; i++) {
     if (select.options[i].text === nombre) {
       select.selectedIndex = i;
+      encontrada = true;
       break;
     }
   }
+  if (!encontrada && carritoServicios.length > 0) {
+    showToast(nombre + ' no realiza uno de los servicios elegidos', 'error');
+    return;
+  }
+  profesionalSeleccionado = nombre;
   cargarHorarios();
   document.getElementById('agendar').scrollIntoView({ behavior: 'smooth' });
   showToast('Seleccionaste a ' + nombre);
