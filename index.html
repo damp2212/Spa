@@ -437,6 +437,7 @@ footer { background-color: #1a1a1a; padding: 52px 24px 32px; }
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
 <script>
 var appCli = firebase.initializeApp({
   apiKey: "AIzaSyBBZInWQZVJyBTP5TG8MrTBOfe7UQFR5uU",
@@ -449,6 +450,21 @@ var appCli = firebase.initializeApp({
 
 var db = appCli.firestore();
 var authCli = appCli.auth();
+var storageCli = appCli.storage();
+
+// ===== Abono para reservar (se configura en el panel admin) =====
+var configAbono = null;
+var saldoFavorActual = 0;
+db.collection('spas').doc('rose').collection('config').doc('abono').get().then(function(d) {
+  configAbono = d.exists ? d.data() : null;
+}).catch(function() {});
+function abonoActivo() { return !!(configAbono && configAbono.activo && Number(configAbono.valor) > 0); }
+function calcularAbono(total) {
+  var v = Number(configAbono.valor) || 0;
+  if (configAbono.tipo === 'porcentaje') return Math.ceil((total * v / 100) / 1000) * 1000;
+  return v;
+}
+function fmtPesos(n) { return '$' + Number(n || 0).toLocaleString('es-CO'); }
 var usuarioActual = null;
 var telefonoActual = null;
 var profesionalSeleccionado = null;
@@ -545,6 +561,7 @@ function cargarPerfilUsuario(tel) {
         }
       }
       if (data.whatsapp) { var fw = document.getElementById('f-whatsapp'); if(fw) fw.value = data.whatsapp; }
+      saldoFavorActual = Number(data.saldoFavor) || 0;
       var puntos = data.puntos || 0;
       var pct = Math.min(Math.round((puntos/500)*100), 100);
       var el = document.getElementById('puntos-num'); if(el) el.textContent = puntos;
@@ -558,9 +575,9 @@ function cargarPerfilUsuario(tel) {
   var hoy = new Date().toISOString().split('T')[0];
   db.collection('spas').doc('rose').collection('citas')
     .where('uid', '==', tel)
-    .where('estado', 'in', ['pendiente', 'confirmada'])
+    .where('estado', 'in', ['pendiente', 'confirmada', 'esperando_abono'])
     .get().then(function(snap) {
-      var futuras = snap.docs.map(function(d){return d.data();}).filter(function(c){ return c.fecha >= hoy; });
+      var futuras = snap.docs.map(function(d){var o = d.data(); o.id = d.id; return o;}).filter(function(c){ return c.fecha >= hoy; });
       futuras.sort(function(a,b){ return (a.fecha+a.hora).localeCompare(b.fecha+b.hora); });
       var elNext = document.getElementById('puntos-next');
       var elVal = document.getElementById('puntos-next-val');
@@ -570,6 +587,17 @@ function cargarPerfilUsuario(tel) {
         var opcFecha = { weekday: 'long', day: 'numeric', month: 'short' };
         var fechaStr = fecha.toLocaleDateString('es-CO', opcFecha);
         elVal.textContent = fechaStr + ' · ' + c.hora + (c.profesional ? ' con ' + c.profesional.split(' ')[0] : '');
+        if (c.estado === 'esperando_abono') {
+          var aviso = document.createElement('div');
+          aviso.style.cssText = 'font-size:0.78rem;margin-top:6px;color:#8a7676;font-family:DM Sans,sans-serif;';
+          if (c.comprobanteUrl) {
+            aviso.textContent = 'Comprobante recibido, estamos revisando tu abono';
+          } else {
+            aviso.innerHTML = '<a href="#" style="color:#EB8899;font-weight:600;">Falta subir el comprobante del abono</a>';
+            aviso.querySelector('a').onclick = function(e) { e.preventDefault(); abrirModalAbono(c.id, c.abono); };
+          }
+          elVal.appendChild(aviso);
+        }
         elNext.style.display = 'block';
       } else if (elNext) {
         elNext.style.display = 'none';
@@ -1246,7 +1274,7 @@ function guardarCita() {
   btn.disabled = true;
   btn.textContent = 'Guardando...';
 
-  db.collection('spas').doc('rose').collection('citas').add({
+  var nuevaCita = {
     uid: usuarioActual.tel,
     nombre: nombre,
     whatsapp: whatsapp,
@@ -1260,11 +1288,29 @@ function guardarCita() {
     estado: 'pendiente',
     puntos: 10,
     creadoEn: firebase.firestore.FieldValue.serverTimestamp()
-  }).then(function() {
+  };
+  var montoAbono = 0;
+  var conSaldo = false;
+  if (abonoActivo()) {
+    montoAbono = calcularAbono(totalPrecio);
+    conSaldo = saldoFavorActual >= montoAbono;
+    nuevaCita.estado = 'esperando_abono';
+    nuevaCita.abono = montoAbono;
+    nuevaCita.usarSaldo = conSaldo;
+  }
+
+  db.collection('spas').doc('rose').collection('citas').add(nuevaCita).then(function(ref) {
     db.collection('spas').doc('rose').collection('clientes').doc(usuarioActual.tel).set({
       nombre: nombre, whatsapp: whatsapp
     }, { merge: true });
-    showToast('Cita agendada! Te confirmamos pronto', 'success');
+    if (montoAbono > 0 && conSaldo) {
+      saldoFavorActual -= montoAbono;
+      showToast('Usamos tu saldo a favor para el abono. Te confirmamos por WhatsApp', 'success');
+    } else if (montoAbono > 0) {
+      abrirModalAbono(ref.id, montoAbono);
+    } else {
+      showToast('Cita agendada! Te confirmamos pronto', 'success');
+    }
     carritoServicios = [];
     renderCarrito();
     document.getElementById('f-fecha').value = '';
@@ -1275,7 +1321,80 @@ function guardarCita() {
     btn.textContent = 'Confirmar cita';
   });
 }
+
+// ===== Modal de abono =====
+var abonoCitaId = null;
+function abrirModalAbono(citaId, monto) {
+  abonoCitaId = citaId;
+  var c = configAbono || {};
+  document.getElementById('abono-monto').textContent = fmtPesos(monto);
+  var datos = '';
+  if (c.nequi) datos += '<div><strong>Nequi:</strong> ' + c.nequi + '</div>';
+  if (c.bancolombia) datos += '<div><strong>Bancolombia:</strong> ' + c.bancolombia + '</div>';
+  if (c.titular) datos += '<div><strong>A nombre de:</strong> ' + c.titular + '</div>';
+  document.getElementById('abono-datos').innerHTML = datos;
+  document.getElementById('abono-politica').textContent = c.politica || '';
+  document.getElementById('abono-minutos').textContent = (Number(c.minutosComprobante) || 30);
+  document.getElementById('abono-archivo').value = '';
+  document.getElementById('abono-archivo-nombre').textContent = '';
+  var b = document.getElementById('btn-enviar-abono');
+  b.disabled = false; b.textContent = 'Enviar comprobante';
+  document.getElementById('abono-overlay').style.display = 'flex';
+}
+function cerrarModalAbono() {
+  document.getElementById('abono-overlay').style.display = 'none';
+  if (usuarioActual) cargarPerfilUsuario(usuarioActual.tel);
+}
+function enviarComprobante() {
+  var input = document.getElementById('abono-archivo');
+  var file = input.files && input.files[0];
+  if (!file) { showToast('Selecciona la foto del comprobante', 'error'); return; }
+  if (!/^image\//.test(file.type)) { showToast('El comprobante debe ser una imagen', 'error'); return; }
+  if (file.size > 10 * 1024 * 1024) { showToast('La imagen es muy pesada (máximo 10MB)', 'error'); return; }
+  if (!abonoCitaId || !usuarioActual) return;
+  var b = document.getElementById('btn-enviar-abono');
+  b.disabled = true; b.textContent = 'Subiendo...';
+  var ext = (file.name.split('.').pop() || 'jpg').toLowerCase();
+  var ref = storageCli.ref('spas/rose/comprobantes/' + usuarioActual.tel + '/' + abonoCitaId + '.' + ext);
+  ref.put(file, { contentType: file.type }).then(function(snap) {
+    return snap.ref.getDownloadURL();
+  }).then(function(url) {
+    return db.collection('spas').doc('rose').collection('citas').doc(abonoCitaId).update({
+      comprobanteUrl: url,
+      comprobanteSubidoEn: firebase.firestore.FieldValue.serverTimestamp()
+    });
+  }).then(function() {
+    cerrarModalAbono();
+    showToast('Recibimos tu comprobante. Te confirmamos por WhatsApp cuando lo revisemos', 'success');
+  }).catch(function(e) {
+    console.error(e);
+    b.disabled = false; b.textContent = 'Enviar comprobante';
+    showToast('No se pudo subir. Puede que el tiempo para el abono ya se haya vencido; intenta agendar de nuevo.', 'error');
+  });
+}
 </script>
+
+<!-- ABONO OVERLAY -->
+<div id="abono-overlay" style="display:none;position:fixed;inset:0;background:rgba(26,26,26,0.92);z-index:9999;align-items:center;justify-content:center;padding:24px;">
+  <div style="background:#ffffff;border-radius:24px;padding:28px 22px;width:100%;max-width:400px;position:relative;max-height:90vh;overflow-y:auto;font-family:'DM Sans',sans-serif;">
+    <button onclick="cerrarModalAbono()" style="position:absolute;top:14px;right:16px;background:none;border:none;font-size:1.2rem;cursor:pointer;color:#8a7676;line-height:1;">✕</button>
+    <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:1.5rem;color:#1a1a1a;margin-bottom:6px;">Separa tu cita</div>
+    <div style="font-size:0.85rem;color:#8a7676;margin-bottom:16px;">Para confirmar tu cita, transfiere el abono y sube el comprobante. El abono se descuenta del valor de tu servicio.</div>
+    <div style="background:#F8D5DB;border-radius:14px;padding:14px;text-align:center;margin-bottom:14px;">
+      <div style="font-size:0.75rem;color:#8a7676;">Valor del abono</div>
+      <div id="abono-monto" style="font-size:1.6rem;font-weight:600;color:#EB8899;"></div>
+    </div>
+    <div id="abono-datos" style="font-size:0.88rem;color:#1a1a1a;line-height:1.7;margin-bottom:14px;"></div>
+    <div id="abono-politica" style="font-size:0.78rem;color:#8a7676;background:#fdf8f5;border-radius:10px;padding:10px 12px;margin-bottom:14px;"></div>
+    <div style="font-size:0.78rem;color:#c0392b;margin-bottom:14px;">Tienes <span id="abono-minutos">30</span> minutos para subir el comprobante. Si no, el horario se libera.</div>
+    <label style="display:block;border:1.5px dashed #F2B2BD;border-radius:12px;padding:14px;text-align:center;color:#EB8899;cursor:pointer;font-size:0.88rem;margin-bottom:8px;">
+      Toca para elegir la foto del comprobante
+      <input type="file" id="abono-archivo" accept="image/*" style="display:none;" onchange="document.getElementById('abono-archivo-nombre').textContent = this.files[0] ? this.files[0].name : ''">
+    </label>
+    <div id="abono-archivo-nombre" style="font-size:0.75rem;color:#8a7676;text-align:center;margin-bottom:12px;"></div>
+    <button id="btn-enviar-abono" onclick="enviarComprobante()" style="width:100%;background:#EB8899;color:#fff;border:none;border-radius:50px;padding:14px;font-size:0.95rem;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif;">Enviar comprobante</button>
+  </div>
+</div>
 
 <!-- LOGIN OVERLAY -->
 <div id="login-overlay" style="display:none;position:fixed;inset:0;background:rgba(26,26,26,0.92);z-index:9999;align-items:center;justify-content:center;padding:24px;">

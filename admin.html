@@ -115,6 +115,7 @@ tbody td{padding:13px 14px;color:#1a1a1a;vertical-align:middle}
 .be-confirmada{background:#d4edda;color:#155724}
 .be-cancelada{background:#f8d7da;color:#721c24}
 .be-atendida{background:#d1ecf1;color:#0c5460}
+.be-esperando_abono{background:#ffe5d0;color:#a04a00}
 .be-activa{background:#d4edda;color:#155724}
 .be-tibia{background:#fff3cd;color:#856404}
 .be-perdida{background:#f8d7da;color:#721c24}
@@ -446,6 +447,7 @@ tbody td{padding:13px 14px;color:#1a1a1a;vertical-align:middle}
       <div class="card">
         <div class="filtros">
           <button class="fb active" onclick="filtrarCitas('todas',this)">Todas</button>
+          <button class="fb" onclick="filtrarCitas('esperando_abono',this)">Esperando abono</button>
           <button class="fb" onclick="filtrarCitas('pendiente',this)">Pendientes</button>
           <button class="fb" onclick="filtrarCitas('confirmada',this)">Confirmadas</button>
           <button class="fb" onclick="filtrarCitas('atendida',this)">Atendidas</button>
@@ -608,6 +610,23 @@ tbody td{padding:13px 14px;color:#1a1a1a;vertical-align:middle}
         <div><div class="topbar-title"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v2M12 20v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M2 12h2M20 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>️ <em>Configuración</em></div></div>
         <button onclick="abrirModalServicio()" style="background:#51BC54;color:#fff;border:none;border-radius:50px;padding:10px 20px;font-size:0.85rem;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif;">+ Nuevo servicio</button>
       </div>
+      <div class="card" style="margin-bottom:16px;">
+        <div class="card-title">Abono para reservar</div>
+        <div style="font-size:0.8rem;color:#8a7a76;margin-bottom:14px;">Si está activo, las clientas deben transferir un abono y subir el comprobante al pedir la cita desde la página. Las citas manuales no piden abono.</div>
+        <label style="display:flex;align-items:center;gap:8px;font-size:0.88rem;margin-bottom:14px;cursor:pointer;"><input type="checkbox" id="ab-activo" style="accent-color:#51BC54;width:18px;height:18px;"> Pedir abono al reservar</label>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;">
+          <div><label class="ab-lbl">Tipo de abono</label><select id="ab-tipo" class="ab-inp"><option value="fijo">Valor fijo ($)</option><option value="porcentaje">Porcentaje del servicio (%)</option></select></div>
+          <div><label class="ab-lbl">Valor (pesos o %)</label><input type="number" id="ab-valor" class="ab-inp" min="0" placeholder="Ej: 20000 o 30"></div>
+          <div><label class="ab-lbl">Minutos para subir comprobante</label><input type="number" id="ab-minutos" class="ab-inp" min="5" placeholder="30"></div>
+          <div><label class="ab-lbl">Horas mínimas para saldo a favor</label><input type="number" id="ab-horas" class="ab-inp" min="0" placeholder="24"></div>
+          <div><label class="ab-lbl">Número Nequi</label><input type="text" id="ab-nequi" class="ab-inp" placeholder="300 000 0000"></div>
+          <div><label class="ab-lbl">Cuenta Bancolombia</label><input type="text" id="ab-bancolombia" class="ab-inp" placeholder="Ahorros 000-000000-00"></div>
+          <div><label class="ab-lbl">A nombre de</label><input type="text" id="ab-titular" class="ab-inp" placeholder="Nombre del titular"></div>
+        </div>
+        <div style="margin-top:12px;"><label class="ab-lbl">Política de cancelación (la ve la clienta)</label><textarea id="ab-politica" class="ab-inp" rows="3"></textarea></div>
+        <button onclick="guardarConfigAbono()" style="margin-top:14px;background:#51BC54;color:#fff;border:none;border-radius:50px;padding:10px 22px;font-size:0.85rem;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif;">Guardar abono</button>
+      </div>
+      <style>.ab-lbl{display:block;font-size:0.72rem;color:#8a7a76;margin-bottom:4px}.ab-inp{width:100%;padding:10px 12px;border:1.5px solid #c8e6c9;border-radius:10px;font-size:0.88rem;font-family:'DM Sans',sans-serif;box-sizing:border-box;background:#fff}</style>
       <div class="card">
         <div class="card-title">Servicios del spa</div>
         <input type="text" id="buscador-servicios" placeholder="Buscar servicio..." oninput="filtrarServicios()" style="width:100%;padding:12px 16px;border:1.5px solid #c8e6c9;border-radius:12px;font-size:0.9rem;font-family:'DM Sans',sans-serif;outline:none;box-sizing:border-box;margin-bottom:16px;">
@@ -1053,16 +1072,19 @@ function renderTabla(idTabla,citas){
     var c=citas[i];
     var estado=c.estado||'pendiente';
     var accion='';
-    if(estado==='pendiente') accion='<button class="btn-ok" onclick="cambiarEstado(\''+c.id+'\',\'confirmada\')">Confirmar</button><button class="btn-no" onclick="cambiarEstado(\''+c.id+'\',\'cancelada\')">Cancelar</button>';
+    if(estado==='esperando_abono'){
+      accion=(c.comprobanteUrl?'<button class="btn-at" onclick="window.open(\''+c.comprobanteUrl+'\',\'_blank\')">Ver comprobante</button> <button class="btn-ok" onclick="aprobarAbono(\''+c.id+'\')">Aprobar</button>':'<span style="color:#a04a00;font-size:0.75rem">Sin comprobante</span> ')+'<button class="btn-no" onclick="rechazarAbono(\''+c.id+'\')">Rechazar</button>';
+    }
+    else if(estado==='pendiente') accion='<button class="btn-ok" onclick="cambiarEstado(\''+c.id+'\',\'confirmada\')">Confirmar</button><button class="btn-no" onclick="cambiarEstado(\''+c.id+'\',\'cancelada\')">Cancelar</button>';
     else if(estado==='confirmada') accion='<button class="btn-at" onclick="cambiarEstado(\''+c.id+'\',\'atendida\')">Atendida</button>';
     else accion='<span style="color:#ccc;font-size:0.78rem">-</span>';
     var svc=c.servicio?c.servicio.split('\u2014')[0].trim().split('\u2013')[0].trim():'\u2014';
     html+='<tr>'+
       '<td><div class="td-name">'+(c.nombre||'\u2014')+'</div><div class="td-sub">'+(c.whatsapp||'')+'</div></td>'+
-      '<td>'+svc+'</td>'+
+      '<td>'+svc+(c.abono?'<div class="td-sub">Abono '+(c.abonoConSaldo?'(saldo a favor) ':'')+'$'+Number(c.abono).toLocaleString('es-CO')+(c.precio?' · Falta $'+Math.max(0,c.precio-c.abono).toLocaleString('es-CO'):'')+'</div>':'')+'</td>'+
       '<td><div class="td-pro"><div class="pro-dot" style="background:'+(colores[c.profesional]||'#ccc')+'"></div>'+(c.profesional||'\u2014')+'</div></td>'+
       '<td>'+(c.fecha||'')+'<br><span style="color:#8a7a76;font-size:0.78rem">'+(c.hora||'')+'</span></td>'+
-      '<td><span class="badge-e be-'+estado+'">'+estado+'</span></td>'+
+      '<td><span class="badge-e be-'+estado+'">'+(estado==='esperando_abono'?'esperando abono':estado)+'</span></td>'+
       '<td>'+accion+'</td>'+
       '</tr>';
   }
@@ -1086,6 +1108,49 @@ function filtrarCitasRango(){
   document.querySelectorAll('#page-citas .filtros .fb').forEach(function(b){b.classList.remove('active');});
   renderTablaTodas(f);
   toast('Mostrando '+f.length+' citas');
+}
+
+function aprobarAbono(idCita){
+  if(!confirm('¿Aprobar el abono? La cita quedará confirmada y se le enviará el WhatsApp a la clienta.')) return;
+  db.collection('spas').doc(sucursalActual).collection('citas').doc(idCita).update({estado:'confirmada',abonoAprobado:true,abonoAprobadoEn:firebase.firestore.FieldValue.serverTimestamp()})
+    .then(function(){toast('Abono aprobado','ok');}).catch(function(){toast('Error aprobando','err');});
+}
+function rechazarAbono(idCita){
+  if(!confirm('¿Rechazar el abono? La cita se cancelará y el horario quedará libre.')) return;
+  db.collection('spas').doc(sucursalActual).collection('citas').doc(idCita).update({estado:'cancelada',abonoRechazado:true})
+    .then(function(){toast('Abono rechazado, cita cancelada','ok');}).catch(function(){toast('Error rechazando','err');});
+}
+function cargarConfigAbono(){
+  db.collection('spas').doc(sucursalActual).collection('config').doc('abono').get().then(function(d){
+    var c=d.exists?d.data():{};
+    document.getElementById('ab-activo').checked=!!c.activo;
+    document.getElementById('ab-tipo').value=c.tipo||'fijo';
+    document.getElementById('ab-valor').value=c.valor||'';
+    document.getElementById('ab-minutos').value=c.minutosComprobante||30;
+    document.getElementById('ab-horas').value=(c.horasSaldo!==undefined?c.horasSaldo:24);
+    document.getElementById('ab-nequi').value=c.nequi||'';
+    document.getElementById('ab-bancolombia').value=c.bancolombia||'';
+    document.getElementById('ab-titular').value=c.titular||'';
+    document.getElementById('ab-politica').value=c.politica||'Si cancelas con al menos 24 horas de anticipación, tu abono queda como saldo a favor para tu próxima cita. Si cancelas después o no asistes, el abono no es reembolsable.';
+  });
+}
+function guardarConfigAbono(){
+  var datos={
+    activo:document.getElementById('ab-activo').checked,
+    tipo:document.getElementById('ab-tipo').value,
+    valor:Number(document.getElementById('ab-valor').value)||0,
+    minutosComprobante:Math.max(5,Number(document.getElementById('ab-minutos').value)||30),
+    horasSaldo:Math.max(0,Number(document.getElementById('ab-horas').value)||0),
+    nequi:document.getElementById('ab-nequi').value.trim(),
+    bancolombia:document.getElementById('ab-bancolombia').value.trim(),
+    titular:document.getElementById('ab-titular').value.trim(),
+    politica:document.getElementById('ab-politica').value.trim()
+  };
+  if(datos.activo&&datos.valor<=0){toast('Pon el valor del abono','err');return;}
+  if(datos.activo&&datos.tipo==='porcentaje'&&datos.valor>100){toast('El porcentaje no puede ser mayor a 100','err');return;}
+  if(datos.activo&&!datos.nequi&&!datos.bancolombia){toast('Pon al menos un Nequi o cuenta para transferir','err');return;}
+  db.collection('spas').doc(sucursalActual).collection('config').doc('abono').set(datos,{merge:true})
+    .then(function(){toast('Abono guardado','ok');}).catch(function(){toast('Error guardando','err');});
 }
 
 function cambiarEstado(idCita,nuevoEstado){
@@ -1525,7 +1590,7 @@ function guardarCitaManual() {
   var iniNueva = aMin(hora), finNueva = iniNueva + durNueva;
   db.collection('spas').doc(sucursalActual).collection('citas')
     .where('profesional','==',profesional).where('fecha','==',fecha)
-    .where('estado','in',['pendiente','confirmada','atendida']).get().then(function(snap) {
+    .where('estado','in',['pendiente','confirmada','atendida','esperando_abono']).get().then(function(snap) {
     var choca = false;
     snap.forEach(function(d) {
       var x = d.data(); var ini = aMin(x.hora); if (ini === null) return;
@@ -2247,7 +2312,7 @@ function showPage(pageName,btn){
   btn.classList.add('active');
   localStorage.setItem('rose_admin_page', pageName);
   if(pageName==='reporte') filtrarReporte('semana',document.querySelector('#page-reporte .fb'));
-  if(pageName==='configuracion') { cargarConfigServicios(); cargarInspoAdmin(); cargarVideoHero(); }
+  if(pageName==='configuracion') { cargarConfigAbono(); cargarConfigServicios(); cargarInspoAdmin(); cargarVideoHero(); }
   if(pageName==='horarios') renderHorarioProSelect();
   if(pageName==='calificaciones'){
     db.collection('spas').doc(sucursalActual).collection('calificaciones').get().then(function(snap){
