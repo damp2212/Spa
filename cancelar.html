@@ -71,7 +71,7 @@ function mostrarConfirmacion(cita) {
     '</div>' +
     '<button class="btn btn-cancel" onclick="confirmarCancelacion()">Si, cancelar mi cita</button>' +
     '<a href="https://roseoficial.com" class="btn btn-back" style="display:block;text-align:center;margin-top:10px">No, mantener cita</a>' +
-    '<div class="powered"><a href="https://maposapp.com" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:8px;text-decoration:none;"><span style="font-size:0.75rem;color:#8a7676;">Desarrollado por</span><img src="mapos-sello-oscuro.svg" alt="Mapos" style="width:100px;height:auto;"></a></div>';
+    '<div class="powered"><a href="https://maposapp.com" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:8px;text-decoration:none;"><span style="font-size:0.75rem;color:#8a7676;">Desarrollado por</span><img src="mapos-sello-texto.svg" alt="Mapos" style="width:100px;height:auto;"></a></div>';
 }
 
 function confirmarCancelacion() {
@@ -81,14 +81,14 @@ function confirmarCancelacion() {
       '<div class="title">Cita cancelada</div>' +
       '<div class="subtitle">Tu cita fue cancelada. Esperamos verte pronto en Rosē.</div>' +
       '<a href="https://roseoficial.com" class="btn btn-back" style="display:block;text-align:center">Volver al inicio</a>' +
-      '<div class="powered"><a href="https://maposapp.com" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:8px;text-decoration:none;"><span style="font-size:0.75rem;color:#8a7676;">Desarrollado por</span><img src="mapos-sello-oscuro.svg" alt="Mapos" style="width:100px;height:auto;"></a></div>';
+      '<div class="powered"><a href="https://maposapp.com" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:8px;text-decoration:none;"><span style="font-size:0.75rem;color:#8a7676;">Desarrollado por</span><img src="mapos-sello-texto.svg" alt="Mapos" style="width:100px;height:auto;"></a></div>';
   }).catch(function() {
     document.getElementById('card').innerHTML =
       '<div class="icon icon-err"><svg viewBox="0 0 24 24" fill="none" stroke="#721c24" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div>' +
       '<div class="title">Error</div>' +
       '<div class="subtitle">No pudimos cancelar tu cita. Intenta de nuevo.</div>' +
       '<a href="https://roseoficial.com" class="btn btn-back" style="display:block;text-align:center">Volver al inicio</a>' +
-      '<div class="powered"><a href="https://maposapp.com" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:8px;text-decoration:none;"><span style="font-size:0.75rem;color:#8a7676;">Desarrollado por</span><img src="mapos-sello-oscuro.svg" alt="Mapos" style="width:100px;height:auto;"></a></div>';
+      '<div class="powered"><a href="https://maposapp.com" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:8px;text-decoration:none;"><span style="font-size:0.75rem;color:#8a7676;">Desarrollado por</span><img src="mapos-sello-texto.svg" alt="Mapos" style="width:100px;height:auto;"></a></div>';
   });
 }
 
@@ -98,7 +98,7 @@ function mostrarError(msg) {
     '<div class="title">Algo salio mal</div>' +
     '<div class="subtitle">' + msg + '</div>' +
     '<a href="https://roseoficial.com" class="btn btn-back" style="display:block;text-align:center">Volver al inicio</a>' +
-    '<div class="powered"><a href="https://maposapp.com" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:8px;text-decoration:none;"><span style="font-size:0.75rem;color:#8a7676;">Desarrollado por</span><img src="mapos-sello-oscuro.svg" alt="Mapos" style="width:100px;height:auto;"></a></div>';
+    '<div class="powered"><a href="https://maposapp.com" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:8px;text-decoration:none;"><span style="font-size:0.75rem;color:#8a7676;">Desarrollado por</span><img src="mapos-sello-texto.svg" alt="Mapos" style="width:100px;height:auto;"></a></div>';
 }
 
 if (!citaId) {
